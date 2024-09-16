@@ -6,32 +6,60 @@
     <title>Big Boots</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-white font-Changa">
 
-<body class="bg-white text-white font-Changa">
+    <!-- Navbar Section -->
     <div id="navbar"></div>
 
-    <div class="max-w-7xl mx-auto py-10 mt-[5%]">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white p-4 rounded-lg text-center transition-all duration-300 hover:scale-105 hover:bg-stone-100">
-                <img class="w-full h-64 object-cover rounded-t-lg" src="https://www.arifootballstore.com/media/catalog/product/cache/6e478a31517304dced53ac4d3f3d5560/p/h/phantom_luna_ii_elite_fg_fj2572-400__01_2.jpg">
-                <h3 class="mt-4 text-red-400 uppercase text-sm text-left pl-1">Nike</h3>
-                <p class="text-xl font-thin mt-1 text-left pl-1 text-black">NIKE PHANTOM LUNA II ELITE FG - BLUE FURY/WHITE</p>
-                <p class="text-2xl font-thin text-left pl-1 mt-3 text-black">9,600 THB</p>
+    <!-- Main Layout -->
+    <div class="flex mt-16">
+        <!-- Sidebar Section -->
+        <aside id="sidebar" class="w-1/4 p-4 border-r border-gray-200"></aside>
+
+        <!-- Content Section -->
+        <main class="w-3/4 mx-auto py-10 ml-4 mt-[-1%] mr-[2%]">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-4 rounded-lg text-center transition-all duration-300 hover:scale-105 hover:bg-stone-100">
+                    <img class="w-full h-64 object-cover rounded-t-lg" src="https://www.arifootballstore.com/media/catalog/product/cache/6e478a31517304dced53ac4d3f3d5560/p/h/phantom_luna_ii_elite_fg_fj2572-400__01_2.jpg" alt="Nike Phantom Luna">
+                    <h3 class="mt-4 text-red-400 uppercase text-sm text-left pl-1">Nike</h3>
+                    <p class="text-xl font-thin mt-1 text-left pl-1 text-black">NIKE PHANTOM LUNA II ELITE FG</p>
+                    <p class="text-2xl font-thin text-left pl-1 mt-3 text-black">9,600 THB</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg text-center transition-all duration-300 hover:scale-105 hover:bg-stone-100">
+                    <img class="w-full h-64 object-cover rounded-t-lg" src="https://www.arifootballstore.com/media/catalog/product/cache/6e478a31517304dced53ac4d3f3d5560/a/s/asics_ds_light_x-fly_pro_2_paris_1101a074.750__01.jpg" alt="ASICS Light X-Fly">
+                    <h3 class="mt-4 text-red-400 uppercase text-sm text-left pl-1">ASICS</h3>
+                    <p class="text-xl font-thin mt-1 text-left pl-1 text-black">ASICS DS LIGHT X-FLY PRO 2 PARIS - SAFETY</p>
+                    <p class="text-2xl font-thin text-left pl-1 mt-3 text-black">7,500 THB</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg text-center transition-all duration-300 hover:scale-105 hover:bg-stone-100">
+                    <img class="w-full h-64 object-cover rounded-t-lg" src="https://www.arifootballstore.com/media/catalog/product/cache/6e478a31517304dced53ac4d3f3d5560/a/s/asics_ds_light_x-fly_pro_2_paris_1101a074.750__01.jpg" alt="ASICS Light X-Fly">
+                    <h3 class="mt-4 text-red-400 uppercase text-sm text-left pl-1">ASICS</h3>
+                    <p class="text-xl font-thin mt-1 text-left pl-1 text-black">ASICS DS LIGHT X-FLY PRO 2 PARIS - SAFETY</p>
+                    <p class="text-2xl font-thin text-left pl-1 mt-3 text-black">7,500 THB</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg text-center transition-all duration-300 hover:scale-105 hover:bg-stone-100">
+                    <img class="w-full h-64 object-cover rounded-t-lg" src="https://www.arifootballstore.com/media/catalog/product/cache/6e478a31517304dced53ac4d3f3d5560/a/s/asics_ds_light_x-fly_pro_2_paris_1101a074.750__01.jpg" alt="ASICS Light X-Fly">
+                    <h3 class="mt-4 text-red-400 uppercase text-sm text-left pl-1">ASICS</h3>
+                    <p class="text-xl font-thin mt-1 text-left pl-1 text-black">ASICS DS LIGHT X-FLY PRO 2 PARIS - SAFETY</p>
+                    <p class="text-2xl font-thin text-left pl-1 mt-3 text-black">7,500 THB</p>
+                </div>
+
             </div>
-            <div class="bg-white p-4 rounded-lg text-center transition-all duration-300 hover:scale-105 hover:bg-stone-100">
-                <img class="w-full h-64 object-cover rounded-t-lg" src="https://www.arifootballstore.com/media/catalog/product/cache/6e478a31517304dced53ac4d3f3d5560/a/s/asics_ds_light_x-fly_pro_2_paris_1101a074.750__01.jpg">
-                <h3 class="mt-4 text-red-400 uppercase text-sm text-left pl-1">ASICS</h3>
-                <p class="text-xl font-thin mt-1 text-left pl-1 text-black">ASICS DS LIGHT X-FLY PRO 2 PARIS - SAFETY</p>
-                <p class="text-2xl font-thin text-left pl-1 mt-3 text-black">7,500 THB</p>
-            </div>
-        </div>
+        </main>
     </div>    
+
+    <script>
+      fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('navbar').innerHTML = data;
+        });
+
+      fetch('sidebar.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('sidebar').innerHTML = data;
+        });
+    </script>
 </body>
 </html>
-<script>
-  fetch('navbar.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('navbar').innerHTML = data;
-    });
-</script>
