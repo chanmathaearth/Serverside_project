@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div data-theme="light" >
         <button
             @click="toggleSidebar"
             class="w-full flex items-center justify-center py-2 px-4 rounded-lg font-thin"
@@ -41,50 +41,50 @@
                     </button>
                 </div>
                 <ul class="mt-2 space-y-2" v-show="isCatebarVisible">
-                    <li>
+                    <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="Adidas"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
                         <span class="font-thin">Adidas</span>
                     </li>
-                    <li>
+                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="ASICS"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
                         <span class="font-thin">Asicis</span>
                     </li>
-                    <li>
+                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="Nike"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
                         <span class="font-thin">Nike</span>
                     </li>
-                    <li>
+                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="Mizuno"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
                         <span class="font-thin">Mizuno</span>
                     </li>
-                    <li>
+                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="Puma"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
@@ -117,50 +117,50 @@
                 </div>
 
                 <ul class="mt-2 space-y-2" v-show="isColorbarVisible">
-                    <li>
+                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="Red"
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
                         <span class="font-thin">Red</span>
                     </li>
-                    <li>
+                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="Blue"
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
                         <span class="font-thin">Blue</span>
                     </li>
-                    <li>
+                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="Green"
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
                         <span class="font-thin">Green</span>
                     </li>
-                    <li>
+                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="Yellow"
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
                         <span class="font-thin">Yellow</span>
                     </li>
-                    <li>
+                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2"
+                            class="mr-2 checkbox checkbox checkbox-xs"
                             value="Black"
                             v-model="selectedColors"
                             @change="emitSelectedColors"

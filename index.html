@@ -5,12 +5,18 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STUDFORCE</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
 
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app" data-theme="light" class="bg-white"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
+<style>
+:root {
+  background-color: #ffffff !important; /* บังคับพื้นหลังเป็นสีขาว */
+  color: #000000 !important; /* บังคับสีข้อความเป็นสีดำ */
+}
+</style>
