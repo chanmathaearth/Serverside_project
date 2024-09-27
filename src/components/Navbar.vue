@@ -24,6 +24,7 @@ const changeQuantity = (event, index) => {
                 </div>
 
                 <div class="profile flex items-center space-x-6">
+                    <RouterLink to="/login">
                     <svg
                         @click="toggleProfileModal"
                         class="w-6 h-6 text-black transition-all duration-300 hover:scale-110 cursor-pointer"
@@ -40,7 +41,7 @@ const changeQuantity = (event, index) => {
                             clip-rule="evenodd"
                         />
                     </svg>
-
+                    </RouterLink>
                     <!-- Cart Icon -->
                     <div @click="toggleCartModal" class="relative transition-all duration-300 hover:scale-110 cursor-pointer">
                         <svg

@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import CartView from '../views/CartView.vue'
 import ProductDetail from '@/components/product_detail.vue';
 import TrackerView from '../views/TrackerView.vue'
+import LoginView from '../views/LoginView.vue'
+import RegisterView from '../views/RegisterView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +28,16 @@ const router = createRouter({
       path: '/tracker',
       name: 'tracker',
       component: TrackerView
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView
     },
   ]
 })
