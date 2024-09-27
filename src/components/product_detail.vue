@@ -9,7 +9,7 @@
                 <div id="default-carousel" class="relative w-full" data-carousel="slide">
                     <!-- Carousel wrapper -->
                     <div class="relative h-56  overflow-hidden rounded-lg md:h-96">
-                        <div v-for="(pic_detail, index) in product.imageUrl" :key="index" class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <div v-for="(pic_detail, index) in product_detail.imageUrl" :key="index" class="hidden duration-700 ease-in-out" data-carousel-item>
                             <img :src="pic_detail" class="block w-full h-full object-cover" alt="Product Image">
                         </div>
                     </div>
@@ -46,7 +46,7 @@
         
         <div class="w-full ml-4" >
             <div>
-                <span class="ml-4 flex text-3xl font-bold">{{ product.name }}</span><br>
+                <span class="ml-4 flex text-3xl font-bold">{{ product_detail.name }}</span><br>
                 <span class="ml-4">รหัสสินค้า : 1101A074.750</span><br>
                 <span class="ml-4">สถานะของสินค้า : สินค้าพร้อมส่ง</span><br><br>
             </div>
@@ -71,31 +71,53 @@
 
             <div>
                 <div class="space-x-2 ml-4">
-                    <span>Size :</span>
-                    <span class="rounded-lg border-solid border-2 border-black ">EUR</span>
-                    <span class="rounded-lg border-solid border-2 border-black ">US</span>
-                    <span class="rounded-lg border-solid border-2 border-black ">UK</span>
-                    <span class="rounded-lg border-solid border-2 border-black ">CM</span>
+                <span>Size :</span>
+                <a href="javascript:void(0)" 
+                    :class="['rounded-lg border-2 px-4 py-2', selectedTabSize === 'EUR' ? 'border-red-500 text-red-500' : 'bg-white text-black']"
+                    @click="openTabSize('EUR')">
+                    EUR
+                </a>
+                <a href="javascript:void(0)" 
+                    :class="['rounded-lg border-2 px-4 py-2', selectedTabSize === 'US' ? 'border-red-500 text-red-500' : 'bg-white text-black']"
+                    @click="openTabSize('US')">
+                    US
+                </a>
+                </div><br>
+
+                <div v-if="selectedTabSize === 'EUR'" class="ml-4 mt-2 space-x-2">
+                    <span v-for="size in product_detail.sizeEUR" 
+                        :key="size" 
+                        @click="selectSize(size)" 
+                        :class="[
+                            'rounded-lg border-2 px-2 py-1 cursor-pointer transition-all duration-300',
+                            selectedSize === size ? 'border-red-500 text-red-500' : 'bg-white text-black border-black'
+                        ]">
+                        {{ size }}
+                    </span>
                 </div>
-                <div class="ml-4 mt-2 space-x-2">
-                    <span class="rounded-lg border-solid border-2 border-black ">41.5</span>
-                    <span class="rounded-lg border-solid border-2 border-black ">42</span>
-                    <span class="rounded-lg border-solid border-2 border-black ">44</span>
-                    <span class="rounded-lg border-solid border-2 border-black ">45</span>
+                <div v-if="selectedTabSize === 'US'" class="ml-4 mt-2 space-x-2">
+                    <span v-for="size in product_detail.sizeUS" 
+                        :key="size" 
+                        @click="selectSize(size)" 
+                        :class="[
+                            'rounded-lg border-2 px-2 py-1 cursor-pointer transition-all duration-300',
+                            selectedSize === size ? 'border-red-500 text-red-500' : 'bg-white text-black border-black'
+                        ]">
+                        {{ size }}
+                    </span>
                 </div>
+
             </div><br>
             <div>
                 <div class="flex items-center space-x-2 ml-4">
                     <label class="text-sm font-medium">จำนวน</label>
                     <div class="flex items-center space-x-2 ">
-                        <button class="minus bg-gray-200 text-gray-700 font-bold px-3 py-1 rounded" @click="decreaseQty()">-</button>
-                        <input type="number" id="qty" name="qty" class="w-86 text-center border border-gray-300 rounded" min="0" value="1">
-                        <button class="plus bg-gray-200 text-gray-700 font-bold px-3 py-1 rounded" @click="increaseQty()">+</button>
+                        <input type="number" v-model="product_quantity" @change="changeQuantity($event, index)" class="w-86 text-center border border-gray-300 rounded" min="1" value="1">
                     </div>
                 </div>
                 <br>
                 <div>
-                    <button type="submit" title="เพิ่มใส่ตะกร้า" class="addtocart bg-red-500 text-white rounded-lg border-solid border-2 ml-2 mr-2 w-96" id="product-addtocart-button">
+                    <button @click="addToCart(product_detail)" type="submit" title="เพิ่มใส่ตะกร้า" class="addtocart bg-red-500 text-white rounded-lg border-solid border-2 ml-2 mr-2 w-96" id="product-addtocart-button">
                         <span>เพิ่มใส่ตะกร้า</span>
                     </button>
                 </div>
@@ -124,8 +146,8 @@
             
             <div class="p-4 border border-gray-300 mt-4">
                 <div id="tab1" class="tabcontent">
-                <p class="font-semibold">{{ product.name }}</p>
-                <p>{{ product.about }}</p>
+                <p class="font-semibold">{{ product_detail.name }}</p>
+                <p>{{ product_detail.about }}</p>
                 </div>
                 <div id="tab2" class="tabcontent hidden">
                 <p>liverpool 3-0 manu</p>
@@ -142,29 +164,28 @@
 import { useProductDetailStore } from '@/stores/P_detail.js'
 import Navbar from "@/components/Navbar.vue";
 import Sidebar from "../components/Sidebar.vue";
+import { useCartStore } from '@/stores/cart';
     export default {
         components: {
             Navbar,
             Sidebar,
         },
+        data() {
+            return {
+                cartStore: null,
+                product_quantity: 1,
+                selectedTabSize: 'EUR',
+                selectedSize: null,
+            };
+        },
         created() {
             const productDetail = useProductDetailStore();
             const productName = this.$route.params.Pro_name;
-            this.product = productDetail.list.find(product => product.name === productName);
+            this.product_detail = productDetail.list.find(product => product.name === productName);
+            this.cartStore = useCartStore();
         },
         name: 'ProductDetail',
         methods: {
-            decreaseQty() {
-                var qtyInput = document.getElementById('qty');
-                var currentValue = parseInt(qtyInput.value, 10);
-                if (currentValue > 0) {
-                    qtyInput.value = currentValue - 1;
-                }
-            },
-            increaseQty() {
-                var qtyInput = document.getElementById('qty');
-                qtyInput.value = parseInt(qtyInput.value, 10) + 1;
-            },
             sizeModal() {
                 const modal = document.getElementById('myModal');
                 const openModalBtn = document.getElementById('openModal');
@@ -184,6 +205,9 @@ import Sidebar from "../components/Sidebar.vue";
                     }
                 });
             },
+            openTabSize(tab) {
+                this.selectedTabSize = tab;
+            },
             openTab(event, tabId) {
                 var i, tabcontent, tablinks;
                 tabcontent = document.getElementsByClassName("tabcontent");
@@ -199,7 +223,28 @@ import Sidebar from "../components/Sidebar.vue";
 
                 document.getElementById(tabId).classList.remove("hidden");
                 event.currentTarget.classList.add("border-red-500", "text-red-500", "active");
-            }
+            },
+            changeQuantity(event, index) {
+                const newQuantity = parseInt(event.target.value)
+                this.cartStore.updateQuantity(index, newQuantity)
+            },
+            selectSize(size){
+                this.selectedSize = size;
+            },
+            addToCart(product_detail) {
+                const productForCart = {
+                    name: product_detail.name,
+                    price: product_detail.price,
+                    image: product_detail.imageUrl[0],
+                    quantity: this.product_quantity,
+                    typeSize: this.selectedTabSize,
+                    size: this.selectedSize,
+                };
+                console.log(product_detail);
+                console.log(productForCart);
+                this.cartStore.addToCart(productForCart);
+                
+            },
         }
     }
 </script>
