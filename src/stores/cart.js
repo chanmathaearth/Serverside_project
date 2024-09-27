@@ -28,19 +28,22 @@ export const useCartStore = defineStore('cart', {
           },
         addToCart (productData) {
             const itemIndex = this.items.findIndex(
-                item => item.name === productData.name
-            )
+                item => item.name === productData.name && item.size === productData.size
+            );
             if (itemIndex >= 0) {
-                this.updateQuantity(itemIndex, this.items[itemIndex].quantity + 1)
+                this.items[itemIndex].quantity += productData.quantity;
             } else {
-                productData.quantity = 1
                 this.items.push(productData)
             }
             localStorage.setItem('cart-data', JSON.stringify(this.items))
         },
         updateQuantity (index, quantity) {
-            this.items[index].quantity = quantity
-            localStorage.setItem('cart-data', JSON.stringify(this.items))
+            if (this.items[index]) {
+                this.items[index].quantity = quantity;
+                localStorage.setItem('cart-data', JSON.stringify(this.items))
+            } else {
+            console.error("Item not found in cart.");
+            }
         },
         removeItemInCart (index, quantity) {
             this.items.splice(index, 1)
