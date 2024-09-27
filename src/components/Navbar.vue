@@ -89,10 +89,13 @@ const changeQuantity = (event, index) => {
                                 <DeleteItem class="w-5"></DeleteItem>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <input type="number" v-model="item.quantity" class="w-16 text-center border border-gray-300 rounded" min="1">
+                                <input type="number" v-model="item.quantity" @change="changeQuantity($event, index)" class="w-16 text-center border border-gray-300 rounded" min="1">
                             </div>
 							<li>
                                 {{ item.name }}
+							</li>
+							<li>
+                                {{ item.size }} {{ item.typeSize }}
 							</li>
 							<li>
                                 {{ item.price }} THB
