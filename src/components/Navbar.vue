@@ -1,3 +1,12 @@
+<script setup>
+import DeleteItem from '@/components/icons/IconTrashcan.vue'
+import { useCartStore } from '@/stores/cart.js'
+const cartStore = useCartStore()
+const changeQuantity = (event, index) => {
+    const newQuantity = parseInt(event.target.value)
+    cartStore.updateQuantity(index, newQuantity)
+}
+</script>
 <template>
     <div>
         <nav class="fixed w-full z-20 top-0 left-0 bg-white max-h-full border-b">
@@ -53,8 +62,8 @@
                         </svg>
                         <span
                             class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full h-4 w-4 text-xs flex items-center justify-center"
-                            >{{ cartItems.length }}</span
-                        >
+                            >{{ cartStore.summaryQuantity }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -69,21 +78,28 @@
 						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
 						</svg>
 					</button>
-
 				</div>
+                
 				<div class="flex justify-center items-center mb-5">
-					<ul>
-						<div v-for="(item, index) in cartItems" :key="index" class="font-thin">
-							<img :src="item.image" width="100px">
+					<ul class="divide-y divide-black overflow-y-scroll h-[30rem]">
+                        <div v-for="(item, index) in cartStore.items" :key="index" class="font-thin relative">
+                            <img :src="item.image" width="100px">
+                            <div @click="cartStore.removeItemInCart(index)" class="absolute top-10 right-0">
+                                <DeleteItem class="w-5"></DeleteItem>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <input type="number" v-model="item.quantity" class="w-16 text-center border border-gray-300 rounded" min="1">
+                            </div>
 							<li>
-								{{ item.name }}
+                                {{ item.name }}
 							</li>
 							<li>
-								{{ item.price }} THB
+                                {{ item.price }} THB
 							</li>
 						</div>
 					</ul>
 				</div>
+                <div class="flex justify-center font-bold">ราคารวม : {{ cartStore.summaryPrice }}</div>
 				<button @click="toggleCartModal" class="bg-green-600 text-white px-4 py-2 rounded mr-4  ">Check out</button>
             </div>
         </div>
