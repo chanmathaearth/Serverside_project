@@ -75,7 +75,6 @@ export default {
           filteredProducts: [],
           selectedBrands: [],
           selectedColors: [],
-          cartItems: [],
       };
   },
   mounted() {
