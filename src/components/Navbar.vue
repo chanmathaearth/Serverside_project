@@ -74,10 +74,10 @@ const changeQuantity = (newQuantity, index) => {
             </div>
         </nav>
 
-        <div v-if="isCartModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30">
-            <div class="bg-white p-6 rounded shadow-lg max-w-md w-full">
+        <div v-if="isCartModalVisible" class="fixed inset-0 bg-black bg-opacity-60 flex justify-end z-30">
+            <div class="bg-white p-6 shadow-lg max-w-md w-full">
 				<div class="flex justify-between items-center">
-					<h2 class="text-xl font-thin">YOUR CART</h2>
+					<h2 class="text-xl font-thin text-left">YOUR CART</h2>
 					<button @click="toggleCartModal">
 						<svg class="w-6 h-6 text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
 						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
@@ -86,17 +86,19 @@ const changeQuantity = (newQuantity, index) => {
 				</div>
                 
 				<div class="flex justify-center items-center mb-5">
-					<ul class="overflow-y-scroll h-[30rem]">
+					<ul class="overflow-y-scroll h-[37rem]">
                         <div v-for="(item, index) in cartStore.items" :key="index" class="font-thin relative p-2 mt-4 rounded-xl border">                
-                            <div class="flex justify-between p-2 space-x-2">
+                            <div class="flex justify-between p-2 space-x-3 mr-4">
                                 <img :src="item.image" width="100px">
                                 <div class="flex flex-col mt-6 ">
                                     <li class="text-base ml-4">{{ item.name }}</li>
-                                    <li class="text-base ml-4 mt-2">{{ item.size }} {{ item.typeSize }}</li>     
+                                    <div class="flex justify-between items-center">
+                                        <li class="text-base ml-4 mt-2">{{ item.size }} {{ item.typeSize }}</li> 
+                                        <li class="text-base ml-4 mt-2 text-red-500">{{ item.price }} THB</li>
+                                    </div>
+                                    
                                 </div>
-                                <div class="font-medium text-red-500 mt-6">
-                                    {{ item.price }} THB
-                                </div>
+                               
                             </div>
                             <li>
                                 <div class="flex justify-between items-center mr-[5%]">
@@ -116,7 +118,7 @@ const changeQuantity = (newQuantity, index) => {
                                             +
                                         </button>
                                     </div>
-                                    <button class="">
+                                    <button class="focus:outline-none">
                                         <div @click="cartStore.removeItemInCart(index)">
                                             <DeleteItem class="w-5"></DeleteItem>
                                         </div>
@@ -127,11 +129,22 @@ const changeQuantity = (newQuantity, index) => {
 						</div>
 					</ul>
 				</div>
-                <div class="flex justify-center font-thin text-lg p-2 mb-4 text-black border-red-500 text-red-500 rounded-xl" v-if="cartStore.summaryPrice != 0">TOTAL PRICE : {{ cartStore.summaryPrice }} THB</div>	
+                <div class="flex justify-between font-thin text-lg p-2 mb-4 text-black  border-t " v-if="cartStore.summaryPrice != 0">
+                    <p class="mt-2">CART SUBTOTAL</p>
+                    <p class="text-red-500 mt-2">{{ cartStore.summaryPrice }} THB</p>
+                </div>
                 <div class="flex justify-center p-2 mb-4" v-else>YOUR CART IS EMPTY</div>		
+                
                 <div class="flex justify-center">
-                    <button @click="toggleCartModal" class="bg-green-600 text-white px-4 py-2 rounded mr-4 font-thin">CHECK OUT</button>
+                    <button @click="toggleCartModal" class="flex bg-red-500 text-white px-4 py-2 rounded-xl mr-4 font-thin mb-4 text-sm items-center hover:bg-red-600">
+                        <svg class="w-6 h-6 text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M7 6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2v-4a3 3 0 0 0-3-3H7V6Z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M2 11a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7Zm7.5 1a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z" clip-rule="evenodd"/>
+                            <path d="M10.5 14.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+                        </svg>
+                        CHECK OUT</button>
                 </div>	
+                
             </div>
         </div>
     </div>

@@ -3,6 +3,7 @@ export const useProductDetailStore = defineStore('user-product', {
     state: () => ({
         list: [
             {
+            brand: 'ASICS',
             name: 'ASICS DS LIGHT X-FLY PRO 2 PARIS',
             imageUrl: [
                 "https://www.arifootballstore.com/media/catalog/product/cache/6e478a31517304dced53ac4d3f3d5560/a/s/asics_ds_light_x-fly_pro_2_paris_1101a074.750__03.jpg",
@@ -19,6 +20,7 @@ export const useProductDetailStore = defineStore('user-product', {
             sizeUS: [7,8,8.5,9,9.5],
             },
             {
+            brand: 'NIKE',
             name: 'NIKE PHANTOM LUNA II ELITE',
             imageUrl: [
                 "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/8669710d-9105-47ca-addd-b87f761c4ddd/PHANTOM+LUNA+II+ELITE+FG.png",

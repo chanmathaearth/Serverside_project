@@ -119,7 +119,7 @@
                 <br>
                 <div>
                     <button @click="addToCart(product_detail)" type="submit" title="เพิ่มใส่ตะกร้า" class="addtocart bg-red-500 text-white rounded-3xl border-solid border-2 ml-2 mr-2 w-96 p-2 focus:outline-none hover:bg-red-600" id="product-addtocart-button">
-                        <span>เพิ่มใส่ตะกร้า</span>
+                        <span>ADD TO CART</span>
                     </button>
                 </div>
             </div>
@@ -218,6 +218,7 @@ import { useCartStore } from '@/stores/cart';
             },
             addToCart(product_detail) {
                 const productForCart = {
+                    brand: product_detail.brand,
                     name: product_detail.name,
                     price: product_detail.price,
                     image: product_detail.imageUrl[0],
