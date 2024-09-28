@@ -1,11 +1,15 @@
 <script setup>
 import DeleteItem from '@/components/icons/IconTrashcan.vue'
 import { useCartStore } from '@/stores/cart.js'
-const cartStore = useCartStore()
-const changeQuantity = (event, index) => {
-    const newQuantity = parseInt(event.target.value)
-    cartStore.updateQuantity(index, newQuantity)
-}
+
+const cartStore = useCartStore();
+
+const changeQuantity = (newQuantity, index) => {
+    const parsedQuantity = parseInt(newQuantity);
+    if (parsedQuantity >= 1) {
+        cartStore.updateQuantity(index, parsedQuantity);
+    }
+};
 </script>
 <template>
     <div>
@@ -82,29 +86,52 @@ const changeQuantity = (event, index) => {
 				</div>
                 
 				<div class="flex justify-center items-center mb-5">
-					<ul class="divide-y divide-black overflow-y-scroll h-[30rem]">
-                        <div v-for="(item, index) in cartStore.items" :key="index" class="font-thin relative">
-                            <img :src="item.image" width="100px">
-                            <div @click="cartStore.removeItemInCart(index)" class="absolute top-10 right-0">
-                                <DeleteItem class="w-5"></DeleteItem>
+					<ul class="overflow-y-scroll h-[30rem]">
+                        <div v-for="(item, index) in cartStore.items" :key="index" class="font-thin relative p-2 mt-4 rounded-xl border">                
+                            <div class="flex justify-between p-2 space-x-2">
+                                <img :src="item.image" width="100px">
+                                <div class="flex flex-col mt-6 ">
+                                    <li class="text-base ml-4">{{ item.name }}</li>
+                                    <li class="text-base ml-4 mt-2">{{ item.size }} {{ item.typeSize }}</li>     
+                                </div>
+                                <div class="font-medium text-red-500 mt-6">
+                                    {{ item.price }} THB
+                                </div>
                             </div>
-                            <div class="flex items-center space-x-3">
-                                <input type="number" v-model="item.quantity" @change="changeQuantity($event, index)" class="w-16 text-center border border-gray-300 rounded" min="1">
-                            </div>
-							<li>
-                                {{ item.name }}
-							</li>
-							<li>
-                                {{ item.size }} {{ item.typeSize }}
-							</li>
-							<li>
-                                {{ item.price }} THB
+                            <li>
+                                <div class="flex justify-between items-center mr-[5%]">
+                                    <div>
+                                        <button @click="changeQuantity(item.quantity - 1, index)" class="px-4 py-2 text-black hover:bg-gray-100 rounded-l-full focus:outline-none">
+                                            -
+                                        </button>
+                                        <!-- ช่องใส่จำนวน -->
+                                        <input
+                                            :value="item.quantity"
+                                            @input="changeQuantity($event.target.value, index)"
+                                            class="w-16 text-center text-black focus:outline-none"
+                                            min="1"
+                                        />
+                                        <!-- ปุ่มเพิ่มจำนวน -->
+                                        <button @click="changeQuantity(item.quantity + 1, index)" class="px-4 py-2 text-black hover:bg-gray-100 rounded-r-full focus:outline-none">
+                                            +
+                                        </button>
+                                    </div>
+                                    <button class="">
+                                        <div @click="cartStore.removeItemInCart(index)">
+                                            <DeleteItem class="w-5"></DeleteItem>
+                                        </div>
+                                    </button>
+
+                                </div>
 							</li>
 						</div>
 					</ul>
 				</div>
-                <div class="flex justify-center font-bold">ราคารวม : {{ cartStore.summaryPrice }}</div>
-				<button @click="toggleCartModal" class="bg-green-600 text-white px-4 py-2 rounded mr-4  ">Check out</button>
+                <div class="flex justify-center font-thin text-lg p-2 mb-4 text-black border-red-500 text-red-500 rounded-xl" v-if="cartStore.summaryPrice != 0">TOTAL PRICE : {{ cartStore.summaryPrice }} THB</div>	
+                <div class="flex justify-center p-2 mb-4" v-else>YOUR CART IS EMPTY</div>		
+                <div class="flex justify-center">
+                    <button @click="toggleCartModal" class="bg-green-600 text-white px-4 py-2 rounded mr-4 font-thin">CHECK OUT</button>
+                </div>	
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@
               @filter-colors="updateFilteredColors"
           />
           <main class="w-3/4 mx-auto py-10 ml-4 mt-[-1%] mr-[2%]">
-            <button>
+            <button class="focus:outline-none">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   <ProductCard
                       v-for="(product, index) in filteredProducts"

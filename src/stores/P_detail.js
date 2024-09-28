@@ -30,7 +30,7 @@ export const useProductDetailStore = defineStore('user-product', {
             quantity: 10,
             about: 'The DS LIGHT X-FLY™ PRO 2 PARIS cleat is designed for soccer players seeking soccer cleats that work on and off the ball. This shoe helps athletes generate faster acceleration after stopping and transitioning into vertical movements. This colorway is inspired by "the city of lights" and its energizing tones at sunrise and sunset. This shoe features a softer kangaroo leather forefoot. Complemented with an acceleration stud design in the outsole, this shoe also delivers a better grip during straight dashes on the pitch.',
             status: 'open',
-            price: 7500,
+            price: 9600,
             sizeEUR: [40,41.5,42,42.5,43.5],
             sizeUS: [7,8,8.5,9,9.5],
             },
