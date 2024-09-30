@@ -93,7 +93,7 @@ const changeQuantity = (newQuantity, index) => {
                                 <div class="flex flex-col mt-6 ">
                                     <li class="text-base ml-4">{{ item.name }}</li>
                                     <div class="flex justify-between items-center">
-                                        <li class="text-base ml-4 mt-2">{{ item.size }} {{ item.typeSize }}</li> 
+                                        <li class="text-base ml-4 mt-2">{{ item.size.size }} {{ item.size.type_size }}</li> 
                                         <li class="text-base ml-4 mt-2 text-red-500">{{ item.price }} THB</li>
                                     </div>
                                     

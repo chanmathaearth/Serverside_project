@@ -7,14 +7,14 @@
             <main>
                 <div class="h-full w-96 ml-4">
                     <div id="default-carousel" class="relative w-full" data-carousel="slide">
-                        <div v-if="product_detail && product_detail.image_urls"
-                            class="relative h-56 overflow-hidden rounded-lg md:h-96">
-                            <div v-for="(pic_detail, index) in product_detail.image_urls" :key="index"
-                                :class="['duration-700 ease-in-out', currentSlideIndex === index ? 'block' : 'hidden']">
-                                <img :src="pic_detail" class="block w-full h-full object-cover" alt="Product Image" />
+                        <div v-if="product_detail && product_detail.images" id="default-carousel" class="relative w-full" data-carousel="slide">
+                            <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                                <div v-for="(pic_detail, index) in product_detail.images" :key="index"
+                                    :class="['duration-700 ease-in-out', currentSlideIndex === index ? 'block' : 'hidden']">
+                                    <img :src="pic_detail.image" class="block w-full h-full object-cover" alt="Product Image" />
+                                </div>
                             </div>
                         </div>
-
                         <button type="button"
                             class="bg-transparent absolute top-1/2 left-0 z-20 flex items-center justify-center h-10 w-10 -translate-y-1/2 bg-white rounded-full hover:bg-gray-200"
                             @click="prevSlide">
@@ -197,15 +197,15 @@ export default {
     name: 'ProductDetail',
     computed: {
         filteredSizesEUR() {
-            return this.product_detail.size_product.filter(size => size.type_size === 'EUR');
+            return this.product_detail.sizes.filter(size => size.type_size === 'EUR');
         },
         filteredSizesUS() {
-            return this.product_detail.size_product.filter(size => size.type_size === 'US');
+            return this.product_detail.sizes.filter(size => size.type_size === 'US');
         }
     },
     methods: {
         nextSlide() {
-            if (this.currentSlideIndex < this.product_detail.image_urls.length - 1) {
+            if (this.currentSlideIndex < this.product_detail.images.length - 1) {
                 this.currentSlideIndex++;
             } else {
                 this.currentSlideIndex = 0;
@@ -215,9 +215,10 @@ export default {
             if (this.currentSlideIndex > 0) {
                 this.currentSlideIndex--;
             } else {
-                this.currentSlideIndex = this.product_detail.image_urls.length - 1;
+                this.currentSlideIndex = this.product_detail.images.length - 1;
             }
         },
+
         openTabSize(tab) {
             this.selectedTabSize = tab;
         },
@@ -255,12 +256,13 @@ export default {
                 image: product_detail.image,
                 quantity: this.product_quantity,
                 typeSize: this.selectedTabSize,
-                size: this.selectedSize.size,
+                size: this.selectedSize,
             };
             console.log(product_detail);
             console.log(productForCart);
             this.cartStore.addToCart(productForCart);
         },
+
     }
 }
 </script>

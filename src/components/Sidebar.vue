@@ -55,7 +55,7 @@
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
-                            value="ASICS"
+                            value="Asics"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />

@@ -42,13 +42,11 @@ export default {
             filteredProducts: [],
             selectedBrands: [],
             selectedColors: [],
+            cartItems: [],
         };
     },
     created() {
             this.fetchProducts();
-    },
-    mounted() {
-        this.filteredProducts = this.products;
     },
     methods: {
         async fetchProducts() {
@@ -63,6 +61,7 @@ export default {
         },
         updateFilteredProducts(selectedBrands) {
             this.selectedBrands = selectedBrands;
+            console.log('Selected Brands:', this.selectedBrands);
             this.filterProducts();
         },
         updateFilteredColors(selectedColors) {
