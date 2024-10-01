@@ -29,9 +29,7 @@ export const useCartStore = defineStore('cart', {
         addToCart(productData) {
             // แก้ไขการหาสินค้าในตะกร้าโดยใช้ type_size และ size
             const itemIndex = this.items.findIndex(
-                item => item.name === productData.name && 
-                        item.size.type_size === productData.size.type_size &&
-                        item.size.size === productData.size.size
+                item => item.name === productData.name
             );
 
             if (itemIndex >= 0) {

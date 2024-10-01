@@ -3,7 +3,7 @@ import DeleteItem from '@/components/icons/IconTrashcan.vue'
 import { useCartStore } from '@/stores/cart.js'
 
 const cartStore = useCartStore();
-
+console.log(cartStore);
 const changeQuantity = (newQuantity, index) => {
     const parsedQuantity = parseInt(newQuantity);
     if (parsedQuantity >= 1) {
@@ -93,8 +93,9 @@ const changeQuantity = (newQuantity, index) => {
                                 <div class="flex flex-col mt-6 ">
                                     <li class="text-base ml-4">{{ item.name }}</li>
                                     <div class="flex justify-between items-center">
-                                        <li class="text-base ml-4 mt-2">{{ item.size.size }} {{ item.size.type_size }}</li> 
-                                        <li class="text-base ml-4 mt-2 text-red-500">{{ item.price }} THB</li>
+                                        <li class="text-base ml-4 mt-2">{{ item.size}} {{ item.typeSize }}</li> 
+                                        <li class="text-base ml-4 mt-2 text-red-500">{{ Number(item.price).toLocaleString('en-US') }} THB
+                                        </li>
                                     </div>
                                     
                                 </div>
@@ -131,7 +132,9 @@ const changeQuantity = (newQuantity, index) => {
 				</div>
                 <div class="flex justify-between font-thin text-lg p-2 mb-4 text-black  border-t " v-if="cartStore.summaryPrice != 0">
                     <p class="mt-2">CART SUBTOTAL</p>
-                    <p class="text-red-500 mt-2">{{ cartStore.summaryPrice }} THB</p>
+                    <p class="text-red-500 mt-2">{{ Number(cartStore.summaryPrice).toLocaleString('en-US') }} THB
+                    </p>
+
                 </div>
                 <div class="flex justify-center p-2 mb-4" v-else>YOUR CART IS EMPTY</div>		
                 

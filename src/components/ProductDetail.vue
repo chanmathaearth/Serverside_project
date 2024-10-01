@@ -64,7 +64,7 @@ const addToCart = () => {
             image: product_detail.value.image,
             quantity: product_quantity.value,
             typeSize: selectedTabSize.value,
-            size: selectedSize.value,
+            size: selectedSize.value.size,
         };
         cartStore.addToCart(productForCart);
     }
@@ -162,7 +162,8 @@ const openTab = (tabId) => {
                 </div>
                 <hr class="ml-4 mr-4"><br>
                 <div>
-                    <span class="ml-4 text-2xl text-red-500">{{ product_detail.price }} THB</span>
+                    <span class="ml-4 text-2xl text-red-500">{{ Number(product_detail.price).toLocaleString('en-US') }} THB
+					</span>
                 </div>
 
                 <div id="myModal"
@@ -273,7 +274,7 @@ const openTab = (tabId) => {
 						<p class="ml-3 text-xl font-thin">{{ product_detail.color.toUpperCase() }}</p>
 					</div>
 					<div class="flex mb-1">
-						<p class="text-xl font-thin">BOOT TYPE: </p>
+						<p class="text-xl font-thin">BOOTS TYPE: </p>
 						<p class="ml-3 text-xl font-thin">{{ product_detail.categories[0].toUpperCase() }}</p>
 					</div>
 					<div class="flex mb-1">

@@ -1,5 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
+import { defineProps} from 'vue';
 
 const props = defineProps({
   product: Object,
@@ -34,8 +35,8 @@ const goToProductDetail = () => {
       <p
         class="text-xl font-thin pl-1 mt-3 text-white bg-red-500 p-1 rounded-3xl text-center"
       >
-        {{ props.product.price }} THB
-      </p>
+        {{ Number(props.product.price).toLocaleString('en-US') }} THB
+    </p>
     </div>
   </div>
 </template>
