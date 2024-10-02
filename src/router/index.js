@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CartView from '../views/CartView.vue'
-import ProductDetail from '@/components/product_detail.vue';
+import ProductDetail from '@/components/ProductDetail.vue';
 import TrackerView from '../views/TrackerView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
@@ -21,7 +21,7 @@ const router = createRouter({
       component: CartView
     },
     {
-      path: '/productDetail/:Pro_name',
+      path: '/productDetail/:productname',
       name: 'ProductDetail',
       component: ProductDetail,
       meta: { requiresAuth: true }

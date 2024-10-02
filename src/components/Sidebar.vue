@@ -55,7 +55,7 @@
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
-                            value="ASICS"
+                            value="Asics"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
@@ -81,7 +81,7 @@
                         />
                         <span class="font-thin">Mizuno</span>
                     </li>
-                     <li class="flex items-center">
+                    <li class="flex items-center">
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
@@ -156,6 +156,16 @@
                             @change="emitSelectedColors"
                         />
                         <span class="font-thin">Yellow</span>
+                    </li>
+                    <li class="flex items-center">
+                        <input
+                            type="checkbox"
+                            class="mr-2 checkbox checkbox checkbox-xs"
+                            value="White"
+                            v-model="selectedColors"
+                            @change="emitSelectedColors"
+                        />
+                        <span class="font-thin">White</span>
                     </li>
                      <li class="flex items-center">
                         <input

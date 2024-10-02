@@ -1,4 +1,37 @@
+<script setup>
+import Navbar from "@/components/Navbar.vue";
+import { useCustomerStore } from "@/stores/customer";
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const customerReg = useCustomerStore();
+const router = useRouter();
+const newCustomer = ref({
+  first_name: '',
+  last_name: '',
+  birthdate: '',
+  email: '',
+  phone: '',
+  username: '',
+  password: '',
+  gender: '',
+});
+
+const addCustomer = () => {
+  const jsonData = newCustomer.value;
+  customerReg.addCustomer(jsonData)
+    .then(response => {
+      console.log(jsonData);
+      console.log('เพิ่มข้อมูลลูกค้าสำเร็จ:');
+      router.push('/login');
+    })
+    .catch(error => {
+      console.error('เกิดข้อผิดพลาดในการเพิ่มข้อมูลลูกค้า:', error);
+    });
+};
+</script>
+
 <template>
+<div>
     <Navbar :cartItems="cartItems" />
     <section>
         <div class="flex items-center justify-center px-6 py-8 mt-[8%] ">
@@ -20,6 +53,7 @@
                                 type="text"
                                 name="firstname"
                                 id="firstname"
+                                v-model="newCustomer.first_name"
                                 class="bg-white border border-black block w-full p-2.5"
                                 placeholder="FIRSTNAME"
                                 required=""
@@ -35,6 +69,7 @@
                                 type="text"
                                 name="lastname"
                                 id="lastname"
+                                v-model="newCustomer.last_name"
                                 class="bg-white border border-black block w-full p-2.5"
                                 placeholder="LASTNAME"
                                 required=""
@@ -50,6 +85,7 @@
                                 type="date"
                                 name="birthdate"
                                 id="birthdate"
+                                v-model="newCustomer.birthdate"
                                 class="bg-white border border-black block w-full p-2.5 font-thin"
                                 required=""
                             />
@@ -64,6 +100,7 @@
                                 type="email"
                                 name="email"
                                 id="email"
+                                v-model="newCustomer.email"
                                 class="bg-white border border-black block w-full p-2.5"
                                 placeholder="EMAIL"
                                 required=""
@@ -79,6 +116,7 @@
                                 type="tel"
                                 name="phone"
                                 id="phone"
+                                v-model="newCustomer.phone"
                                 class="bg-white border border-black block w-full p-2.5"
                                 placeholder="PHONENUMBER"
                                 required=""
@@ -94,6 +132,7 @@
                                 type="text"
                                 name="username"
                                 id="username"
+                                v-model="newCustomer.username"
                                 class="bg-white border border-black block w-full p-2.5"
                                 placeholder="USERNAME"
                                 required=""
@@ -109,6 +148,7 @@
                                 type="password"
                                 name="password"
                                 id="password"
+                                v-model="newCustomer.password"
                                 class="bg-white border border-black block w-full p-2.5"
                                 placeholder="••••••••"
                                 required=""
@@ -123,6 +163,7 @@
                             <select
                                 name="gender"
                                 id="gender"
+                                v-model="newCustomer.gender"
                                 class="bg-white border border-black block w-full p-2.5 font-thin"
                                 required=""
                             >
@@ -130,7 +171,7 @@
                                 <option value="Female">FEMALE</option>
                             </select>
                         </div>
-                        <button
+                        <button @click="addCustomer"
                             type="submit"
                             class="w-full text-white bg-red-500 rounded-full p-2 border border-black font-thin hover:bg-red-600"
                         >
@@ -153,14 +194,6 @@
             </div>
         </div>
     </section>
+</div>
 </template>
 
-<script>
-import Navbar from "../components/Navbar.vue";
-
-export default {
-    components: {
-        Navbar,
-    },
-};
-</script>

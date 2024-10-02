@@ -1,9 +1,116 @@
+<script setup>
+import Navbar from "@/components/Navbar.vue";
+import { useCartStore } from "@/stores/cart";
+import { useProductStore } from "@/stores/product";
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+
+const cartStore = useCartStore();
+const productStore = useProductStore();
+const route = useRoute();
+
+const product_quantity = ref(1);
+const currentSlideIndex = ref(0);
+const selectedTabSize = ref("EUR");
+const selectedSize = ref(null);
+const product_detail = ref(null);
+const activeTab = ref('tab1');
+
+onMounted(async () => {
+    await productStore.fetchProduct();
+    const productName = route.params.productname;
+
+    if (productStore.list && productStore.list.length > 0) {
+        product_detail.value = productStore.list.find(
+            (product) => product.name === productName
+        );
+    }
+});
+
+const nextSlide = () => {
+    if (
+        product_detail.value &&
+        product_detail.value.images &&
+        currentSlideIndex.value < product_detail.value.images.length - 1
+    ) {
+        currentSlideIndex.value++;
+    } else {
+        currentSlideIndex.value = 0;
+    }
+};
+
+const prevSlide = () => {
+    if (
+        product_detail.value &&
+        product_detail.value.images &&
+        currentSlideIndex.value > 0
+    ) {
+        currentSlideIndex.value--;
+    } else if (product_detail.value && product_detail.value.images) {
+        currentSlideIndex.value = product_detail.value.images.length - 1;
+    }
+};
+
+const openTabSize = (tab) => {
+    selectedTabSize.value = tab;
+};
+
+const addToCart = () => {
+    if (product_detail.value) {
+        const productForCart = {
+            brand: product_detail.value.brand,
+            name: product_detail.value.name,
+            price: product_detail.value.price,
+            image: product_detail.value.image,
+            quantity: product_quantity.value,
+            typeSize: selectedTabSize.value,
+            size: selectedSize.value.size,
+        };
+        cartStore.addToCart(productForCart);
+    }
+};
+
+const filteredSizesEUR = computed(() => {
+    if (product_detail.value && product_detail.value.sizes) {
+        return product_detail.value.sizes.filter(
+            (size) => size.type_size === "EUR"
+        );
+    }
+    return [];
+});
+
+const filteredSizesUS = computed(() => {
+    if (product_detail.value && product_detail.value.sizes) {
+        return product_detail.value.sizes.filter(
+            (size) => size.type_size === "US"
+        );
+    }
+    return [];
+});
+
+const changeQuantity = (newQuantity) => {
+    const parsedQuantity = parseInt(newQuantity);
+    if (parsedQuantity >= 1) {
+        product_quantity.value = parsedQuantity;
+    }
+};
+
+const selectSize = (size) => {
+    selectedSize.value = size;
+};
+
+const openTab = (tabId) => {
+    activeTab.value = tabId;
+};
+</script>
+
+
 <template>
     <div class="mb-6">
         <div class="flex mt-16">
             <Navbar :cartItems="cartItems" />
         </div>
-        <div class="flex mt-16 p-6 font-thin">
+        <div v-if="product_detail" class="flex mt-16 p-6 font-thin">
             <main>
                 <div class="h-full w-96 ml-4">
                     <div id="default-carousel" class="relative w-full" data-carousel="slide">
@@ -49,12 +156,14 @@
             <div class="w-full ml-4">
                 <div>
                     <span class="ml-4 flex text-3xl font-thin">{{ product_detail.name }}</span><br>
-                    <span class="ml-4">CODE : 1101A074.750</span><br>
-                    <span class="ml-4">STATUS : READY FOR DELIVERY</span><br><br>
+                    <span class="ml-4">PRODUCT ID : {{ product_detail.id }}</span><br>
+                    <span class="ml-4" v-if="product_detail.amount > 0">STOCK STATUS : IN STOCK</span>
+					<span class="ml-4" v-else>STATUS : OUT OF STOCK</span><br><br>
                 </div>
                 <hr class="ml-4 mr-4"><br>
                 <div>
-                    <span class="ml-4 text-2xl text-red-500">{{ product_detail.price }} THB</span>
+                    <span class="ml-4 text-2xl text-red-500">{{ Number(product_detail.price).toLocaleString('en-US') }} THB
+					</span>
                 </div>
 
                 <div id="myModal"
@@ -127,142 +236,65 @@
 
         </div>
 
-        <div class="mt-2 p-6">
-            <div class="tabs">
-                <ul class="flex border-b border-gray-300">
-                    <li class="mr-1">
-                        <a href="javascript:void(0)"
-                            class="bg-white inline-block py-2 px-4 text-red-500 border-b-2 border-red-500 tablink active"
-                            @click="openTab($event, 'tab1')">Details</a>
+		<div v-if="product_detail" class="mt-2 p-6">
+        <div class="tabs">
+            <ul class="flex border-b border-gray-300">
+                <li class="mr-1">
+                    <a href="javascript:void(0)"
+                        class="bg-white inline-block py-2 px-4 border-b-2"
+                        :class="[activeTab === 'tab1' ? 'border-red-500 text-red-500' : '']"
+                        @click="openTab('tab1')">
+                        DETAILS
+                    </a>
 
-                        <a href="javascript:void(0)"
-                            class="bg-white inline-block py-2 px-4 text-gray-500 hover:text-red-500 border-b-2 border-transparent tablink"
-                            @click="openTab($event, 'tab2')">More Information</a>
+                    <a href="javascript:void(0)"
+                        class="bg-white inline-block py-2 px-4 hover:text-red-500 border-b-2"
+                        :class="[activeTab === 'tab2' ? 'border-red-500 text-red-500' : '']"
+                        @click="openTab('tab2')">
+                        MORE INFORMATION
+                    </a>
 
-                        <a href="javascript:void(0)"
-                            class="bg-white inline-block py-2 px-4 text-gray-500 hover:text-red-500 border-b-2 border-transparent tablink"
-                            @click="openTab($event, 'tab3')">Size Chart</a>
-                    </li>
-                </ul>
+                    <a href="javascript:void(0)"
+                        class="bg-white inline-block py-2 px-4 hover:text-red-500 border-b-2"
+                        :class="[activeTab === 'tab3' ? 'border-red-500 text-red-500' : '']"
+                        @click="openTab('tab3')">
+                        SIZE CHART
+                    </a>
+                </li>
+            </ul>
 
-                <div class="p-4 mt-4">
-                    <div id="tab1" class="tabcontent">
-                        <p class="font-semibold">{{ product_detail.name }}</p>
-                        <p>{{ product_detail.description }}</p>
-                    </div>
-                    <div id="tab2" class="tabcontent hidden">
-                        <p>MANU FACUP WINNER</p>
-                        <p>Liverpool carabao cup WINNER</p>
-                    </div>
-                    <div id="tab3" class="tabcontent hidden flex justify-center">
-                        <p><img src="https://www.arirunningstore.com/media/Size_Chart/Asics-M.png" alt=""></p>
-                    </div>
+            <div class="p-4 mt-2">
+                <div v-show="activeTab === 'tab1'" class="tabcontent">
+                    <p class="font-medium text-xl mb-3">{{ product_detail.name }}</p>
+                    <p class="font-thin text-xl">{{ product_detail.description }}</p>
+                </div>
+                <div v-show="activeTab === 'tab2'" class="tabcontent">
+					<div class="flex mb-1">
+						<p class="text-xl font-thin">COLOR: </p>
+						<p class="ml-3 text-xl font-thin">{{ product_detail.color.toUpperCase() }}</p>
+					</div>
+					<div class="flex mb-1">
+						<p class="text-xl font-thin">BOOTS TYPE: </p>
+						<p class="ml-3 text-xl font-thin">{{ product_detail.categories[0].toUpperCase() }}</p>
+					</div>
+					<div class="flex mb-1">
+						<p class="text-xl font-thin">LMITED: </p>
+						<p class="ml-3 text-xl font-thin">NO</p>
+					</div>
+					<div class="flex mb-1">
+						<p class="text-xl font-thin">SHIPPING COST: </p>
+						<p class="ml-3 text-xl font-thin">NO</p>
+					</div>
+					<div class="flex mb-4">
+						<p class="text-xl font-thin">COLLABORATION: </p>
+						<p class="ml-3 text-xl font-thin">NO</p>
+					</div>
+                </div>
+                <div v-show="activeTab === 'tab3'" class="tabcontent flex justify-center items-center">
+                    <p><img src="https://files.oaiusercontent.com/file-qfyiz3hQEdt7HmdgOFTMuOSj?se=2024-10-01T21%3A48%3A08Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Df896a823-85ef-4e45-a2e8-06c8f7eb0730.webp&sig=lfawDnETMChZw6z9CVdw2t%2BlFvayVukjk68fq8FW25M%3D" width="300" alt=""></p>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 </template>
-<script>
-import Navbar from "@/components/Navbar.vue";
-import Sidebar from "../components/Sidebar.vue";
-import { useCartStore } from '@/stores/cart';
-import axios from 'axios';
-export default {
-    components: {
-        Navbar,
-        Sidebar,
-    },
-    data() {
-        return {
-            cartStore: null,
-            product_quantity: 1,
-            currentSlideIndex: 0,
-            selectedTabSize: 'EUR',
-            selectedSize: null,
-            product_detail: null,
-        };
-    },
-    async created() {
-        try {
-            const response = await axios.get('http://localhost:8000/api/products/');
-            const productList = response.data;
-            const productName = this.$route.params.Pro_name;
-            this.product_detail = productList.find(product => product.name === productName);
-            console.log(this.product_detail);
-        } catch (error) {
-            console.error('Error fetching product details:', error);
-        }
-        this.cartStore = useCartStore();
-    },
-    name: 'ProductDetail',
-    computed: {
-        filteredSizesEUR() {
-            return this.product_detail.sizes.filter(size => size.type_size === 'EUR');
-        },
-        filteredSizesUS() {
-            return this.product_detail.sizes.filter(size => size.type_size === 'US');
-        }
-    },
-    methods: {
-        nextSlide() {
-            if (this.currentSlideIndex < this.product_detail.images.length - 1) {
-                this.currentSlideIndex++;
-            } else {
-                this.currentSlideIndex = 0;
-            }
-        },
-        prevSlide() {
-            if (this.currentSlideIndex > 0) {
-                this.currentSlideIndex--;
-            } else {
-                this.currentSlideIndex = this.product_detail.images.length - 1;
-            }
-        },
-
-        openTabSize(tab) {
-            this.selectedTabSize = tab;
-        },
-        openTab(event, tabId) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].classList.add("hidden");
-            }
-
-            tablinks = document.getElementsByClassName("tablink");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].classList.remove("border-red-500", "text-red-500", "active");
-                tablinks[i].classList.add("text-gray-500", "border-transparent");
-            }
-
-            document.getElementById(tabId).classList.remove("hidden");
-            event.currentTarget.classList.add("border-red-500", "text-red-500", "active");
-        },
-        changeQuantity(newQuantity) {
-            const parsedQuantity = parseInt(newQuantity);
-            if (parsedQuantity >= 1) {
-                this.product_quantity = parsedQuantity;
-                this.cartStore.updateQuantity(this.index, this.product_quantity);
-            }
-        },
-        selectSize(size) {
-            this.selectedSize = size;
-        },
-        addToCart(product_detail) {
-            const productForCart = {
-                brand: product_detail.brand,
-                name: product_detail.name,
-                price: product_detail.price,
-                image: product_detail.image,
-                quantity: this.product_quantity,
-                typeSize: this.selectedTabSize,
-                size: this.selectedSize.size,
-            };
-            console.log(product_detail);
-            console.log(productForCart);
-            this.cartStore.addToCart(productForCart);
-        },
-
-    }
-}
-</script>

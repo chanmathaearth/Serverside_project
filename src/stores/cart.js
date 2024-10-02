@@ -5,49 +5,58 @@ export const useCartStore = defineStore('cart', {
         items: []
     }),
     getters: {
-        summaryQuantity (state) {
+        summaryQuantity(state) {
             return state.items.reduce((acc, item) => acc + item.quantity, 0)
         },
-        summaryPrice (state) {
+        summaryPrice(state) {
             return state.items.reduce((acc, item) => acc + (item.price * item.quantity), 0)
         },
     },
     actions: {
-        loadCart () {
+        loadCart() {
             const cartItem = localStorage.getItem('cart-data');
             if (cartItem) {
-              try {
-                this.items = JSON.parse(cartItem);
-              } catch (e) {
-                console.error('Error parsing JSON', e);
-                this.items = [];
-              }
+                try {
+                    this.items = JSON.parse(cartItem);
+                } catch (e) {
+                    console.error('Error parsing JSON', e);
+                    this.items = [];
+                }
             } else {
-              this.items = [];
+                this.items = [];
             }
-          },
-        addToCart (productData) {
+        },
+        addToCart(productData) {
+            // แก้ไขการหาสินค้าในตะกร้าโดยใช้ type_size และ size
             const itemIndex = this.items.findIndex(
-                item => item.name === productData.name && item.size === productData.size
+                item => item.name === productData.name
             );
+
             if (itemIndex >= 0) {
+                // เพิ่มจำนวนสินค้าที่มีอยู่ในตะกร้า
                 this.items[itemIndex].quantity += productData.quantity;
             } else {
-                this.items.push(productData)
+                // ถ้าไม่มีสินค้านี้อยู่ในตะกร้า เพิ่มเข้าไปในตะกร้าใหม่
+                this.items.push(productData);
             }
-            localStorage.setItem('cart-data', JSON.stringify(this.items))
+            // บันทึกตะกร้าลง localStorage
+            localStorage.setItem('cart-data', JSON.stringify(this.items));
         },
-        updateQuantity (index, quantity) {
+        updateQuantity(index, quantity) {
             if (this.items[index]) {
                 this.items[index].quantity = quantity;
-                localStorage.setItem('cart-data', JSON.stringify(this.items))
+                localStorage.setItem('cart-data', JSON.stringify(this.items));
             } else {
-            console.error("Item not found in cart.");
+                console.error("Item not found in cart.");
             }
         },
-        removeItemInCart (index, quantity) {
-            this.items.splice(index, 1)
-            localStorage.setItem('cart-data', JSON.stringify(this.items))
+        removeItemInCart(index) {
+            if (this.items[index]) {
+                this.items.splice(index, 1);
+                localStorage.setItem('cart-data', JSON.stringify(this.items));
+            } else {
+                console.error("Item not found in cart.");
+            }
         },
     }
-})
+});
