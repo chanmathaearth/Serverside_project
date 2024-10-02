@@ -24,6 +24,7 @@ const router = createRouter({
       path: '/productDetail/:Pro_name',
       name: 'ProductDetail',
       component: ProductDetail,
+      meta: { requiresAuth: true }
     },
     {
       path: '/tracker',
