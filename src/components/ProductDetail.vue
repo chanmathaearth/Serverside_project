@@ -275,7 +275,12 @@ const openTab = (tabId) => {
 					</div>
 					<div class="flex mb-1">
 						<p class="text-xl font-thin">BOOTS TYPE: </p>
-						<p class="ml-3 text-xl font-thin">{{ product_detail.categories[0].toUpperCase() }}</p>
+						<p class="ml-3 text-xl font-thin" v-if="product_detail.categories && product_detail.categories.length > 0">
+						{{ product_detail.categories[0].toUpperCase() }}
+						</p>
+						<p class="ml-3 text-xl font-thin" v-else>
+						No category available
+						</p>					
 					</div>
 					<div class="flex mb-1">
 						<p class="text-xl font-thin">LMITED: </p>
