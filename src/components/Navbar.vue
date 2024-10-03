@@ -1,9 +1,22 @@
 <script setup>
 import DeleteItem from '@/components/icons/IconTrashcan.vue'
 import { useCartStore } from '@/stores/cart.js'
-
+import { onMounted, ref } from 'vue';
 const cartStore = useCartStore();
 console.log(cartStore);
+onMounted(() => {
+    if(localStorage.getItem('isLoggedIn')) {
+        isLoggedIn.value = true
+    }
+})
+const isLoggedIn = ref(false);
+const btnlogout = () => {
+  isLoggedIn.value = false
+  localStorage.removeItem('isLoggedIn')
+  localStorage.removeItem('cart-data')
+  localStorage.removeItem('checkout-data')
+  window.location.reload()
+}
 const changeQuantity = (newQuantity, index) => {
     const parsedQuantity = parseInt(newQuantity);
     if (parsedQuantity >= 1) {
@@ -28,7 +41,38 @@ const changeQuantity = (newQuantity, index) => {
                 </div>
 
                 <div class="profile flex items-center space-x-6">
-                    <RouterLink to="/login">
+                    <div v-if="isLoggedIn" class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                            <div>
+                                <svg
+                                    class="w-6 h-6 text-black transition-all duration-300 hover:scale-110 cursor-pointer"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
+                                        clip-rule="evenodd"
+                                    />
+                                </svg>
+                            </div>
+                        </label>
+                        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                            <li>
+                            <RouterLink to="/profile" class="justify-between">
+                                Profile
+                            </RouterLink>
+                            </li>
+                            <li>
+                            <a @click="btnlogout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <RouterLink v-else to="/login">
                     <svg
                         @click="toggleProfileModal"
                         class="w-6 h-6 text-black transition-all duration-300 hover:scale-110 cursor-pointer"

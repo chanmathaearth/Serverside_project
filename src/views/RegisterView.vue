@@ -16,7 +16,7 @@ const newCustomer = ref({
   gender: '',
 });
 
-const addCustomer = () => {
+const btnAddCustomer = () => {
   const jsonData = newCustomer.value;
   customerReg.addCustomer(jsonData)
     .then(response => {
@@ -171,12 +171,12 @@ const addCustomer = () => {
                                 <option value="Female">FEMALE</option>
                             </select>
                         </div>
-                        <button @click="addCustomer"
+                        <a @click="btnAddCustomer"
                             type="submit"
                             class="w-full text-white bg-red-500 rounded-full p-2 border border-black font-thin hover:bg-red-600"
                         >
                             Register
-                        </button>
+                        </a>
                         <p
                             class="text-sm font-light text-gray-500 dark:text-gray-400"
                         >
