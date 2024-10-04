@@ -25,6 +25,12 @@ const isCurrentRoute = (path) => {
                         <span class="text-lg ml-6">DASHBOARD</span>
                     </RouterLink>
                     <RouterLink
+                        to="/"
+                        :class="isCurrentRoute('/') ? 'text-red-600' : ''"
+                    >
+                        <span class="text-lg ml-6">ORDER</span>
+                    </RouterLink>
+                    <RouterLink
                         to="/admin"
                         :class="isCurrentRoute('/admin') ? 'text-red-600' : ''"
                     >

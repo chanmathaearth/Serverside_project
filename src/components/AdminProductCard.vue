@@ -96,9 +96,9 @@ const editProduct = async () => {
             <p class="text-xl font-thin mt-1 text-left pl-1 text-black">
                 {{ props.product.name }}
             </p>
-            <div class="justify-center w-full">
+            <div class="flex justify-center w-full">
                 <button
-                    class="flex justify-center items-center text-xl font-thin pl-1 mt-3 p-1 rounded-xl text-center mr-4 w-full bg-amber-400 text-white hover:bg-amber-500 focus:outline-none"
+                    class="flex justify-center items-center text-sm font-thin pl-1 mt-3 p-1 rounded-xl text-center mr-4 w-full bg-amber-400 text-white hover:bg-amber-500 focus:outline-none"
                     @click="openModal"
                 >
                     Edit
@@ -108,7 +108,7 @@ const editProduct = async () => {
 
                 </button>
                 <button
-                    class="flex justify-center items-center text-xl font-thin pl-1 mt-3 p-1 rounded-xl text-center w-full bg-red-500 text-white hover:bg-red-600 focus:outline-none"
+                    class="flex justify-center items-center text-sm font-thin pl-1 mt-3 p-1 rounded-xl text-center w-full bg-red-500 text-white hover:bg-red-600 focus:outline-none"
                     @click="deleteProduct"
                 >
                     Delete
@@ -185,7 +185,7 @@ const editProduct = async () => {
                             </svg>
                         </button>
                     </div>
-                    <button type="button" @click="addSizeField" class="bg-red-500  font-thin text-white p-2 text-sm rounded-lg mt-2">ADD SIZE</button>
+                    <button type="button" @click="addSizeField" class="bg-green-600 font-thin text-white p-2 text-sm rounded-lg mt-2">ADD SIZE</button>
                 </div>
 
                 <!-- Additional Images -->
@@ -199,10 +199,10 @@ const editProduct = async () => {
                             </svg>
                         </button>                    
                     </div>
-                    <button type="button" @click="addImageField" class="bg-red-500  font-thin text-white p-2 text-sm rounded-lg mt-2">ADD IMAGE</button>
+                    <button type="button" @click="addImageField" class="bg-green-600 font-thin text-white p-2 text-sm rounded-lg mt-2">ADD IMAGE</button>
                 </div>
                 <div class="mt-6">
-                    <button type="submit" @click="editProduct" class="bg-red-500 font-thin text-white px-4 py-2 rounded-lg mt-2 w-full focus:outline-none">EDIT PRODUCT</button>
+                    <button type="submit" @click="editProduct" class="bg-amber-500 font-thin text-white px-4 py-2 rounded-lg mt-2 w-full focus:outline-none">EDIT PRODUCT</button>
                 </div>
             </form>
             </div>
