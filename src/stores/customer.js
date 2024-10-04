@@ -9,6 +9,17 @@ export const useCustomerStore = defineStore('customer', {
         isAuthenticated: false,
     }),
     actions: {
+        async getCustomer() {
+            try {
+                if (!this.loaded) {
+                    const response = await axios.get('http://localhost:8000/api/customer/');
+                    this.list = response.data;
+                    this.loaded = true;
+                }
+            } catch (error) {
+                console.error('Error fetching customer:', error);
+            }
+        },
         async addCustomer(customerData) {
             try {
                 const response = await axios.post('http://localhost:8000/api/customer/', customerData);

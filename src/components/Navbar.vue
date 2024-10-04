@@ -2,21 +2,54 @@
 import DeleteItem from '@/components/icons/IconTrashcan.vue'
 import { useCartStore } from '@/stores/cart.js'
 import { onMounted, ref } from 'vue';
+import { useCustomerStore } from '@/stores/customer'
+import Swal from 'sweetalert2';
 const cartStore = useCartStore();
-console.log(cartStore);
-onMounted(() => {
+const customerStore = useCustomerStore();
+const user = ref(null);
+const isLoggedIn = ref(false);
+
+const isDropdownOpen = ref(false); 
+
+const toggleDropdown = () => {
+    isDropdownOpen.value = !isDropdownOpen.value;
+};
+const logout = () => {
+    Swal.fire({
+        title: 'Logged Out',
+        text: 'You have been successfully logged out.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#df4625',
+    }).then(() => {
+        isLoggedIn.value = false;
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('cart-data');
+        localStorage.removeItem('checkout-data');
+        localStorage.removeItem('username');
+        router.push('/login');
+    });
+};
+
+onMounted( async () => {
+    await customerStore.getCustomer();
+    const storedUser = localStorage.getItem('username');
+    if (storedUser) {
+        const username = storedUser;
+        if (customerStore.list) {
+            const foundUser = customerStore.list.find(
+                (customer) => customer.username === username
+            );
+            if (foundUser) {
+                user.value = foundUser;
+            }
+        }
+    }
     if(localStorage.getItem('isLoggedIn')) {
         isLoggedIn.value = true
     }
 })
-const isLoggedIn = ref(false);
-const btnlogout = () => {
-  isLoggedIn.value = false
-  localStorage.removeItem('isLoggedIn')
-  localStorage.removeItem('cart-data')
-  localStorage.removeItem('checkout-data')
-  window.location.reload()
-}
+
 const changeQuantity = (newQuantity, index) => {
     const parsedQuantity = parseInt(newQuantity);
     if (parsedQuantity >= 1) {
@@ -32,20 +65,23 @@ const changeQuantity = (newQuantity, index) => {
                     Precision, Power, Performance – On Your Feet.
                 </h1>
             </div>
+
+            
+
             <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4 mt-6">
                 <div class="transition-all duration-300 hover:scale-105 font-thin text-l">
-                    <RouterLink to="/tracker">TRACKER</RouterLink>
+                    <RouterLink v-if="isLoggedIn" to="/tracker">TRACKER</RouterLink>
+                    <RouterLink v-else to="/login">TRACKER</RouterLink>
                 </div>
                 <div class="transition-all duration-300 hover:scale-105 font-thin text-2xl">
 					<RouterLink to="/">STUDFORCE</RouterLink>
                 </div>
-
                 <div class="profile flex items-center space-x-6">
-                    <div v-if="isLoggedIn" class="dropdown dropdown-end">
-                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                            <div>
+                    <div v-if="isLoggedIn" @click="toggleDropdown" class="flex justify-center items-center">
+                        <RouterLink to="/tracker">
+                            <div class="flex transition-all duration-300 hover:scale-110 items-center justify-center">
                                 <svg
-                                    class="w-6 h-6 text-black transition-all duration-300 hover:scale-110 cursor-pointer"
+                                    class="w-6 h-6 text-black  cursor-pointer"
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
@@ -59,18 +95,9 @@ const changeQuantity = (newQuantity, index) => {
                                         clip-rule="evenodd"
                                     />
                                 </svg>
+                                <p class="font-thin text-sm">{{ user.username.toUpperCase() }}</p>     
                             </div>
-                        </label>
-                        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>
-                            <RouterLink to="/profile" class="justify-between">
-                                Profile
-                            </RouterLink>
-                            </li>
-                            <li>
-                            <a @click="btnlogout">Logout</a>
-                            </li>
-                        </ul>
+                        </RouterLink>
                     </div>
                     <RouterLink v-else to="/login">
                     <svg
@@ -110,7 +137,7 @@ const changeQuantity = (newQuantity, index) => {
                             />
                         </svg>
                         <span
-                            class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full h-4 w-4 text-xs flex items-center justify-center"
+                            class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full h-4 w-4 text-xs flex items-center justify-center "
                             >{{ cartStore.summaryQuantity }}
                         </span>
                     </div>

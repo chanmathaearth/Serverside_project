@@ -3,35 +3,70 @@ import Navbar from "@/components/Navbar.vue";
 import { useCustomerStore } from "@/stores/customer";
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
+
 const customerReg = useCustomerStore();
 const router = useRouter();
 const logCustomer = ref({
     username: '',
     password: '',
 });
-onMounted(() => {
-    if(localStorage.getItem('isLoggedIn')) {
-        isLoggedIn.value = true
-    }
-})
+
 const isLoggedIn = ref(false);
+const username = ref(''); // สร้างตัวแปรเพื่อเก็บชื่อผู้ใช้
+
+onMounted(() => {
+    const storedId = localStorage.getItem('id');
+    const storedUsername = localStorage.getItem('username');
+
+    if (localStorage.getItem('isLoggedIn')) {
+        isLoggedIn.value = true;
+    }
+    if (storedUsername) {
+        username.value = storedUsername; // ตั้งค่า username ที่ดึงมา
+    }
+});
+
 const btnlogin = (event) => {
     event.preventDefault();
     const jsonData = logCustomer.value;
     customerReg.loginCustomer(jsonData)
         .then(response => {
-            console.log(jsonData);
-            console.log('login success');
-            isLoggedIn.value = true
-            localStorage.setItem('isLoggedIn', true)
-            router.push('/tracker');
+            console.log('login success:', response.data);
+            isLoggedIn.value = true;
+            localStorage.setItem('isLoggedIn', true);
+            localStorage.setItem('username', response.data.username);
+            username.value = response.data.username;
+
+            const role = response.data.role;
+
+            Swal.fire({
+                title: 'Logged In',
+                text: 'You have been successfully logged in.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#df4625',
+            }).then(() => {
+                if (role === 'admin') {
+                    router.push('/admin');
+                } else if (role === 'customer') {
+                    router.push('/tracker');
+                }
+            });
         })
         .catch(error => {
             console.error('error login', error);
-            alert("รหัสหรือรหัสผ่านผิด")
+            Swal.fire({
+                title: 'Login Failed',
+                text: 'Failed to log in. Please check your credentials and try again.',
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#df4625',
+            });
         });
 };
 </script>
+
 <template>
     <div>
         <Navbar :cartItems="cartItems" />
@@ -54,7 +89,7 @@ const btnlogin = (event) => {
                                     class="bg-white border border-black block w-full p-2.5" required="" />
                             </div>
                             <button @click="btnlogin" v-if="!isLoggedIn" type="button"
-                                class="w-full text-white bg-red-500 rounded-full p-2 border border-black font-thin hover:bg-red-600">
+                                class="w-full text-white bg-red-500 rounded-full p-2 font-thin hover:bg-red-600 focus:outline-none">
                                 SIGN IN
                             </button>
                             <p class="text-sm font-light text-gray-500 dark:text-gray-400">

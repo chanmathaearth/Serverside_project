@@ -3,6 +3,8 @@ import { ref, onMounted } from "vue";
 import { useProductStore } from "../stores/product";
 import AdminNavbar from "../components/AdminNavbar.vue";
 import AdminProductCard from "../components/AdminProductCard.vue";
+import Swal from 'sweetalert2';
+
 
 const productStore = useProductStore();
 const product = ref([]);
@@ -25,6 +27,7 @@ const closeModal = () => {
     showModal.value = false;
 };
 
+
 // ฟังก์ชันเพิ่มสินค้าใหม่
 const addProduct = async (event) => {
     event.preventDefault();
@@ -44,8 +47,15 @@ const addProduct = async (event) => {
 
     try {
         await productStore.addProduct(productData);
-        alert('Product added successfully.');
-        window.location.reload();
+        Swal.fire({
+        title: 'Product added successfully.',
+        text: 'You have been successfully added to the product store',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#df4625',
+        }).then(() => {
+            window.location.reload();
+        });
     } catch (error) {
         console.error('Failed to add product:', error);
         alert('Failed to add product. Please try again.');

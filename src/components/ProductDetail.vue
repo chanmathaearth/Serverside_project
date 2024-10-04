@@ -162,7 +162,7 @@ const openTab = (tabId) => {
                 </div>
                 <hr class="ml-4 mr-4"><br>
                 <div>
-                    <span class="ml-4 text-2xl text-red-500">{{ Number(product_detail.price).toLocaleString('en-US') }} THB
+                    <span class="ml-4 text-3xl text-red-500">{{ Number(product_detail.price).toLocaleString('en-US') }} THB
 					</span>
                 </div>
 

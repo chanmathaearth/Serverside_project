@@ -1,11 +1,30 @@
 <script setup>
 import { RouterLink, useRoute } from 'vue-router';
+import Swal from 'sweetalert2';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const route = useRoute();
-
-// ฟังก์ชันตรวจสอบว่า route ปัจจุบันตรงกับเส้นทางที่กำหนดหรือไม่
+const router = useRouter();
+const isLoggedIn = ref(false);
 const isCurrentRoute = (path) => {
-    return route.path === path;
+    return router.path === path;
+};
+
+const logout = () => {
+    Swal.fire({
+        title: 'Logged Out',
+        text: 'You have been successfully logged out.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#df4625',
+    }).then(() => {
+        isLoggedIn.value = false;
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('cart-data');
+        localStorage.removeItem('checkout-data');
+        localStorage.removeItem('username');
+        router.push('/login');
+    });
 };
 </script>
 <template>
@@ -38,7 +57,7 @@ const isCurrentRoute = (path) => {
                     </RouterLink>
                 </div>
                 <div class="transition-all duration-300 hover:scale-105 font-thin text-lg transition-all duration-300 hover:scale-110">
-                    <RouterLink to="/">SIGNOUT</RouterLink>
+                    <button @click="logout()">SIGN OUT</button> 
                 </div>
             </div>
         </nav>

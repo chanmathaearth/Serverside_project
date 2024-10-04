@@ -3,6 +3,8 @@ import Navbar from "@/components/Navbar.vue";
 import { useCustomerStore } from "@/stores/customer";
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
+
 const customerReg = useCustomerStore();
 const router = useRouter();
 const newCustomer = ref({
@@ -18,15 +20,24 @@ const newCustomer = ref({
 
 const btnAddCustomer = () => {
   const jsonData = newCustomer.value;
-  customerReg.addCustomer(jsonData)
-    .then(response => {
-      console.log(jsonData);
-      console.log('เพิ่มข้อมูลลูกค้าสำเร็จ:');
-      router.push('/login');
-    })
-    .catch(error => {
-      console.error('เกิดข้อผิดพลาดในการเพิ่มข้อมูลลูกค้า:', error);
+  Swal.fire({
+        title: 'Registration Successful',
+        text: 'You have been successfully registered.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#df4625',
+    }).then(() => {
+        customerReg.addCustomer(jsonData)
+        .then(response => {
+        console.log(jsonData);
+        console.log('เพิ่มข้อมูลลูกค้าสำเร็จ:');
+        router.push('/login');
+        })
+        .catch(error => {
+        console.error('เกิดข้อผิดพลาดในการเพิ่มข้อมูลลูกค้า:', error);
+        });
     });
+
 };
 </script>
 
@@ -171,11 +182,11 @@ const btnAddCustomer = () => {
                                 <option value="Female">FEMALE</option>
                             </select>
                         </div>
+                        
                         <a @click="btnAddCustomer"
                             type="submit"
-                            class="w-full text-white bg-red-500 rounded-full p-2 border border-black font-thin hover:bg-red-600"
-                        >
-                            Register
+                            class="w-full text-white bg-red-500 rounded-full p-2 font-thin hover:bg-red-600 focus:outline-none">
+                            <div class="flex justify-center">REGISTER</div>
                         </a>
                         <p
                             class="text-sm font-light text-gray-500 dark:text-gray-400"
