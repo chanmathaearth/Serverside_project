@@ -65,7 +65,7 @@
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
-                            value="Nike"
+                            value="NIKE"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
@@ -75,7 +75,7 @@
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
-                            value="Mizuno"
+                            value="MIZUNO"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
@@ -85,7 +85,7 @@
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
-                            value="Puma"
+                            value="PUMA"
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />

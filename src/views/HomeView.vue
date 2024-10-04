@@ -4,6 +4,7 @@ import { useProductStore } from "../stores/product";
 import Navbar from "../components/Navbar.vue";
 import Sidebar from "../components/Sidebar.vue";
 import ProductCard from "../components/ProductCard.vue";
+import axios from "axios";
 
 const cartItems = ref([]);
 const selectedBrands = ref([]);
