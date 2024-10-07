@@ -24,6 +24,7 @@ const logout = () => {
         localStorage.removeItem('cart-data');
         localStorage.removeItem('checkout-data');
         localStorage.removeItem('username');
+        localStorage.removeItem('summaryPrice');
         router.push('/');
     });
 };
