@@ -12,7 +12,7 @@ export const useCustomerStore = defineStore('customer', {
         async getCustomer() {
             try {
                 if (!this.loaded) {
-                    const response = await axios.get('http://localhost:8000/api/customer/');
+                    const response = await axios.get('http://localhost:8000/api/customers/');
                     this.list = response.data;
                     this.loaded = true;
                 }
@@ -22,7 +22,7 @@ export const useCustomerStore = defineStore('customer', {
         },
         async addCustomer(customerData) {
             try {
-                const response = await axios.post('http://localhost:8000/api/customer/', customerData);
+                const response = await axios.post('http://localhost:8000/api/customers/register/', customerData);
                 this.list.push(response.data);
                 console.log('Customer added successfully:', response.data);
             } catch (error) {
@@ -31,7 +31,7 @@ export const useCustomerStore = defineStore('customer', {
         },
         async loginCustomer(customerData) {
             try {
-                const response = await axios.post('http://localhost:8000/api/login/', {
+                const response = await axios.post('http://localhost:8000/api/auth/login/', {
                   username: customerData.username,
                   password: customerData.password,
                 });

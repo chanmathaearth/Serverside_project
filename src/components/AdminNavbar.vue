@@ -23,6 +23,9 @@ const logout = () => {
         localStorage.removeItem('cart-data');
         localStorage.removeItem('checkout-data');
         localStorage.removeItem('username');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('id');
+        localStorage.removeItem('token');
         router.push('/login');
     });
 };

@@ -17,13 +17,12 @@ const product_detail = ref(null);
 const activeTab = ref('tab1');
 
 onMounted(async () => {
-    await productStore.fetchProduct();
-    const productName = route.params.productname;
+    const productId = route.params.productid;
+	console.log(productId);
+    await productStore.fetchProductById(productId);
 
-    if (productStore.list && productStore.list.length > 0) {
-        product_detail.value = productStore.list.find(
-            (product) => product.name === productName
-        );
+    if (productStore.currentProduct) {
+        product_detail.value = productStore.currentProduct;
     }
 });
 

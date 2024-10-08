@@ -24,6 +24,8 @@ const logout = () => {
         localStorage.removeItem('cart-data');
         localStorage.removeItem('checkout-data');
         localStorage.removeItem('username');
+        localStorage.removeItem('role');
+
         router.push('/');
     });
 };
@@ -56,7 +58,7 @@ onMounted( async () => {
 
         <div class="flex mt-[8%] justify-center items-center">
             <div v-if="user">
-            <h1 class="text-center font-thin text-xl">HI {{ user.first_name.toUpperCase() }} {{ user.last_name.toUpperCase() }}!!</h1>
+            <h1 class="text-center font-thin text-2xl">Welcome, <span class="text-2xl font-thin">{{ user.first_name.toUpperCase() }}!</span></h1>
             </div>
             <svg class="ml-3 w-3 h-6 text-green-500 animate-pulse" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
