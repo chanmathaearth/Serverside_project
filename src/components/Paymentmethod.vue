@@ -87,7 +87,7 @@
                 </div>
                 </form>
                 <div class="flex justify-center mt-4">
-                <button type="submit" class="bg-red-500 text-white p-3 rounded-full focus:outline-none hover:bg-red-600">
+                <button type="submit" class="bg-red-500 text-white p-3 font-light rounded-full focus:outline-none hover:bg-red-500">
                     Process to Checkout
                 </button>
                 </div>

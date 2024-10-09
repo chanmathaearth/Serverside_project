@@ -26,6 +26,7 @@ const logout = () => {
         localStorage.removeItem('username');
         localStorage.removeItem('role');
 
+        localStorage.removeItem('summaryPrice');
         router.push('/');
     });
 };

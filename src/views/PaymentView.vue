@@ -1,8 +1,12 @@
 <script setup>
 import { useCartStore } from '@/stores/cart.js'
+import { useProductStore } from '@/stores/product'
 const cartStore = useCartStore();
+const productStore = useProductStore();
+const summaryPrice = localStorage.getItem('summaryPrice');
 </script>
 <template>
+    <div>
     <Navbar :cartItems="cartItems" />
     <section class="bg-white py-8 md:py-16 antialiased mt-16">
         <div class="flex justify-between">
@@ -77,16 +81,16 @@ const cartStore = useCartStore();
                 </div>
                 <h3 class="text-xl font-thin mb-4">Order Summary</h3>
 				<div v-for="(item, index) in cartStore.items" :key="index" class="font-thin relative  mt-4 rounded-xl">                
-                            <div class="flex justify-between">
-                                <img :src="item.image" width="130px">
+                            <div v-if="productStore.list.find(product => product.id === item.product)" class="flex justify-between">
+                                <img :src="productStore.list.find(product => product.id === item.product).image" width="130px">
                                 <div class="flex flex-col mt-6 ">
-                                    <p class="text-base ml-4">{{ item.name }}</p>
+                                    <p class="text-base ml-4">{{ productStore.list.find(product => product.id === item.product).name }}</p>
                                     <div class="flex justify-between items-center">
-                                        <p class="text-base ml-4 mt-2">{{ item.size }} {{ item.typeSize }}</p> 
-										<p class="text-base ml-4 mt-2">QTY: {{ item.quantity }}</p> 
+                                        <p class="text-base ml-4 mt-2">{{ item.size }} {{ item.type_size }}</p> 
+										<p class="text-base ml-4 mt-2">QTY: {{ item.amount }}</p> 
 
                                     </div>
-									<p class="text-base ml-4">{{ item.price }} THB</p>
+									<p class="text-base ml-4">{{Number(productStore.list.find(product => product.id === item.product).price).toLocaleString('en-US') }} THB</p>
                                 </div>
                                
                             </div>
@@ -96,19 +100,20 @@ const cartStore = useCartStore();
 
                 <div class="flex justify-between font-thin">
                     <span>Cart Subtotal</span>
-                    <span>{{ cartStore.summaryPrice }} THB</span>
+                    <span>{{ Number(summaryPrice).toLocaleString('en-US') }} THB</span>
                 </div>
                 <div class="flex justify-between mt-2 font-thin">
                     <span>Shipping</span>
                     <span>0.00 THB</span>
                 </div>
-                <div class="flex justify-between mt-2 font-bold">
+                <div class="flex justify-between mt-2 font-thin text-xl">
                     <span>Order Total</span>
-                    <span>{{ cartStore.summaryPrice }} THB</span>
+                    <span>{{ Number(summaryPrice).toLocaleString('en-US') }} THB</span>
                 </div>
             </div>
         </div>
     </section>
+    </div>
 </template>
 
 <script>
@@ -153,7 +158,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-/* สไตล์เพิ่มเติมถ้าจำเป็น */
-</style>

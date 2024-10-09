@@ -4,11 +4,12 @@ import { useCartStore } from "@/stores/cart";
 import { useProductStore } from "@/stores/product";
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import Swal from 'sweetalert2';
 
 const cartStore = useCartStore();
 const productStore = useProductStore();
 const route = useRoute();
-
+const user_id = localStorage.getItem("user_ID");
 const product_quantity = ref(1);
 const currentSlideIndex = ref(0);
 const selectedTabSize = ref("EUR");
@@ -54,18 +55,31 @@ const openTabSize = (tab) => {
     selectedTabSize.value = tab;
 };
 
-const addToCart = () => {
+const addToCartbtn = async () => {
     if (product_detail.value) {
-        const productForCart = {
-            brand: product_detail.value.brand,
-            name: product_detail.value.name,
-            price: product_detail.value.price,
-            image: product_detail.value.image,
-            quantity: product_quantity.value,
-            typeSize: selectedTabSize.value,
-            size: selectedSize.value.size,
-        };
-        cartStore.addToCart(productForCart);
+        try {
+            // ดึงข้อมูล customer id จาก API โดยใช้ username
+			if (product_detail.value) {
+				const productForCart = {
+					customer: parseInt(user_id), // ต้องเป็น ID ของลูกค้า
+					product: product_detail.value.id,          // ต้องเป็น ID ของสินค้า
+					amount: product_quantity.value,
+					type_size: selectedTabSize.value,
+					size: selectedSize.value.size,
+				};
+				cartStore.addToCart(productForCart);
+			} else {
+				console.error('Product not found in database');
+			}
+        } catch (error) {
+            Swal.fire({
+			title: 'Please select a size',
+			text: 'You need to choose a size',
+			icon: 'error',
+            confirmButtonColor: '#df4625',
+			});
+		}
+
     }
 };
 
@@ -224,7 +238,7 @@ const openTab = (tabId) => {
                     </div>
                     <br>
                     <div>
-                        <button @click="addToCart(product_detail)" type="submit" title="เพิ่มใส่ตะกร้า"
+                        <button @click="addToCartbtn" type="submit" title="เพิ่มใส่ตะกร้า"
                             class="addtocart bg-red-500 text-white rounded-3xl border-solid border-2 ml-2 mr-2 w-96 p-2 focus:outline-none hover:bg-red-600"
                             id="product-addtocart-button">
                             <span>ADD TO CART</span>

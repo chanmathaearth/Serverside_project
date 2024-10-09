@@ -35,6 +35,7 @@ const btnlogin = (event) => {
             isLoggedIn.value = true;
             localStorage.setItem('isLoggedIn', true);
             localStorage.setItem('username', response.data.username);
+            localStorage.setItem('user_ID', response.data.user_id);
             localStorage.setItem('role', response.data.role);
             localStorage.setItem('token', response.data.access);
             localStorage.setItem('refreshToken', response.data.refresh);

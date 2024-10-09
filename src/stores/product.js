@@ -29,15 +29,15 @@ export const useProductStore = defineStore('product', {
                 console.error("Failed to fetch product", error);
             }
         },
-        async deleteProduct(productId) {
+        async deleteProduct(id) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`http://localhost:8000/api/products/${productId}/`, {
+                await axios.delete(`http://localhost:8000/api/products/${id}/`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                this.list = this.list.filter(product => product.id !== productId);
+                this.list = this.list.filter(product => product.id !== id);
             } catch (error) {
                 console.error('Error deleting product', error);
             }
