@@ -70,7 +70,7 @@ const addToCartbtn = async () => {
             const customerResponse = await axios.get(`http://localhost:8000/api/customersid/?username=${username}`);
             if (customerResponse.data) {
                 const customer = customerResponse.data;
-
+                console.log("cusIDDDD   :",customer)
                 if (product_detail.value) {
                     const productForCart = {
                         customer: customer.id, // ต้องเป็น ID ของลูกค้า

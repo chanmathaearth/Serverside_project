@@ -149,17 +149,16 @@ const calculateSummaryPrice = () => {
                         <div v-for="(item, index) in cartStore.items" :key="index"
                             class="font-thin relative p-2 mt-4 rounded-xl border">
                             <!-- Check if the product id matches with the productStore list id -->
-                            <div v-if="productStore.list.find(product => product.id === item.product)"
+                            <div v-if="product = productStore.list.find(product => product.id === item.product)"
                                 class="flex justify-between p-2 space-x-3 mr-4">
-                                <img :src="productStore.list.find(product => product.id === item.product).image"
+                                <img :src="product.image"
                                     width="100px">
                                 <div class="flex flex-col mt-6">
-                                    <li class="text-base ml-4">{{ productStore.list.find(product => product.id === item.product).name }}</li>
+                                    <li class="text-base ml-4">{{ product.name }}</li>
                                     <div class="flex justify-between items-center">
                                         <li class="text-base ml-4 mt-2">{{ item.size }} {{ item.type_size }}</li>
                                         <li class="text-base ml-4 mt-2 text-red-500">{{
-                                            Number(productStore.list.find(product => product.id ===
-                                            item.product).price).toLocaleString('en-US') }} THB</li>
+                                            Number(product.price).toLocaleString('en-US') }} THB</li>
                                     </div>
                                 </div>
                             </div>
