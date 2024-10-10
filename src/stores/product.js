@@ -19,26 +19,50 @@ export const useProductStore = defineStore('product', {
                 console.error('Error fetching product', error);
             }
         },
-        async deleteProduct(productId) {
+        async fetchProductById(id) {
             try {
-                await axios.delete(`http://localhost:8000/api/products/${productId}/`);
-                this.list = this.list.filter(product => product.id !== productId);
+                const token = localStorage.getItem('token');  // รับ token จาก localStorage
+                const response = await axios.get(`http://localhost:8000/api/products/${id}/`, {
+                });
+                this.currentProduct = response.data;
+            } catch (error) {
+                console.error("Failed to fetch product", error);
+            }
+        },
+        async deleteProduct(id) {
+            try {
+                const token = localStorage.getItem('token');
+                await axios.delete(`http://localhost:8000/api/products/${id}/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                this.list = this.list.filter(product => product.id !== id);
             } catch (error) {
                 console.error('Error deleting product', error);
             }
         },
         async addProduct(newProduct) {
             try {
-                console.log(newProduct)
-                const response = await axios.post('http://localhost:8000/api/products/', newProduct);
-                this.list.push(response.data); 
+                const token = localStorage.getItem('token');
+                const response = await axios.post('http://localhost:8000/api/products/', newProduct, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                this.list.push(response.data);
             } catch (error) {
                 console.error('Error adding product', error);
             }
         },
         async editProduct(productId, updatedProduct) {
             try {
-                const response = await axios.put(`http://localhost:8000/api/products/${productId}/`, updatedProduct);
+                const token = localStorage.getItem('token');  // รับ token จาก localStorage
+                const response = await axios.put(`http://localhost:8000/api/products/${productId}/`, updatedProduct, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`  // แนบ token ใน header
+                    }
+                });
                 // อัปเดตสินค้าที่ถูกแก้ไขใน `this.list`
                 const index = this.list.findIndex(product => product.id === productId);
                 if (index !== -1) {
@@ -49,4 +73,4 @@ export const useProductStore = defineStore('product', {
             }
         }
     }
-})
+});

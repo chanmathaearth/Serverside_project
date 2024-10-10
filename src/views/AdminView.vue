@@ -76,8 +76,12 @@ const addImageField = () => {
 <template>
     <div id="app">
         <AdminNavbar :cartItems="cartItems" />
+        <section class="text-center p-8 mt-16">
+            <h1 class="text-3xl font-thin">Welcome, Admin!</h1>
+            <p class="mt-2 text-xl font-thin">Manage your products and inventory below.</p>
+        </section>
 
-        <div class="flex mt-16  justify-center">
+        <div class="flex mt-1  justify-center">
             <button @click="openModal" class="flex mt-6 font-thin bg-red-600 text-white p-2 rounded-2xl focus:outline-none transition-all duration-300 hover:scale-110 " type="button">
                 <span class="ml-1">ADD PRODUCT</span>
                 <svg class="ml-1 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

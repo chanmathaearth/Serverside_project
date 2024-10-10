@@ -1,16 +1,15 @@
 <script setup>
-import axios from 'axios';
 import Navbar from "@/components/Navbar.vue";
-import { useCustomerStore } from "@/stores/customer";
 import { useCartStore } from "@/stores/cart";
 import { useProductStore } from "@/stores/product";
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
-const customerStore = useCustomerStore();
+import Swal from 'sweetalert2';
+
 const cartStore = useCartStore();
 const productStore = useProductStore();
 const route = useRoute();
-
+const user_id = localStorage.getItem("user_ID");
 const product_quantity = ref(1);
 const currentSlideIndex = ref(0);
 const selectedTabSize = ref("EUR");
@@ -19,13 +18,12 @@ const product_detail = ref(null);
 const activeTab = ref('tab1');
 
 onMounted(async () => {
-    await productStore.fetchProduct();
-    const productName = route.params.productname;
+    const productId = route.params.productid;
+	console.log(productId);
+    await productStore.fetchProductById(productId);
 
-    if (productStore.list && productStore.list.length > 0) {
-        product_detail.value = productStore.list.find(
-            (product) => product.name === productName
-        );
+    if (productStore.currentProduct) {
+        product_detail.value = productStore.currentProduct;
     }
 });
 
@@ -59,36 +57,28 @@ const openTabSize = (tab) => {
 
 const addToCartbtn = async () => {
     if (product_detail.value) {
-        // ดึง username จาก localStorage
-        const username = localStorage.getItem('username');
-        if (!username) {
-            console.error('Username not found in localStorage');
-            return;
-        }
         try {
             // ดึงข้อมูล customer id จาก API โดยใช้ username
-            const customerResponse = await axios.get(`http://localhost:8000/api/customersid/?username=${username}`);
-            if (customerResponse.data) {
-                const customer = customerResponse.data;
-                console.log("cusIDDDD   :",customer)
-                if (product_detail.value) {
-                    const productForCart = {
-                        customer: customer.id, // ต้องเป็น ID ของลูกค้า
-                        product: product_detail.value.id,          // ต้องเป็น ID ของสินค้า
-                        amount: product_quantity.value,
-                        type_size: selectedTabSize.value,
-                        size: selectedSize.value.size,
-                    };
-                    cartStore.addToCart(productForCart);
-                } else {
-                    console.error('Product not found in database');
-                }
-            } else {
-                console.error('Customer not found in database');
-            }
+			if (product_detail.value) {
+				const productForCart = {
+					customer: parseInt(user_id), // ต้องเป็น ID ของลูกค้า
+					product: product_detail.value.id,          // ต้องเป็น ID ของสินค้า
+					amount: product_quantity.value,
+					type_size: selectedTabSize.value,
+					size: selectedSize.value.size,
+				};
+				cartStore.addToCart(productForCart);
+			} else {
+				console.error('Product not found in database');
+			}
         } catch (error) {
-            console.error('Error adding product to cart:', error);
-        }
+            Swal.fire({
+			title: 'Please select a size',
+			text: 'You need to choose a size',
+			icon: 'error',
+            confirmButtonColor: '#df4625',
+			});
+		}
 
     }
 };

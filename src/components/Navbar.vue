@@ -70,6 +70,10 @@ const calculateSummaryPrice = () => {
     localStorage.setItem('summaryPrice', summaryPrice);
     return summaryPrice;
 };
+
+const getProduct = (productId) => {
+        return this.productStore.list.find(product => product.id === productId);
+    }
 </script>
 <template>
     <div>
@@ -146,31 +150,28 @@ const calculateSummaryPrice = () => {
                 </div>
                 <div class="flex justify-center items-center mb-5">
                     <ul v-if="cartStore.items && cartStore.items.length > 0" class="overflow-y-scroll h-[37rem]">
-                        <div v-for="(item, index) in cartStore.items" :key="index"
-                            class="font-thin relative p-2 mt-4 rounded-xl border">
-                            <!-- Check if the product id matches with the productStore list id -->
-                            <div v-if="product = productStore.list.find(product => product.id === item.product)"
-                                class="flex justify-between p-2 space-x-3 mr-4">
-                                <img :src="product.image"
-                                    width="100px">
-                                <div class="flex flex-col mt-6">
-                                    <li class="text-base ml-4">{{ product.name }}</li>
-                                    <div class="flex justify-between items-center">
-                                        <li class="text-base ml-4 mt-2">{{ item.size }} {{ item.type_size }}</li>
-                                        <li class="text-base ml-4 mt-2 text-red-500">{{
-                                            Number(product.price).toLocaleString('en-US') }} THB</li>
+                        <div v-for="(item, index) in cartStore.items" :key="index" class="font-thin relative p-2 mt-4 rounded-xl border">
+                            <div v-if = "product = productStore.list.find(product => product.id === item.product)" class="flex justify-between p-2 space-x-3 mr-4" >
+                                    <img :src="product.image" width="100px">
+                                    <div class="flex flex-col mt-6">
+                                        <li class="text-base ml-4">{{ productStore.list.find(product => product.id === item.product).name }}</li>
+                                        <div class="flex justify-between items-center">
+                                            <li class="text-base ml-4 mt-2">{{ item.size }} {{ item.type_size }}</li>
+                                            <li class="text-base ml-4 mt-2 text-red-500">{{
+                                                Number(product.price).toLocaleString('en-US') }} THB</li>
+                                        </div>
                                     </div>
-                                </div>
                             </div>
-                            <!-- ปุ่มลบสินค้าในตะกร้า -->
                             <li>
                                 <div class="flex justify-between items-center mr-[5%]">
-                                    <button @click="changeQuantity(item.amount - 1, index)"
+                                    <div>
+                                        <button @click="changeQuantity(item.amount - 1, index)"
                                         class="px-4 py-2 text-black hover:bg-gray-100 rounded-l-full focus:outline-none">-</button>
-                                    <input :value="item.amount" @input="changeQuantity($event.target.value, index)"
-                                        class="w-16 text-center text-black focus:outline-none" min="1" />
-                                    <button @click="changeQuantity(item.amount + 1, index)"
-                                        class="px-4 py-2 text-black hover:bg-gray-100 rounded-r-full focus:outline-none">+</button>
+                                        <input :value="item.amount" @input="changeQuantity($event.target.value, index)"
+                                            class="w-16 text-center text-black focus:outline-none" min="1" />
+                                        <button @click="changeQuantity(item.amount + 1, index)"
+                                            class="px-4 py-2 text-black hover:bg-gray-100 rounded-r-full focus:outline-none">+</button>
+                                    </div>
                                     <button @click="cartStore.removeItemInCart(index)" class="focus:outline-none">
                                         <DeleteItem class="w-5" />
                                     </button>

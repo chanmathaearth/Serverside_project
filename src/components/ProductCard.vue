@@ -11,9 +11,10 @@ const router = useRouter();
 const goToProductDetail = () => {
   router.push({
     name: "ProductDetail",
-    params: { productname: props.product.name },
+    params: { productid: props.product.id },
   });
 };
+
 </script>
 
 <template>

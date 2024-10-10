@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Swal from 'sweetalert2';  // ตรวจสอบว่า import 'sweetalert2' ไว้ด้วย
 import HomeView from '../views/HomeView.vue'
 import CartView from '../views/CartView.vue'
 import ProductDetail from '@/components/ProductDetail.vue';
@@ -17,20 +18,15 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/cart',
-      name: 'cart',
-      component: CartView
-    },
-    {
-      path: '/productDetail/:productname',
+      path: '/productDetail/:productid',
       name: 'ProductDetail',
       component: ProductDetail,
-      meta: { requiresAuth: true }
     },
     {
       path: '/tracker',
       name: 'tracker',
-      component: TrackerView
+      component: TrackerView,
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -45,14 +41,43 @@ const router = createRouter({
     {
       path: '/checkout',
       name: 'checkout',
-      component: PaymentView
+      component: PaymentView,
+      meta: { requiresAuth: true }
     },
     {
       path: '/admin',
       name: 'admin',
-      component: AdminView
+      component: AdminView,
+      meta: { requiresAuth: true, requiresAdmin: true }  // ต้องการการล็อกอินและต้องเป็น admin
     },
   ]
 })
 
-export default router
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('token');
+  const userRole = localStorage.getItem('role'); 
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isAuthenticated || userRole === null) {
+      return next('/login');
+    }
+  }
+
+  if (to.matched.some(record => record.meta.requiresAdmin)) {
+    if (userRole !== 'admin') {
+      Swal.fire({
+        title: 'Access Denied',
+        text: 'You do not have permission to access this page.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#df4625'
+      }).then(() => {
+        return next('/');
+      });
+      return;  // ต้องเพิ่ม return ที่นี่เพื่อหยุดการทำงานของ next() ถ้าไม่ใช่ admin
+    }
+  }
+  next();
+});
+
+export default router;

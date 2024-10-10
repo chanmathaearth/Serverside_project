@@ -2,6 +2,7 @@
 import { ref, watch } from "vue";
 import { defineProps } from "vue";
 import { useProductStore } from "@/stores/product";
+import Swal from 'sweetalert2';
 
 const props = defineProps({
     product: Object,
@@ -56,6 +57,28 @@ const removeSizeField = (index) => {
 
 const removeImageField = (index) => {
     images.value.splice(index, 1);
+};
+const deleteProduct = async () => {
+    try {
+        await productStore.deleteProduct(props.product.id);
+        Swal.fire({
+            title: "Deleted!",
+            text: "Product has been deleted.",
+            icon: "success",
+            confirmButtonColor: "#df4625",
+        }).then(() => {
+            // Reload the page after user clicks the "OK" button
+            window.location.reload();
+        });
+    } catch (error) {
+        console.error("Failed to delete product:", error);
+        Swal.fire({
+            title: "Error!",
+            text: "Failed to delete product. Please try again.",
+            icon: "error",
+            confirmButtonColor: "#df4625",
+        });
+    }
 };
 const editProduct = async () => {
     try {
