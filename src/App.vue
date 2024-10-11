@@ -5,7 +5,6 @@ import { useCartStore } from './stores/cart';
 const cartStore = useCartStore()
 
 onMounted(() => {
-    // cartStore.loadCart()
 })
 </script>
 

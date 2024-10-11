@@ -71,9 +71,6 @@ const calculateSummaryPrice = () => {
     return summaryPrice;
 };
 
-const getProduct = (productId) => {
-        return this.productStore.list.find(product => product.id === productId);
-    }
 </script>
 <template>
     <div>

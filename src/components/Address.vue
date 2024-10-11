@@ -6,8 +6,10 @@ import subDistricts from "../data/subDistricts.json";
 import zipcodes from "../data/zipcodes.json";
 import Swal from "sweetalert2";
 import { useCustomerStore } from "@/stores/customer";
-const customerStore = useCustomerStore();
+import { useAddressStore } from '@/stores/customer';
 
+const customerStore = useCustomerStore();
+const addressStore = useAddressStore();
 const isEditModalOpen = ref(false);
 const showModal = ref(false);
 const showButton = ref(false);
@@ -228,6 +230,7 @@ const handleEdit = async () => {
 
 watch(selectedExistingAddress, (newValue) => {
     console.log("Selected address ID:", newValue.id);
+    addressStore.setAddress(newValue.id);
     console.log("Button", showButton.value);
     if (newValue) {
         const selectedAddress = existingAddresses.value.find(
