@@ -109,7 +109,6 @@ export const useCustomerStore = defineStore('customer', {
             }
         },
         async createOrder(orderData) {
-            this.loading = true;
             try {
                 // axios ใช้ method POST ตรงๆ โดยไม่ต้องระบุใน headers อีก
                 const response = await axios.post('http://localhost:8000/api/customers/orders/', 
@@ -130,7 +129,73 @@ export const useCustomerStore = defineStore('customer', {
             } finally {
                 this.loading = false;
             }
+        },
+        async getOrder() {
+            const customerID = localStorage.getItem("user_ID"); // หรือคุณอาจส่ง customerID เป็น parameter
+            if (!customerID) {
+                console.error("Customer ID is missing.");
+                return;
+            }
+            try {
+                const response = await axios.get(`http://localhost:8000/api/customers/orders/${customerID}/`, 
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+                
+                console.log('Order data retrieved successfully:', response.data);
+                this.orders = response.data;
+                return response.data;
+            } catch (error) {
+                console.error('Error retrieving order:', error);
+            }
+        },
+
+        async getOrder() {
+            const customerID = localStorage.getItem("user_ID"); // หรือคุณอาจส่ง customerID เป็น parameter
+            if (!customerID) {
+                console.error("Customer ID is missing.");
+                return;
+            }
+            try {
+                const response = await axios.get(`http://localhost:8000/api/customers/orders/${customerID}/`, 
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+                
+                console.log('Order data retrieved successfully:', response.data);
+                this.orders = response.data;
+                return response.data;
+            } catch (error) {
+                console.error('Error retrieving order:', error);
+            }
+        },
+        async loadOrder() {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/customers/orders/`, 
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+                console.log('Order data retrieved successfully:', response.data);
+                this.orders = response.data;
+                return response.data;
+            } catch (error) {
+                console.error('Error retrieving order:', error);
+            }
         }
+        
+        
         
 
     }

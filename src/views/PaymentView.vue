@@ -72,30 +72,6 @@ const discountCode = ref('');
                                 <div class="flex justify-between items-center">
                                     <p class="text-base ml-4 mt-2">{{ item.size }} {{ item.type_size }}</p>
                                     <p class="text-base ml-4 mt-2">QTY: {{ item.amount }}</p>
-                <div class="bg-white p-6 text-black w-full sm:w-1/3 mx-auto">
-                    <h3 class="text-xl font-thin text-black mb-4">
-                        Apply Discount Code
-                    </h3>
-                    <div class="flex items-center rounded-lg overflow-hidden mb-6 border">
-                        <input type="text" v-model="discountCode" placeholder="Enter discount code"
-                            class="flex-grow p-3 bg-white text-black placeholder-gray-400 focus:outline-none" />
-                        <button @click="applyDiscount"
-                            class="bg-red-500 text-white px-6 py-3 focus:outline-none hover:bg-red-600">
-                            Apply
-                        </button>
-                    </div>
-                    <h3 class="text-xl font-thin mb-4">Order Summary</h3>
-                    <div v-for="(item, index) in cartStore.items" :key="index"
-                        class="font-thin relative  mt-4 rounded-xl">
-                        <div v-if="product = productStore.list.find(product => product.id === item.product)"
-                            class="flex justify-between">
-                            <img :src="product.image"
-                                width="130px">
-                            <div class="flex flex-col mt-6 ">
-                                <p class="text-base ml-4">{{ product.name }}</p>
-                                <div class="flex justify-between items-center">
-                                    <p class="text-base ml-4 mt-2">{{ item.size }} {{ item.type_size }}</p>
-                                    <p class="text-base ml-4 mt-2">QTY: {{ item.amount }}</p>
 
                                 </div>
                                 <p class="text-base ml-4">{{ Number(product.price).toLocaleString('en-US') }} THB</p>
@@ -103,14 +79,7 @@ const discountCode = ref('');
 
                         </div>
                     </div>
-                                </div>
-                                <p class="text-base ml-4">{{ Number(product.price).toLocaleString('en-US') }} THB</p>
-                            </div>
 
-                        </div>
-                    </div>
-
-                    <hr class="my-4 border-gray-300" />
                     <hr class="my-4 border-gray-300" />
 
                     <div class="flex justify-between font-thin">
@@ -136,19 +105,12 @@ import Navbar from "../components/Navbar.vue";
 import Address from "../components/Address.vue";
 import Paymentmethod from "../components/Paymentmethod.vue";
 import { ref } from 'vue';
-import { ref } from 'vue';
 
 export default {
     components: {
         Navbar,
         Address,
         Paymentmethod,
-    },
-    props: {
-        cartItems: {
-            type: Array,
-            required: true
-        }
     },
     props: {
         cartItems: {
@@ -165,10 +127,6 @@ export default {
         };
     },
     methods: {
-        handleSaveAddress() {
-            console.log("Save button clicked");
-            this.isAddressOpen = false;
-        },
         handleSaveAddress() {
             console.log("Save button clicked");
             this.isAddressOpen = false;

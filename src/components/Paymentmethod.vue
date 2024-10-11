@@ -204,6 +204,15 @@ onMounted(async () => {
 });
 
 const codsuccess = () => {
+	if (!AddressStore.selectedAddress) {
+		Swal.fire({
+			icon: "warning",
+			title: "No Shipping Address",
+			text: "Please select a shipping address before proceeding!",
+			confirmButtonColor: "#df4625",
+		});
+		return;
+	}
     Swal.fire({
         icon: "success",
         title: "Order Successful",
@@ -211,28 +220,53 @@ const codsuccess = () => {
         confirmButtonColor: "#df4625",
     }).then(async () => {
         try {
-            await cartStore.clearCart(localStorage.getItem("user_ID"));
+            const orderData = {
+                customer: localStorage.getItem("user_ID"),
+                total_price: productPrice.value,
+                order_status: "Pending",
+                payment_status: "Pending",
+                shipping_address: AddressStore.selectedAddress,
+            };
+            console.log("Data", orderData);
+            await CustomerStore.createOrder(orderData);
             router.push("/");
         } catch (error) {
-            console.error("Error clearing cart:", error);
+            console.error("Error creating Order:", error);
         }
     });
 };
 const promtpaysuccess = () => {
     promptPayQRCode.value = null;
-    Swal.fire({
-        icon: "success",
-        title: "Payment Successful",
-        text: "Your payment has been processed successfully!",
-        confirmButtonColor: "#df4625",
-    }).then(async () => {
-        try {
-            await cartStore.clearCart(localStorage.getItem("user_ID"));
-            router.push("/");
-        } catch (error) {
-            console.error("Error clearing cart:", error);
-        }
-    });
+    if (!AddressStore.selectedAddress) {
+        Swal.fire({
+            icon: "warning",
+            title: "No Shipping Address",
+            text: "Please select a shipping address before proceeding!",
+            confirmButtonColor: "#df4625",
+        });
+    } else {
+        Swal.fire({
+            icon: "success",
+            title: "Payment Successful",
+            text: "Your payment has been processed successfully!",
+            confirmButtonColor: "#df4625",
+        }).then(async () => {
+            try {
+                const orderData = {
+                    customer: localStorage.getItem("user_ID"),
+                    total_price: productPrice.value,
+                    order_status: "Pending",
+                    payment_status: "Paid",
+                    shipping_address: AddressStore.selectedAddress,
+                };
+                console.log("Data", orderData);
+                await CustomerStore.createOrder(orderData);
+                router.push("/");
+            } catch (error) {
+                console.error("Error creating Order:", error);
+            }
+        });
+    }
 };
 
 const handleSubmit = async () => {
@@ -243,7 +277,16 @@ const handleSubmit = async () => {
         message.value = error.message;
         console.error(error.message);
     } else {
-        // Send the token and product price to the backend
+        if (!AddressStore.selectedAddress) {
+            Swal.fire({
+                icon: "warning",
+                title: "No Shipping Address",
+                text: "Please select a shipping address before proceeding!",
+                confirmButtonColor: "#df4625",
+            });
+			isLoading.value = false;
+            return;
+        }
         const response = await fetch(
             "http://localhost:8000/api/customers/charge/",
             {
@@ -261,13 +304,21 @@ const handleSubmit = async () => {
         const result = await response.json();
         if (result.status === "Payment successful") {
             message.value = "Payment successful!";
+			if (!AddressStore.selectedAddress) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "No Shipping Address",
+                        text: "Please select a shipping address before proceeding!",
+                        confirmButtonColor: "#df4625",
+                    });
+                    return;
+            }
             Swal.fire({
                 icon: "success",
                 title: "Payment Successful",
                 text: "Your payment has been processed successfully!",
                 confirmButtonColor: "#df4625",
             }).then(async () => {
-				console.log(AddressStore)
                 try {
                     const orderData = {
                         customer: localStorage.getItem("user_ID"),
@@ -276,9 +327,9 @@ const handleSubmit = async () => {
                         payment_status: "Paid",
                         shipping_address: AddressStore.selectedAddress,
                     };
-					console.log("Data", orderData);
+                    console.log("Data", orderData);
                     await CustomerStore.createOrder(orderData);
-					router.push('/'); 
+                    router.push("/");
                 } catch (error) {
                     console.error("Error creating Order:", error);
                 }
