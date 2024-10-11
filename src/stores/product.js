@@ -6,6 +6,7 @@ export const useProductStore = defineStore('product', {
     ({
         list: [],
         loaded: false,
+        discount: [],
     }),
     actions: {
         async fetchProduct() {
@@ -71,6 +72,21 @@ export const useProductStore = defineStore('product', {
             } catch (error) {
                 console.error('Error editing product', error);
             }
+        },
+        async checkPromotion(promotion_code) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.post('http://localhost:8000/api/products/promotion/', promotion_code, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                this.discount.push(response.data);  // อัปเดตข้อมูลส่วนลดใน store
+                return response;  // คืนค่า response ให้ฟังก์ชันที่เรียกใช้
+            } catch (error) {
+                console.error('Error Invalid code', error);
+            }
         }
+        
     }
 });

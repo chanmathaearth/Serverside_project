@@ -68,6 +68,7 @@ const calculateSummaryPrice = () => {
         return product ? acc + (product.price * item.amount) : acc;
     }, 0);
     localStorage.setItem('summaryPrice', summaryPrice);
+    localStorage.setItem('summaryPriceDiscount', summaryPrice);
     return summaryPrice;
 };
 

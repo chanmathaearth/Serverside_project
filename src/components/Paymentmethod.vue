@@ -1,3 +1,74 @@
+<script setup>
+import { useCartStore } from '@/stores/cart.js'
+import { useProductStore } from '@/stores/product'
+import { loadStripe } from '@stripe/stripe-js';
+import { ref, onMounted } from 'vue';
+const productStore = useProductStore();
+const summaryPrice = localStorage.getItem('summaryPrice');
+const discountCode = ref('');
+
+const applyDiscount = async () => {
+    if (discountCode.value) {  //ถ้า discountCode มีค่า
+        try {
+            const promotion_code = {
+                code: discountCode.value
+            };
+            const response = await productStore.checkPromotion(promotion_code);
+            console.log(response.data);
+            const dis = response.data.discount_percentage;
+            const discount_sum = summaryPrice * (100 - dis) / 100;
+            localStorage.setItem('summaryPriceDiscount', discount_sum);
+            window.location.reload();
+        }
+        catch (error) {
+            console.error('Invalid code --', error);
+        }
+    } else {
+        console.error('Pls input text code!!!');
+    }
+};
+
+
+// ใส่ publishable key ของคุณที่นี่
+const stripePromise = loadStripe('pk_test_51Q7iZMBhZhzEe0URZ7yq74zQN148npBjK4DQsY3v2P4bOLb5gB7AugpvHD4n4LeKRUJsvy5f3cYtx3lF27e3UrFx00rawliOvK');
+const errorMessage = ref('');
+let stripe = null;
+let elements = null;
+let cardElement = null;
+
+onMounted(async () => {
+  stripe = await stripePromise;
+  elements = stripe.elements();
+
+  // Create an instance of the card Element.
+  cardElement = elements.create('card');
+  cardElement.mount('#card-element');
+});
+
+const handleSubmit = async () => {
+  const { token, error } = await stripe.createToken(cardElement);
+
+  if (error) {
+    console.error(error.message);
+  } else {
+    // ส่ง token ไปยัง backend
+    const response = await fetch('http://localhost:8000/api/customers/charge/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: token.id }), // ส่ง token.id ไปยัง backend
+    });
+
+    const result = await response.json();
+    if (result.status === 'Payment successful') {
+      console.log('Payment successful');
+    } else {
+      console.error(result.error);
+    }
+  }
+};
+</script>
 <template>
     <div class="p-6 mb-6 font-thin">
         <form @submit.prevent="handlePayment">
@@ -21,7 +92,7 @@
                 </div>
                 
                 <div v-if="selectedPaymentMethod === 'creditCard'" class="mb-4 p-4 border rounded-xl pb-12">
-                    <label for="card-number" class="block mb-2"
+                    <!-- <label for="card-number" class="block mb-2"
                         >Credit Card Number:</label
                     >
                     <input
@@ -45,7 +116,8 @@
                         id="cvv"
                         class="input input-bordered w-full"
                         placeholder="XXX"
-                    />
+                    /> -->
+                    
                 </div>
 
                 <div class="form-control">
@@ -93,7 +165,13 @@
                 </div>
             </div>
             
-            
+            <div class="w-full border-2">
+                <form @submit.prevent="handleSubmit">
+                <div id="card-element" class=" border-2 h-96"><!-- Stripe Elements will be inserted here --></div>
+                <button type="submit" class="bg-red-500 text-white px-6 place-items-center focus:outline-none hover:bg-red-600">Pay</button>
+                </form>
+                <div v-if="errorMessage">{{ errorMessage }}</div>
+            </div>
         </form>
     </div>
 </template>
@@ -113,7 +191,6 @@ export default {
     },
 };
 </script>
-
 <style scoped>
 /* สไตล์เพิ่มเติมถ้าจำเป็น */
 </style>

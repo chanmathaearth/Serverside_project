@@ -6,21 +6,20 @@ import { ref, onMounted } from 'vue';
 const cartStore = useCartStore();
 const productStore = useProductStore();
 const summaryPrice = localStorage.getItem('summaryPrice');
-const summaryPriceDiscount = localStorage.getItem('summaryPriceDiscount');
 const discountCode = ref('');
+const finalPrice = ref(summaryPrice);
 
 const applyDiscount = async () => {
     if (discountCode.value) {  //ถ้า discountCode มีค่า
         try {
             const promotion_code = {
-                code: discountCode.value
+                code: discountCode.value,
+                summaryPrice: summaryPrice,
             };
             const response = await productStore.checkPromotion(promotion_code);
             console.log(response.data);
-            const dis = response.data.discount_percentage;
-            const discount_sum = summaryPrice * (100 - dis) / 100;
-            localStorage.setItem('summaryPriceDiscount', discount_sum);
-            window.location.reload();
+            finalPrice.value = response.data.finalPrice; 
+            console.log('total: ', finalPrice.value);
         }
         catch (error) {
             console.error('Invalid code --', error);
@@ -51,32 +50,26 @@ const handleSubmit = async () => {
   const { token, error } = await stripe.createToken(cardElement);
 
   if (error) {
-    errorMessage.value = error.message;
     console.error(error.message);
   } else {
     // ส่ง token ไปยัง backend
-    try {
-      const response = await fetch('http://localhost:8000/api/customers/charge/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token: token.id }),
-      });
+    const response = await fetch('http://localhost:8000/api/customers/charge/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: token.id }), // ส่ง token.id ไปยัง backend
+    });
 
-      const result = await response.json();
-      if (result.status === 'Payment successful') {
-        console.log('Payment successful');
-      } else {
-        errorMessage.value = result.error;
-        console.error(result.error);
-      }
-    } catch (fetchError) {
-      errorMessage.value = 'Error processing payment';
-      console.error('Error during fetch:', fetchError);
+    const result = await response.json();
+    if (result.status === 'Payment successful') {
+      console.log('Payment successful');
+    } else {
+      console.error(result.error);
     }
   }
 };
+
 
 </script>
 <template>
@@ -165,7 +158,7 @@ const handleSubmit = async () => {
                     </div>
                     <div class="flex justify-between mt-2 font-thin text-xl">
                         <span>Order Total</span>
-                        <span>{{ Number(summaryPriceDiscount).toLocaleString('en-US') }} THB</span>
+                        <span>{{ Number(finalPrice).toLocaleString('en-US') }} THB</span>
                     </div>
                     <!-- <div class="flex justify-between mt-2 font-thin text-xl">
                         <button @click="checkout" class="bg-red-500 text-white px-6 py-3 focus:outline-none hover:bg-red-600">Checkout</button>
