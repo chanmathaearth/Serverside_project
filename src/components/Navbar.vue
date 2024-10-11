@@ -68,13 +68,10 @@ const calculateSummaryPrice = () => {
         return product ? acc + (product.price * item.amount) : acc;
     }, 0);
     localStorage.setItem('summaryPrice', summaryPrice);
-    localStorage.setItem('summaryPriceDiscount', summaryPrice);
+    localStorage.setItem('finalPrice', summaryPrice);
     return summaryPrice;
 };
 
-const getProduct = (productId) => {
-        return this.productStore.list.find(product => product.id === productId);
-    }
 </script>
 <template>
     <div>

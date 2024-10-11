@@ -2,11 +2,11 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 
 export const useProductStore = defineStore('product', {
-    state: () =>
-    ({
+    state: () => ({
         list: [],
         loaded: false,
         discount: [],
+        priceDiscount: null,  // ค่า finalPrice ที่จะใช้งานในทุก Component
     }),
     actions: {
         async fetchProduct() {
@@ -81,7 +81,7 @@ export const useProductStore = defineStore('product', {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                this.discount.push(response.data);  // อัปเดตข้อมูลส่วนลดใน store
+                this.priceDiscount = response.data.finalPrice;  // อัปเดต finalPrice
                 return response;  // คืนค่า response ให้ฟังก์ชันที่เรียกใช้
             } catch (error) {
                 console.error('Error Invalid code', error);

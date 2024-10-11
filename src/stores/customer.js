@@ -1,6 +1,17 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
+export const useAddressStore = defineStore('address', {
+    state: () => ({
+        selectedAddress: null
+    }),
+    actions: {
+        setAddress(address) {
+            this.selectedAddress = address;
+        }
+    }
+});
+
 export const useCustomerStore = defineStore('customer', {
     state: () =>
     ({
@@ -11,11 +22,9 @@ export const useCustomerStore = defineStore('customer', {
     actions: {
         async getCustomer() {
             try {
-                if (!this.loaded) {
-                    const response = await axios.get('http://localhost:8000/api/customers/');
-                    this.list = response.data;
-                    this.loaded = true;
-                }
+                const response = await axios.get('http://localhost:8000/api/customers/');
+                this.list = response.data;
+                return this.list;
             } catch (error) {
                 console.error('Error fetching customer:', error);
             }
@@ -88,17 +97,41 @@ export const useCustomerStore = defineStore('customer', {
                         'Content-Type': 'application/json',
                     }
                 });
-                
+
                 const index = this.list.findIndex(address => address.id === addressId);
                 if (index !== -1) {
                     this.list.splice(index, 1, response.data);  // Replace the existing address
                 }
-        
+
                 console.log("Updated address:", response.data);
             } catch (error) {
                 console.error('Error updating customer address:', error);
             }
+        },
+        async createOrder(orderData) {
+            this.loading = true;
+            try {
+                // axios ใช้ method POST ตรงๆ โดยไม่ต้องระบุใน headers อีก
+                const response = await axios.post('http://localhost:8000/api/customers/orders/', 
+                    orderData,  // ส่งข้อมูลคำสั่งซื้อใน request body โดยตรง
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+        
+                // axios ไม่ต้องใช้ response.ok แบบ fetch มันจะเข้า catch error โดยตรงถ้ามี error
+                console.log('Order created successfully:', response.data);
+            } catch (error) {
+                this.error = error.response ? error.response.data : 'Error creating order';
+                console.error('Error creating order:', error);
+            } finally {
+                this.loading = false;
+            }
         }
+        
 
     }
 })

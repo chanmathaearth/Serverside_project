@@ -18,7 +18,6 @@ export const useCartStore = defineStore('cart', {
                     console.error('Username not found in localStorage');
                     return;
                 }
-        
                 console.log(`Attempting to fetch customer with username: ${username}`);
                 const user_id = localStorage.getItem('user_ID');
                 const response = await axios.get(`http://localhost:8000/api/customers/customer-cart/${user_id}/`); //ดึง cart ที่ตรงกับ customer.id
