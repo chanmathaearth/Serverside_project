@@ -41,13 +41,7 @@ const logout = () => {
                         STUDFORCE
                     </RouterLink>
                     <RouterLink
-                        to="/"
-                        :class="isCurrentRoute('/') ? 'text-red-600' : ''"
-                    >
-                        <span class="text-lg ml-6">DASHBOARD</span>
-                    </RouterLink>
-                    <RouterLink
-                        to="/"
+                        to="/admin/order"
                         :class="isCurrentRoute('/') ? 'text-red-600' : ''"
                     >
                         <span class="text-lg ml-6">ORDER</span>

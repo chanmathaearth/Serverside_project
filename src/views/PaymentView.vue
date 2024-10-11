@@ -61,12 +61,6 @@ export default {
             required: true
         }
     },
-    props: {
-        cartItems: {
-            type: Array,
-            required: true
-        }
-    },
     data() {
         return {
             cartItems: [],
@@ -76,10 +70,6 @@ export default {
         };
     },
     methods: {
-        handleSaveAddress() {
-            console.log("Save button clicked");
-            this.isAddressOpen = false;
-        },
         handleSaveAddress() {
             console.log("Save button clicked");
             this.isAddressOpen = false;

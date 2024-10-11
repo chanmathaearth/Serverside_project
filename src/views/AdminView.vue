@@ -11,6 +11,7 @@ const product = ref([]);
 const sizes = ref([{ type_size: "EUR", size: "" }]);
 const images = ref([""]);
 const showModal = ref(false); // State เพื่อควบคุมการแสดง modal
+const showModal2 = ref(false); // State เพื่อควบคุมการแสดง modal
 
 onMounted(async () => {
     await productStore.fetchProduct();
@@ -26,7 +27,12 @@ const openModal = () => {
 const closeModal = () => {
     showModal.value = false;
 };
-
+const openModal2 = () => {
+    showModal2.value = true;watch
+};
+const closeModal2 = () => {
+    showModal2.value = false;
+};
 
 // ฟังก์ชันเพิ่มสินค้าใหม่
 const addProduct = async (event) => {
@@ -61,6 +67,33 @@ const addProduct = async (event) => {
         alert('Failed to add product. Please try again.');
     }
     console.log(productData);
+};
+const addPromotion = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const promotionData = {
+        code: formData.get("code"),
+        discount_percentage: parseInt(formData.get("discount_percentage")),
+        description: formData.get("description"),
+        usage_limit: parseInt(formData.get("amount")),
+    };
+
+    try {
+        await productStore.addPromotion(promotionData);
+        Swal.fire({
+        title: 'Promotion added successfully.',
+        text: 'You have been successfully added to the promotion store',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#df4625',
+        }).then(() => {
+            window.location.reload();
+        });
+    } catch (error) {
+        console.error('Failed to add product:', error);
+        alert('Failed to add product. Please try again.');
+    }
+    console.log(promotionData);
 };
 
 // ฟังก์ชันเพิ่มฟิลด์ size และ image ใหม่
@@ -176,6 +209,58 @@ const addImageField = () => {
                 </div>
             </div>
         </div>
+        
+        <div class="flex mt-1  justify-center">
+            <button @click="openModal2" class="flex mt-6 font-thin bg-red-600 text-white p-2 rounded-2xl focus:outline-none transition-all duration-300 hover:scale-110 " type="button">
+                <span class="ml-1">ADD PROMOTION CODE</span>
+                <svg class="ml-1 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+
+            </button>
+
+            <div v-if="showModal2" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center z-30 overflow-y-auto">
+                <div class="relative p-4 max-h-full w-[40%]">
+                    <div class="relative bg-white rounded-lg shadow">
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                            <h3 class="text-lg font-thin">ADD PROMOTION CODE</h3>
+                            <button type="button" class="text-gray-400 bg-transparent focus:outline-none" @click="closeModal2">
+                                <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <form @submit="addPromotion" id="addProductForm" class="p-6">
+                            <!-- Form Content Here -->
+                            <!-- Name -->
+                            <div class="mb-4">
+                                <label class="block font-thin">CODE</label>
+                                <input type="text" name="code" class="w-full p-2 border rounded-lg" required>
+                            </div>
+                            <!-- Discount -->
+                            <div class="mb-4">
+                                <label   label class="block font-thin">DISCOUNT PERCENTAGE</label>
+                                <input type="text" name="discount_percentage" class="w-full p-2 border rounded-lg" required>
+                            </div>
+                            <!-- Description -->
+                            <div class="mb-4">
+                                <label class="block font-thin">Description</label>
+                                <textarea name="description" rows="4" class="w-full p-2 border rounded-lg" required></textarea>
+                            </div>
+                            <!-- amount -->
+                            <div class="mb-4">
+                                <label class="block font-thin">Amount</label>
+                                <input type="text" name="amount" class="w-full p-2 border rounded-lg" required>
+                            </div>
+                            <div class="mt-6">
+                                <button type="submit" class="bg-red-500 font-thin text-white px-4 py-2 rounded-full mt-2 w-full focus:outline-none">ADD</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="flex justify-center">
             <main class="w-3/4 mx-auto ml-4 mt-[-1%] mr-[2%]">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

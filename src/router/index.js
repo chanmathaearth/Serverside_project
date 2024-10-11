@@ -8,6 +8,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import PaymentView from '../views/PaymentView.vue'
 import AdminView from '../views/AdminView.vue'
+import OrderView from '../views/OrderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +49,12 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: AdminView,
+      meta: { requiresAuth: true, requiresAdmin: true }  // ต้องการการล็อกอินและต้องเป็น admin
+    },
+    {
+      path: '/admin/order',
+      name: 'order',
+      component: OrderView,
       meta: { requiresAuth: true, requiresAdmin: true }  // ต้องการการล็อกอินและต้องเป็น admin
     },
   ]

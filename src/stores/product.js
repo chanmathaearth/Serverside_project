@@ -56,6 +56,15 @@ export const useProductStore = defineStore('product', {
                 console.error('Error adding product', error);
             }
         },
+        async addPromotion(newPromotion) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.post('http://localhost:8000/api/products/promotions/create/', newPromotion);
+                this.list.push(response.data);
+            } catch (error) {
+                console.error('Error adding product', error);
+            }
+        },
         async editProduct(productId, updatedProduct) {
             try {
                 const token = localStorage.getItem('token');  // รับ token จาก localStorage

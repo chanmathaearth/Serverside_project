@@ -187,7 +187,9 @@ const calculateSummaryPrice = () => {
                 <div class="flex justify-center">
                     <RouterLink to="/checkout">
                         <button
-                            class="flex bg-red-500 text-white px-4 py-2 rounded-xl mr-4 font-thin mb-4 text-sm items-center hover:bg-red-600">
+                            :disabled="calculateSummaryPrice() == 0"
+                            class="flex bg-red-500 text-white px-4 py-2 rounded-xl mr-4 font-thin mb-4 text-sm items-center hover:bg-red-600"
+                            :class="{ 'opacity-50 cursor-not-allowed': calculateSummaryPrice() == 0}">
                             <svg class="w-6 h-6 text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd"
