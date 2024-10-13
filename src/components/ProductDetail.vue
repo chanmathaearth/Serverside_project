@@ -123,7 +123,7 @@ const openTab = (tabId) => {
         <div class="flex mt-16">
             <Navbar :cartItems="cartItems" />
         </div>
-        <div v-if="product_detail" class="flex mt-16 p-6 font-thin">
+        <div v-if="product_detail" class="flex mt-16 p-6 font-extralight">
             <main>
                 <div class="h-full w-96 ml-4">
                     <div id="default-carousel" class="relative w-full" data-carousel="slide">
@@ -168,14 +168,14 @@ const openTab = (tabId) => {
 
             <div class="w-full ml-4">
                 <div>
-                    <span class="ml-4 flex text-3xl font-thin">{{ product_detail.name }}</span><br>
+                    <span class="ml-4 flex text-3xl font-extralight">{{ product_detail.name }}</span><br>
                     <span class="ml-4">PRODUCT ID : {{ product_detail.id }}</span><br>
                     <span class="ml-4" v-if="product_detail.amount > 0">STOCK STATUS : IN STOCK</span>
 					<span class="ml-4" v-else>STATUS : OUT OF STOCK</span><br><br>
                 </div>
                 <hr class="ml-4 mr-4"><br>
                 <div>
-                    <span class="ml-4 text-3xl text-red-500">{{ Number(product_detail.price).toLocaleString('en-US') }} THB
+                    <span class="ml-4 text-3xl text-teal-400 ">{{ Number(product_detail.price).toLocaleString('en-US') }} THB
 					</span>
                 </div>
 
@@ -186,7 +186,7 @@ const openTab = (tabId) => {
                             <img src="https://www.arirunningstore.com/media/Size_Chart/Asics-M.png" alt="">
                         </div>
                         <div class="px-4 py-2 border-t flex justify-end">
-                            <button id="closeModal" class="px-4 py-2 bg-red-500 text-white rounded">Close</button>
+                            <button id="closeModal" class="px-4 py-2 bg-teal-400  text-white rounded">Close</button>
                         </div>
                     </div>
                 </div>
@@ -195,26 +195,21 @@ const openTab = (tabId) => {
                     <div class="space-x-2 ml-4 mt-4">
                         <span>Size :</span>
                         <a href="javascript:void(0)"
-                            :class="['rounded-xl border-2 px-4 py-2', selectedTabSize === 'EUR' ? 'border-red-500 text-red-500' : 'bg-white text-black']"
+                            :class="['rounded-xl border-2 px-4 py-2', selectedTabSize === 'EUR' ? 'border-teal-400  text-teal-700 ' : 'bg-white text-black']"
                             @click="openTabSize('EUR')">
                             EUR
-                        </a>
-                        <a href="javascript:void(0)"
-                            :class="['rounded-xl border-2 px-4 py-2', selectedTabSize === 'US' ? 'border-red-500 text-red-500' : 'bg-white text-black']"
-                            @click="openTabSize('US')">
-                            US
                         </a>
                     </div><br>
 
                     <div v-if="selectedTabSize === 'EUR'" class="ml-4 mt-2 space-x-2">
                         <span v-for="sizeShow in filteredSizesEUR" :key="sizeShow" @click="selectSize(sizeShow)" 
-                        :class="['rounded-xl border-2 p-2 cursor-pointer transition-all duration-300',selectedSize === sizeShow ? 'border-red-500 text-red-500' : 'bg-white text-black']">
+                        :class="['rounded-xl border-2 p-2 cursor-pointer transition-all duration-300',selectedSize === sizeShow ? 'border-teal-400  text-teal-700 ' : 'bg-white text-black']">
                             {{ sizeShow.size }}
                         </span>
                     </div>
                     <div v-if="selectedTabSize === 'US'" class="ml-4 mt-2 space-x-2">
                         <span v-for="sizeShow in filteredSizesUS" :key="sizeShow" @click="selectSize(sizeShow)" 
-                        :class="['rounded-xl border-2 p-2 cursor-pointer transition-all duration-300',selectedSize === sizeShow ? 'border-red-500 text-red-500' : 'bg-white text-black']">
+                        :class="['rounded-xl border-2 p-2 cursor-pointer transition-all duration-300',selectedSize === sizeShow ? 'border-teal-400  text-teal-600 ' : 'bg-white text-black']">
                             {{ sizeShow.size }}
                         </span>
                     </div>
@@ -222,7 +217,7 @@ const openTab = (tabId) => {
                 </div><br>
                 <div>
                     <div class="flex items-center space-x-2 ml-4">
-                        <label class="text-md font-thin">AMOUNT</label>
+                        <label class="text-md font-extralight">AMOUNT</label>
                         <div class="flex items-center border-2 rounded-full">
                             <button @click="changeQuantity(product_quantity - 1)"
                                 class="px-4 py-2 text-black hover:bg-gray-100 rounded-l-full focus:outline-none">
@@ -239,9 +234,9 @@ const openTab = (tabId) => {
                     <br>
                     <div>
                         <button @click="addToCartbtn" type="submit" title="เพิ่มใส่ตะกร้า"
-                            class="addtocart bg-red-500 text-white rounded-3xl border-solid border-2 ml-2 mr-2 w-96 p-2 focus:outline-none hover:bg-red-600"
+                            class="addtocart bg-teal-400  text-white rounded-3xl border-solid border-2 ml-2 mr-2 w-96 p-2 focus:outline-none hover:bg-teal-500"
                             id="product-addtocart-button">
-                            <span>ADD TO CART</span>
+                            <span class="font-extralight">ADD TO CART</span>
                         </button>
                     </div>
                 </div>
@@ -255,21 +250,21 @@ const openTab = (tabId) => {
                 <li class="mr-1">
                     <a href="javascript:void(0)"
                         class="bg-white inline-block py-2 px-4 border-b-2"
-                        :class="[activeTab === 'tab1' ? 'border-red-500 text-red-500' : '']"
+                        :class="[activeTab === 'tab1' ? 'border-teal-400  text-teal-400 ' : '']"
                         @click="openTab('tab1')">
                         DETAILS
                     </a>
 
                     <a href="javascript:void(0)"
-                        class="bg-white inline-block py-2 px-4 hover:text-red-500 border-b-2"
-                        :class="[activeTab === 'tab2' ? 'border-red-500 text-red-500' : '']"
+                        class="bg-white inline-block py-2 px-4 hover:text-teal-400  border-b-2"
+                        :class="[activeTab === 'tab2' ? 'border-teal-400  text-teal-400 ' : '']"
                         @click="openTab('tab2')">
                         MORE INFORMATION
                     </a>
 
                     <a href="javascript:void(0)"
-                        class="bg-white inline-block py-2 px-4 hover:text-red-500 border-b-2"
-                        :class="[activeTab === 'tab3' ? 'border-red-500 text-red-500' : '']"
+                        class="bg-white inline-block py-2 px-4 hover:text-teal-400  border-b-2"
+                        :class="[activeTab === 'tab3' ? 'border-teal-400  text-teal-400 ' : '']"
                         @click="openTab('tab3')">
                         SIZE CHART
                     </a>
@@ -279,33 +274,33 @@ const openTab = (tabId) => {
             <div class="p-4 mt-2">
                 <div v-show="activeTab === 'tab1'" class="tabcontent">
                     <p class="font-medium text-xl mb-3">{{ product_detail.name }}</p>
-                    <p class="font-thin text-xl">{{ product_detail.description }}</p>
+                    <p class="font-extralight text-xl">{{ product_detail.description }}</p>
                 </div>
                 <div v-show="activeTab === 'tab2'" class="tabcontent">
 					<div class="flex mb-1">
-						<p class="text-xl font-thin">COLOR: </p>
-						<p class="ml-3 text-xl font-thin">{{ product_detail.color.toUpperCase() }}</p>
+						<p class="text-xl font-extralight">COLOR: </p>
+						<p class="ml-3 text-xl font-extralight">{{ product_detail.color.toUpperCase() }}</p>
 					</div>
 					<div class="flex mb-1">
-						<p class="text-xl font-thin">BOOTS TYPE: </p>
-						<p class="ml-3 text-xl font-thin" v-if="product_detail.categories && product_detail.categories.length > 0">
+						<p class="text-xl font-extralight">BOOTS TYPE: </p>
+						<p class="ml-3 text-xl font-extralight" v-if="product_detail.categories && product_detail.categories.length > 0">
 						{{ product_detail.categories[0].toUpperCase() }}
 						</p>
-						<p class="ml-3 text-xl font-thin" v-else>
+						<p class="ml-3 text-xl font-extralight" v-else>
 						No category available
 						</p>					
 					</div>
 					<div class="flex mb-1">
-						<p class="text-xl font-thin">LMITED: </p>
-						<p class="ml-3 text-xl font-thin">NO</p>
+						<p class="text-xl font-extralight">LMITED: </p>
+						<p class="ml-3 text-xl font-extralight">NO</p>
 					</div>
 					<div class="flex mb-1">
-						<p class="text-xl font-thin">SHIPPING COST: </p>
-						<p class="ml-3 text-xl font-thin">NO</p>
+						<p class="text-xl font-extralight">SHIPPING COST: </p>
+						<p class="ml-3 text-xl font-extralight">NO</p>
 					</div>
 					<div class="flex mb-4">
-						<p class="text-xl font-thin">COLLABORATION: </p>
-						<p class="ml-3 text-xl font-thin">NO</p>
+						<p class="text-xl font-extralight">COLLABORATION: </p>
+						<p class="ml-3 text-xl font-extralight">NO</p>
 					</div>
                 </div>
                 <div v-show="activeTab === 'tab3'" class="tabcontent flex justify-center items-center">

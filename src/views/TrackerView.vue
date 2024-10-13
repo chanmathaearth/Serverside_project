@@ -19,14 +19,16 @@ const logout = () => {
         confirmButtonText: 'OK',
         confirmButtonColor: '#df4625',
     }).then(() => {
-        isLoggedIn.value = false;
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('cart-data');
         localStorage.removeItem('checkout-data');
         localStorage.removeItem('username');
         localStorage.removeItem('role');
-
+        localStorage.removeItem('user_ID');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('token');
         localStorage.removeItem('summaryPrice');
+        isLoggedIn.value = false;
         router.push('/');
     });
 };

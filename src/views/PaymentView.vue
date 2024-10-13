@@ -1,11 +1,47 @@
 <script setup>
 import { useCartStore } from '@/stores/cart.js'
 import { useProductStore } from '@/stores/product'
-import { ref, onMounted } from 'vue';
+import Swal from 'sweetalert2';
+import { ref, onMounted, watchEffect } from 'vue';
+
+const summaryPrice = ref(localStorage.getItem('summaryPrice') || 0); 
 const cartStore = useCartStore();
 const productStore = useProductStore();
-const summaryPrice = localStorage.getItem('summaryPrice');
 const discountCode = ref('');
+
+const applyDiscount = async () => {
+    try {
+        console.log("discountCode:", discountCode.value);
+        console.log("sum:", summaryPrice.value);
+
+        const response = await productStore.applyDiscountCode(discountCode.value, summaryPrice.value);
+        console.log('Discount applied successfully:', response);
+
+        localStorage.setItem('summaryPrice', response);
+        summaryPrice.value = response;
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Discount Applied',
+            text: `Your new total price is: ${response} THB`,
+            confirmButtonColor: '#df4625'
+        }).then(() => {
+            window.location.reload();
+        });
+    } catch (error) {
+        console.error('Error applying discount:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Invalid discount code or other issue occurred.',
+            confirmButtonColor: '#df4625'
+        });
+    }
+};
+
+watchEffect(() => {
+    console.log("Summary price updated:", summaryPrice.value);
+});
 
 </script>
 <template>
@@ -56,7 +92,7 @@ const discountCode = ref('');
                         <input type="text" v-model="discountCode" placeholder="Enter discount code"
                             class="flex-grow p-3 bg-white text-black placeholder-gray-400 focus:outline-none" />
                         <button @click="applyDiscount"
-                            class="bg-red-500 text-white px-6 py-3 focus:outline-none hover:bg-red-600">
+                            class="bg-teal-400 text-white px-6 py-3 focus:outline-none hover:bg-teal-500">
                             Apply
                         </button>
                     </div>

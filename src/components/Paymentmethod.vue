@@ -94,7 +94,7 @@
                         </div>
                         <div
                             v-else
-                            class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-light"
+                            class="bg-teal-400  text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-teal-500  font-light"
                         >
                             Pay now
                         </div>
@@ -134,7 +134,7 @@
         <div v-if="!promptPayQRCode" class="flex justify-center">
             <button
                 @click="generatePromptPayQR"
-                class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-light"
+                class="bg-teal-400  text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-teal-500  font-light"
             >
                 Pay by PromptPay QR Code
             </button>
@@ -142,7 +142,7 @@
         <div v-if="promptPayQRCode" class="flex justify-center">
             <button
                 @click="promtpaysuccess"
-                class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-light w-28 mb-20"
+                class="bg-teal-400  text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-teal-500  font-light w-28 mb-20"
             >
                 Done
             </button>
@@ -158,7 +158,7 @@
         </p>
         <button
             @click="codsuccess"
-            class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-light"
+            class="bg-teal-400  text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-teal-500  font-light"
         >
             Order Now
         </button>
@@ -183,7 +183,7 @@ const selectMethod = (method) => {
 
 const router = useRouter();
 const promptpaystate = ref(null);
-const productPrice = ref(null);
+const productPrice = ref(localStorage.getItem("summaryPrice"));
 const stripePromise = loadStripe(
     "pk_test_51Q7iZMBhZhzEe0URZ7yq74zQN148npBjK4DQsY3v2P4bOLb5gB7AugpvHD4n4LeKRUJsvy5f3cYtx3lF27e3UrFx00rawliOvK"
 );
@@ -284,7 +284,7 @@ const handleSubmit = async () => {
                 text: "Please select a shipping address before proceeding!",
                 confirmButtonColor: "#df4625",
             });
-			isLoading.value = false;
+			isLoading.value = true;
             return;
         }
         const response = await fetch(

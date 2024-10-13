@@ -27,11 +27,20 @@ const updateOrderStatus = async (order) => {
     });
 
     if (newStatus) {
+        const statusChange = {
+            "id": order.id,
+            "order_status": newStatus
+        }
         try {
             // ส่งข้อมูลไป backend เพื่ออัปเดตสถานะ
-            await CustomerStore.updateOrderStatus(order.id, newStatus);
-            Swal.fire("Updated!", `Order status has been updated to ${newStatus}`, "success");
-        } catch (error) {
+            await CustomerStore.updateStatus(statusChange);
+            Swal.fire({
+                title: "Updated!",
+                text: `Order status has been updated to ${newStatus}`,
+                icon: "success",
+                confirmButtonColor: '#df4625'
+                });        
+            } catch (error) {
             Swal.fire("Error!", "Failed to update order status", "error");
         }
     }
@@ -52,11 +61,21 @@ const updatePaymentStatus = async (order) => {
     });
 
     if (newStatus) {
+        const statusChange = {
+            "id": order.id,
+            "payment_status": newStatus
+        }
         try {
             // ส่งข้อมูลไป backend เพื่ออัปเดตสถานะการชำระเงิน
-            await CustomerStore.updatePaymentStatus(order.id, newStatus);
-            Swal.fire("Updated!", `Payment status has been updated to ${newStatus}`, "success");
-        } catch (error) {
+            await CustomerStore.updateStatus(statusChange);
+            Swal.fire({
+                title: "Updated!",
+                text: `Payment status has been updated to ${newStatus}`,
+                icon: "success",
+                confirmButtonColor: '#df4625'
+                });        
+            } 
+        catch (error) {
             Swal.fire("Error!", "Failed to update payment status", "error");
         }
     }

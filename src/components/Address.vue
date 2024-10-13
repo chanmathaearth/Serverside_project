@@ -263,7 +263,7 @@ onMounted(() => {
                 >
                 <button
                     @click="openModal"
-                    class="bg-red-500 text-white p-2 font-light rounded-full focus:outline-none hover:bg-red-600 text-sm"
+                    class="bg-teal-400  text-white p-2 font-light rounded-full focus:outline-none hover:bg-teal-500 text-sm"
                 >
                     Add New Address
                 </button>

@@ -67,7 +67,6 @@ const deleteProduct = async () => {
             icon: "success",
             confirmButtonColor: "#df4625",
         }).then(() => {
-            // Reload the page after user clicks the "OK" button
             window.location.reload();
         });
     } catch (error) {
@@ -80,6 +79,7 @@ const deleteProduct = async () => {
         });
     }
 };
+
 const editProduct = async () => {
     try {
         const updatedProduct = {
@@ -96,20 +96,38 @@ const editProduct = async () => {
         };
 
         await productStore.editProduct(props.product.id, updatedProduct);
-        alert('Product updated successfully.');
-        closeModal();
+        console.log(updatedProduct);
+
+        // ใช้ SweetAlert2 เพื่อแสดงข้อความแจ้งเตือนความสำเร็จ
+        Swal.fire({
+            title: 'Success!',
+            text: 'Product updated successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            confirmButtonColor: "#df4625",
+        });
+
     } catch (error) {
         console.error('Failed to edit product:', error);
-        alert('Failed to edit product. Please try again.');
+
+        // ใช้ SweetAlert2 เพื่อแสดงข้อความแจ้งเตือนเมื่อเกิดข้อผิดพลาด
+        Swal.fire({
+            title: 'Error!',
+            text: 'Failed to edit product. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: "#df4625",
+        });
     }
 };
+
 </script>
 
 <template>
     <div class="p-4 rounded-2xl text-center">
         <div>
             <img
-                class="w-full h-64 object-cover rounded-t-lg"
+                class="w-full h-auto object-cover rounded-t-lg"
                 :src="props.product.image"
                 :alt="props.product.name"
             />
@@ -183,16 +201,21 @@ const editProduct = async () => {
                 <div class="mb-4">
                     <label class="block font-thin">Categories</label>
                     <select v-model="categories" class="p-2 border rounded-lg w-full">
-                        <option value="touch">TOUCH</option>
-                        <option value="speed">SPEED</option>
-                        <option value="control">CONTROL</option>
+                        <option value="diabetes">รองเท้าผู้ป่วยเบาหวาน</option>
+                        <option value="flat-foot">เท้าแบน</option>
+                        <option value="bunions">นิ้วปืน กระดูกโปน</option>
+                        <option value="different-size">เท้าเล็กใหญ่/ขาสั้นยาวไม่เท่ากัน</option>
+                        <option value="swollen-foot">เท้าบวม</option>
+                        <option value="deformed-foot">เท้าผิดรูป เท้าล้ม</option>
+                        <option value="high-arch">อุ้งเท้าสูง</option>
+                        <option value="standing-long">ยืนเป็นเวลานาน</option>
                     </select>
+
                 </div>
                 <div class="mb-4">
                     <label class="block font-thin">Main Image URL</label>
                     <input v-model="image" type="url" class="w-full p-2 border rounded-lg" required>
                 </div>
-                <!-- Sizes -->
                 <!-- Sizes -->
                 <div class="mb-4">
                 <label class="block font-thin">Sizes</label>

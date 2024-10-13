@@ -71,6 +71,29 @@ export const useProductStore = defineStore('product', {
             } catch (error) {
                 console.error('Error editing product', error);
             }
-        }
+        },
+        async applyDiscountCode(code, summaryPrice) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.post('http://localhost:8000/api/products/promotions/', {
+                    code: code,
+                    summary_price: summaryPrice,
+                });
+                const finalPrice = response.data.final_price;
+                return finalPrice;
+            } catch (error) {
+                console.error('Error applying discount code', error);
+                throw error;
+            }
+        },
+        async addPromotion(newPromotion) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.post('http://localhost:8000/api/products/promotions/create/', newPromotion);
+                this.list.push(response.data);
+            } catch (error) {
+                console.error('Error adding product', error);
+            }
+        },
     }
 });

@@ -185,11 +185,11 @@ const btnAddCustomer = () => {
                         
                         <a @click="btnAddCustomer"
                             type="submit"
-                            class="w-full text-white bg-red-500 rounded-full p-2 font-thin hover:bg-red-600 focus:outline-none">
+                            class="w-full text-white bg-teal-400 rounded-full p-2 font-thin hover:bg-teal-500 focus:outline-none">
                             <div class="flex justify-center">REGISTER</div>
                         </a>
                         <p
-                            class="text-sm font-light text-gray-500 dark:text-gray-400"
+                            class="text-sm font-light text-gray-500"
                         >
                             Already have an account?
                             <RouterLink to="/login">

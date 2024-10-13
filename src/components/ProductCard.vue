@@ -23,18 +23,18 @@ const goToProductDetail = () => {
   >
     <div @click="goToProductDetail">
       <img
-        class="w-full h-64 object-cover rounded-t-lg"
+        class="object-contain h-48 w-full rounded-t-lg"
         :src="props.product.image"
         :alt="props.product.name"
       />
-      <h3 class="mt-4 text-red-600 uppercase text-sm text-left pl-1">
+      <h3 class="mt-4 text-teal-400 uppercase text-sm text-left pl-1">
         {{ props.product.brand }}
       </h3>
-      <p class="text-xl font-thin mt-1 text-left pl-1 text-black">
+      <p class="text-xl font-extralight mt-1 text-left pl-1 text-black">
         {{ props.product.name }}
       </p>
       <p
-        class="text-xl font-thin pl-1 mt-3 text-white bg-red-500 p-1 rounded-3xl text-center"
+        class="text-xl font-extralight pl-1 mt-3 text-white bg-teal-400 p-1 rounded-3xl text-center"
       >
         {{ Number(props.product.price).toLocaleString('en-US') }} THB
     </p>

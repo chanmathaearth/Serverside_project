@@ -1,8 +1,48 @@
+<script setup>
+import { ref, defineEmits } from "vue";
+
+// การใช้งาน ref สำหรับค่าที่เคยอยู่ใน data()
+const isCatebarVisible = ref(true);
+const isSidebarVisible = ref(true);
+const selectedCategories = ref([]); // แทนที่ selectedBrands ด้วย selectedCategories
+const isCategoryOpen = ref(false);
+const isColorbarVisible = ref(true);
+const selectedColors = ref([]);
+const isColorOpen = ref(false);
+
+// การใช้งาน defineEmits สำหรับการส่ง event ไปยัง parent component
+const emit = defineEmits(["filter-categories", "filter-colors"]);
+
+
+// Methods
+const toggleCate = () => {
+    isCatebarVisible.value = !isCatebarVisible.value;
+    isCategoryOpen.value = !isCategoryOpen.value;
+};
+
+const emitSelectedCategories = () => {
+    emit("filter-categories", selectedCategories.value); // แทนที่การส่งแบรนด์ด้วยหมวดหมู่ประเภทของรองเท้า
+};
+
+const toggleColor = () => {
+    isColorbarVisible.value = !isColorbarVisible.value;
+    isColorOpen.value = !isColorOpen.value;
+};
+
+const emitSelectedColors = () => {
+    emit("filter-colors", selectedColors.value);
+};
+
+const toggleSidebar = () => {
+    isSidebarVisible.value = !isSidebarVisible.value;
+};
+</script>
+
 <template>
-    <div data-theme="light" >
+    <div data-theme="light">
         <button
             @click="toggleSidebar"
-            class="w-full flex items-center justify-center py-2 px-4 rounded-lg font-thin"
+            class="w-full flex items-center justify-center py-2 px-4 rounded-lg font-extralight focus:outline-none"
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -18,13 +58,13 @@
                     d="M4 6h16M4 12h16M4 18h16"
                 />
             </svg>
-            {{ isSidebarVisible ? "Hide Filters" : "Display Filters" }}
+            {{ isSidebarVisible ? "ซ่อนการกรอง" : "แสดงการกรอง" }}
         </button>
         <div v-show="isSidebarVisible" class="p-4 w-64">
             <div class="mb-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="font-thin text-lg">Product Categories</h2>
-                    <button @click="toggleCate">
+                    <h2 class="font-extralight text-lg">หมวดหมู่ตามอาการ</h2>
+                    <button @click="toggleCate" class="focus:outline-none">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             :class="{ 'rotate-180': isCategoryOpen }"
@@ -44,52 +84,62 @@
                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2 checkbox checkbox checkbox-xs"
-                            value="Adidas"
-                            v-model="selectedBrands"
-                            @change="emitSelectedBrands"
+                            class="mr-2 checkbox checkbox-xs"
+                            value="flat-foot"
+                            v-model="selectedCategories"
+                            @change="emitSelectedCategories"
                         />
-                        <span class="font-thin">Adidas</span>
-                    </li>
-                     <li class="flex items-center">
-                        <input
-                            type="checkbox"
-                            class="mr-2 checkbox checkbox checkbox-xs"
-                            value="Asics"
-                            v-model="selectedBrands"
-                            @change="emitSelectedBrands"
-                        />
-                        <span class="font-thin">Asicis</span>
-                    </li>
-                     <li class="flex items-center">
-                        <input
-                            type="checkbox"
-                            class="mr-2 checkbox checkbox checkbox-xs"
-                            value="Nike"
-                            v-model="selectedBrands"
-                            @change="emitSelectedBrands"
-                        />
-                        <span class="font-thin">Nike</span>
-                    </li>
-                     <li class="flex items-center">
-                        <input
-                            type="checkbox"
-                            class="mr-2 checkbox checkbox checkbox-xs"
-                            value="Mizuno"
-                            v-model="selectedBrands"
-                            @change="emitSelectedBrands"
-                        />
-                        <span class="font-thin">Mizuno</span>
+                        <span class="font-extralight">เท้าแบน</span>
                     </li>
                     <li class="flex items-center">
                         <input
                             type="checkbox"
-                            class="mr-2 checkbox checkbox checkbox-xs"
-                            value="Puma"
-                            v-model="selectedBrands"
-                            @change="emitSelectedBrands"
+                            class="mr-2 checkbox checkbox-xs"
+                            value="swollen-foot"
+                            v-model="selectedCategories"
+                            @change="emitSelectedCategories"
                         />
-                        <span class="font-thin">Puma</span>
+                        <span class="font-extralight">เท้าบวม</span>
+                    </li>
+                    <li class="flex items-center">
+                        <input
+                            type="checkbox"
+                            class="mr-2 checkbox checkbox-xs"
+                            value="deformed-foot"
+                            v-model="selectedCategories"
+                            @change="emitSelectedCategories"
+                        />
+                        <span class="font-extralight">เท้าผิดรูป</span>
+                    </li>
+                    <li class="flex items-center">
+                        <input
+                            type="checkbox"
+                            class="mr-2 checkbox checkbox-xs"
+                            value="standing-long"
+                            v-model="selectedCategories"
+                            @change="emitSelectedCategories"
+                        />
+                        <span class="font-extralight">ยืนเป็นเวลานาน</span>
+                    </li>
+                    <li class="flex items-center">
+                        <input
+                            type="checkbox"
+                            class="mr-2 checkbox checkbox-xs"
+                            value="bunions"
+                            v-model="selectedCategories"
+                            @change="emitSelectedCategories"
+                        />
+                        <span class="font-extralight">นิ้วปืน กระดูกโปน</span>
+                    </li>
+                    <li class="flex items-center">
+                        <input
+                            type="checkbox"
+                            class="mr-2 checkbox checkbox-xs"
+                            value="diabetes"
+                            v-model="selectedCategories"
+                            @change="emitSelectedCategories"
+                        />
+                        <span class="font-extralight">รองเท้าผู้ป่วยเบาหวาน</span>
                     </li>
                 </ul>
             </div>
@@ -98,8 +148,8 @@
         <div v-show="isSidebarVisible" class="p-4 w-64">
             <div class="mb-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="font-thin text-lg">Colors</h2>
-                    <button @click="toggleColor">
+                    <h2 class="font-extralight text-lg">สี</h2>
+                    <button @click="toggleColor" class="focus:outline-none">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             :class="{ 'rotate-180': isColorOpen }"
@@ -117,7 +167,7 @@
                 </div>
 
                 <ul class="mt-2 space-y-2" v-show="isColorbarVisible">
-                     <li class="flex items-center">
+                    <li class="flex items-center">
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
@@ -125,9 +175,9 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Red</span>
+                        <span class="font-extralight">แดง</span>
                     </li>
-                     <li class="flex items-center">
+                    <li class="flex items-center">
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
@@ -135,9 +185,9 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Blue</span>
+                        <span class="font-extralight">ฟ้า</span>
                     </li>
-                     <li class="flex items-center">
+                    <li class="flex items-center">
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
@@ -145,9 +195,9 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Green</span>
+                        <span class="font-extralight">เขียว</span>
                     </li>
-                     <li class="flex items-center">
+                    <li class="flex items-center">
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
@@ -155,7 +205,7 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Yellow</span>
+                        <span class="font-extralight">เหลือง</span>
                     </li>
                     <li class="flex items-center">
                         <input
@@ -165,9 +215,9 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">White</span>
+                        <span class="font-extralight">ขาว</span>
                     </li>
-                     <li class="flex items-center">
+                    <li class="flex items-center">
                         <input
                             type="checkbox"
                             class="mr-2 checkbox checkbox checkbox-xs"
@@ -175,50 +225,10 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Black</span>
+                        <span class="font-extralight">ดำ</span>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 </template>
-
-<script>
-export default {
-    data() {
-        return {
-            isCatebarVisible: true,
-            isSidebarVisible: true,
-            selectedBrands: [],
-            isCategoryOpen: false,
-            isColorbarVisible: true,
-            selectedColors: [],
-            isColorOpen: false,
-        };
-    },
-    methods: {
-        toggleCate() {
-            this.isCatebarVisible = !this.isCatebarVisible;
-            this.isCategoryOpen = !this.isCategoryOpen;
-        },
-        emitSelectedBrands() {
-            this.$emit("filter-products", this.selectedBrands);
-        },
-
-        toggleColor() {
-            this.isColorbarVisible = !this.isColorbarVisible;
-            this.isColorOpen = !this.isColorOpen;
-        },
-        emitSelectedColors() {
-            this.$emit("filter-colors", this.selectedColors);
-        },
-        toggleSidebar() {
-            this.isSidebarVisible = !this.isSidebarVisible;
-        },
-    },
-};
-</script>
-
-<style>
-	
-</style>

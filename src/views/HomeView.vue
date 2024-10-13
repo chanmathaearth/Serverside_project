@@ -4,10 +4,9 @@ import { useProductStore } from "../stores/product";
 import Navbar from "../components/Navbar.vue";
 import Sidebar from "../components/Sidebar.vue";
 import ProductCard from "../components/ProductCard.vue";
-import axios from "axios";
 
 const cartItems = ref([]);
-const selectedBrands = ref([]);
+const selectedCategories = ref([]);
 const selectedColors = ref([]);
 const filteredProducts = ref([]);
 
@@ -16,10 +15,11 @@ const productStore = useProductStore();
 onMounted(async () => {
     await productStore.fetchProduct();
     filteredProducts.value = productStore.list;
+    console.log('Initial Product List:', productStore.list); // ตรวจสอบข้อมูลเริ่มต้น
 });
 
-const updateFilteredProducts = (brands) => {
-    selectedBrands.value = brands;
+const updateFilteredProducts = (categories) => {
+    selectedCategories.value = categories;
     filterProducts();
 };
 
@@ -29,13 +29,20 @@ const updateFilteredColors = (colors) => {
 };
 
 const filterProducts = () => {
-    filteredProducts.value = productStore.list.filter(
-        (obj) =>
-            (selectedBrands.value.length === 0 ||
-                selectedBrands.value.includes(obj.brand)) &&
-            (selectedColors.value.length === 0 ||
-                selectedColors.value.includes(obj.color))
-    );
+    filteredProducts.value = productStore.list.filter((obj) => {
+        const categoryMatch = selectedCategories.value.length === 0 || 
+            obj.categories.some(category => 
+                selectedCategories.value.map(cat => cat.toLowerCase()).includes(category.toLowerCase())
+            );
+
+        const colorMatch = selectedColors.value.length === 0 || 
+            selectedColors.value.includes(obj.color);
+
+        console.log(`Product: ${obj.name}, Category Match: ${categoryMatch}, Color Match: ${colorMatch}`);
+
+        return categoryMatch && colorMatch;
+    });
+
 };
 </script>
 
@@ -45,7 +52,7 @@ const filterProducts = () => {
 
         <div class="flex mt-24">
             <Sidebar
-                @filter-products="updateFilteredProducts"
+                @filter-categories="updateFilteredProducts"
                 @filter-colors="updateFilteredColors"
             />
             <main class="w-3/4 mx-auto py-10 ml-4 mt-[-1%] mr-[2%]">

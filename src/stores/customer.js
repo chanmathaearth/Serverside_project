@@ -43,14 +43,22 @@ export const useCustomerStore = defineStore('customer', {
                 const response = await axios.post('http://localhost:8000/api/auth/login/', {
                     username: customerData.username,
                     password: customerData.password,
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json', // เพิ่ม headers ให้แน่ใจว่าเป็น JSON
+                    }
                 });
-                console.log('Login successful');
+                console.log('Login successful', response.data);  // แสดงข้อมูล response
                 this.isAuthenticated = true;
+        
+                // เก็บ token หรือข้อมูลอื่นๆ ที่ได้รับจากการ login เช่น token หรือ user info
+                localStorage.setItem('token', response.data.token); // เก็บ token ใน localStorage ถ้ามี
+        
                 return response;
             } catch (error) {
-                console.error('Error during login:', error);
+                console.error('Error during login:', error.response ? error.response.data : error);
                 this.isAuthenticated = false;
-                throw error;
+                throw error;  // โยน error กลับไปยัง caller เพื่อตรวจสอบต่อ
             }
         },
         async deleteAddress(addressId) {
@@ -75,12 +83,7 @@ export const useCustomerStore = defineStore('customer', {
         },
         async createAddress(newAddress) {
             try {
-                const token = localStorage.getItem('token');
                 const response = await axios.post('http://localhost:8000/api/customers/customer-addresses/', newAddress, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    }
                 });
                 this.list.push(response.data);
                 this.loaded = true;
@@ -90,12 +93,7 @@ export const useCustomerStore = defineStore('customer', {
         },
         async updateAddress(addressId, updatedAddress) {
             try {
-                const token = localStorage.getItem('token');
                 const response = await axios.put(`http://localhost:8000/api/customers/customer-addresses/${addressId}/`, updatedAddress, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    }
                 });
 
                 const index = this.list.findIndex(address => address.id === addressId);
@@ -110,15 +108,8 @@ export const useCustomerStore = defineStore('customer', {
         },
         async createOrder(orderData) {
             try {
-                // axios ใช้ method POST ตรงๆ โดยไม่ต้องระบุใน headers อีก
                 const response = await axios.post('http://localhost:8000/api/customers/orders/', 
                     orderData,  // ส่งข้อมูลคำสั่งซื้อใน request body โดยตรง
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                            'Content-Type': 'application/json',
-                        },
-                    }
                 );
         
                 // axios ไม่ต้องใช้ response.ok แบบ fetch มันจะเข้า catch error โดยตรงถ้ามี error
@@ -138,12 +129,6 @@ export const useCustomerStore = defineStore('customer', {
             }
             try {
                 const response = await axios.get(`http://localhost:8000/api/customers/orders/${customerID}/`, 
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                            'Content-Type': 'application/json',
-                        },
-                    }
                 );
                 
                 console.log('Order data retrieved successfully:', response.data);
@@ -162,12 +147,6 @@ export const useCustomerStore = defineStore('customer', {
             }
             try {
                 const response = await axios.get(`http://localhost:8000/api/customers/orders/${customerID}/`, 
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                            'Content-Type': 'application/json',
-                        },
-                    }
                 );
                 
                 console.log('Order data retrieved successfully:', response.data);
@@ -180,12 +159,6 @@ export const useCustomerStore = defineStore('customer', {
         async loadOrder() {
             try {
                 const response = await axios.get(`http://localhost:8000/api/customers/orders/`, 
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                            'Content-Type': 'application/json',
-                        },
-                    }
                 );
                 console.log('Order data retrieved successfully:', response.data);
                 this.orders = response.data;
@@ -193,10 +166,20 @@ export const useCustomerStore = defineStore('customer', {
             } catch (error) {
                 console.error('Error retrieving order:', error);
             }
-        }
-        
-        
-        
-
+        },
+        async updateStatus(statusChange) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.put(`http://localhost:8000/api/customers/edit_orders/`, statusChange, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                console.log("Updated status:", response.data);
+            } catch (error) {
+                console.error('Error updating status:', error);
+            }
+        },
     }
 })

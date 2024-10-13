@@ -32,39 +32,25 @@ onMounted(async () => {
             </p>
 
             <div class="flex">
-                <ul class="steps w-full mb-4">
-                    <li
-                        :class="
-                            order.order_status === 'Pending'
-                                ? 'step step-success'
-                                : 'step'
-                        "
-                    >
-                        Pending
-                    </li>
-                    <li
-                        :class="
-                            order.order_status === 'Shipped' ||
-                            order.order_status === 'Delivered'
-                                ? 'step step-success'
-                                : 'step'
-                        "
-                    >
-                        Shipped
-                    </li>
+			<ul class="steps w-full mb-4">
+				<li
+					:class="['step', order.order_status === 'Pending' ? 'step-success' : order.order_status === 'Shipped' || order.order_status === 'Delivered' ? 'step-success' : '']"
+				>
+					Pending
+				</li>
+				<li
+					:class="['step', order.order_status === 'Shipped' || order.order_status === 'Delivered' ? 'step-success' : '']"
+				>
+					Shipped
+				</li>
+				<li
+					:class="['step', order.order_status === 'Delivered' ? 'step-success' : '']"
+				>
+					Delivery
+				</li>
+			</ul>
+		</div>
 
-                    <!-- สำหรับขั้นตอน Delivery -->
-                    <li
-                        :class="
-                            order.order_status === 'Delivered'
-                                ? 'step step-success'
-                                : 'step'
-                        "
-                    >
-                        Delivery
-                    </li>
-                </ul>
-            </div>
             <div class="flex items-start p-4">
                 <!-- ไอคอนสำหรับที่อยู่การจัดส่ง -->
                 <div class="mr-4 mt-1">
