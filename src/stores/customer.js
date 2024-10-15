@@ -21,19 +21,28 @@ export const useCustomerStore = defineStore('customer', {
     }),
     actions: {
         async getCustomer() {
+            let token = localStorage.getItem('token');
             try {
-                const response = await axios.get('http://localhost:8000/api/customers/');
+                const response = await axios.get('http://localhost:8000/api/customers/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
                 this.list = response.data;
+                
                 return this.list;
             } catch (error) {
-                console.error('Error fetching customer:', error);
+                console.log('Token expired, attempting to refresh token...');
             }
         },
+
         async addCustomer(customerData) {
             try {
                 const response = await axios.post('http://localhost:8000/api/customers/register/', customerData);
                 this.list.push(response.data);
                 console.log('Customer added successfully:', response.data);
+                await this.loginCustomer({ username: customerData.username, password: customerData.password });
             } catch (error) {
                 console.error('Error adding customer:', error);
             }
@@ -43,10 +52,6 @@ export const useCustomerStore = defineStore('customer', {
                 const response = await axios.post('http://localhost:8000/api/auth/login/', {
                     username: customerData.username,
                     password: customerData.password,
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json', // เพิ่ม headers ให้แน่ใจว่าเป็น JSON
-                    }
                 });
                 console.log('Login successful', response.data);  // แสดงข้อมูล response
                 this.isAuthenticated = true;
@@ -62,8 +67,14 @@ export const useCustomerStore = defineStore('customer', {
             }
         },
         async deleteAddress(addressId) {
+            const token = localStorage.getItem('token'); 
             try {
-                const response = await axios.delete(`http://localhost:8000/api/customers/customer-addresses/${addressId}/`);
+                const response = await axios.delete(`http://localhost:8000/api/customers/customer-addresses/${addressId}/`,{
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  // ใส่ JWT token
+                        'Content-Type': 'application/json',  // กำหนด Content-Type
+                    }
+                });
                 this.list = this.list.filter(address => address.id !== addressId);
                 console.log("Deleted address with ID:", addressId);
             } catch (error) {
@@ -72,28 +83,46 @@ export const useCustomerStore = defineStore('customer', {
             }
         },
         async getAddress(id) {
+            const token = localStorage.getItem('token'); 
             try {
-                const response = await axios.get(`http://localhost:8000/api/customers/customer-addresses/${id}/`);
+                const response = await axios.get(`http://localhost:8000/api/customers/customer-addresses/${id}/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  // ใส่ JWT token
+                        'Content-Type': 'application/json',  // กำหนด Content-Type
+                    }
+                });
                 this.list = response.data;
                 return this.list;
             } catch (error) {
+                console.log("token", token)
                 console.error('Error fetching customer address:', error);
                 throw error;
             }
         },
         async createAddress(newAddress) {
+            const token = localStorage.getItem('token'); 
             try {
                 const response = await axios.post('http://localhost:8000/api/customers/customer-addresses/', newAddress, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  // ใส่ JWT token
+                        'Content-Type': 'application/json',  // กำหนด Content-Type
+                    }
                 });
                 this.list.push(response.data);
                 this.loaded = true;
             } catch (error) {
+                console.log("token", token)
                 console.error('Error added customer address:', error);
             }
         },
         async updateAddress(addressId, updatedAddress) {
+            const token = localStorage.getItem('token'); 
             try {
                 const response = await axios.put(`http://localhost:8000/api/customers/customer-addresses/${addressId}/`, updatedAddress, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  // ใส่ JWT token
+                        'Content-Type': 'application/json',  // กำหนด Content-Type
+                    }
                 });
 
                 const index = this.list.findIndex(address => address.id === addressId);
@@ -107,9 +136,16 @@ export const useCustomerStore = defineStore('customer', {
             }
         },
         async createOrder(orderData) {
+            const token = localStorage.getItem('token'); 
             try {
                 const response = await axios.post('http://localhost:8000/api/customers/orders/', 
-                    orderData,  // ส่งข้อมูลคำสั่งซื้อใน request body โดยตรง
+                    orderData,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        }
+                    }
                 );
         
                 // axios ไม่ต้องใช้ response.ok แบบ fetch มันจะเข้า catch error โดยตรงถ้ามี error
@@ -121,32 +157,22 @@ export const useCustomerStore = defineStore('customer', {
                 this.loading = false;
             }
         },
-        async getOrder() {
-            const customerID = localStorage.getItem("user_ID"); // หรือคุณอาจส่ง customerID เป็น parameter
-            if (!customerID) {
-                console.error("Customer ID is missing.");
-                return;
-            }
-            try {
-                const response = await axios.get(`http://localhost:8000/api/customers/orders/${customerID}/`, 
-                );
-                
-                console.log('Order data retrieved successfully:', response.data);
-                this.orders = response.data;
-                return response.data;
-            } catch (error) {
-                console.error('Error retrieving order:', error);
-            }
-        },
 
         async getOrder() {
-            const customerID = localStorage.getItem("user_ID"); // หรือคุณอาจส่ง customerID เป็น parameter
+            const token = localStorage.getItem('token');
+
+            const customerID = localStorage.getItem("user_ID"); //ส่ง customerID เป็น parameter
             if (!customerID) {
                 console.error("Customer ID is missing.");
                 return;
             }
             try {
-                const response = await axios.get(`http://localhost:8000/api/customers/orders/${customerID}/`, 
+                const response = await axios.get(`http://localhost:8000/api/customers/orders/${customerID}/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                }
                 );
                 
                 console.log('Order data retrieved successfully:', response.data);
@@ -158,7 +184,13 @@ export const useCustomerStore = defineStore('customer', {
         },
         async loadOrder() {
             try {
-                const response = await axios.get(`http://localhost:8000/api/customers/orders/`, 
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`http://localhost:8000/api/customers/orders/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                }
                 );
                 console.log('Order data retrieved successfully:', response.data);
                 this.orders = response.data;
