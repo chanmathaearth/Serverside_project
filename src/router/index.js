@@ -9,7 +9,7 @@ import RegisterView from '../views/RegisterView.vue'
 import PaymentView from '../views/PaymentView.vue'
 import AdminView from '../views/AdminView.vue'
 import OrderView from '../views/OrderView.vue'
-import MainView from '../views/MainView.vue'
+import resetPassword from '../views/resetPassword.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,11 +18,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
-    },
-    {
-      path: '/main',
-      name: 'main',
-      component: MainView
     },
     {
       path: '/productDetail/:productid',
@@ -62,6 +57,11 @@ const router = createRouter({
       name: 'order',
       component: OrderView,
       meta: { requiresAuth: true, requiresAdmin: true }  // ต้องการการล็อกอินและต้องเป็น admin
+    },
+    {
+      path: '/resetPassword',
+      name: 'resetPassword',
+      component: resetPassword
     },
   ]
 })
