@@ -9,7 +9,7 @@ import RegisterView from '../views/RegisterView.vue'
 import PaymentView from '../views/PaymentView.vue'
 import AdminView from '../views/AdminView.vue'
 import OrderView from '../views/OrderView.vue'
-import resetPassword from '../views/ResetPassword.vue'
+import ResetPassword from '../views/ResetPassword.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,7 +61,7 @@ const router = createRouter({
     {
       path: '/resetPassword',
       name: 'resetPassword',
-      component: resetPassword
+      component: ResetPassword
     },
   ]
 })
