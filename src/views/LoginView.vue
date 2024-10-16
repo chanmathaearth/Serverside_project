@@ -53,7 +53,7 @@ const btnlogin = (event) => {
                 if (role === 'admin') {
                     router.push('/admin');
                 } else if (role === 'customer') {
-                    router.push('/main');
+                    router.push('/tracker');
                 }
             });
         })
@@ -92,13 +92,19 @@ const btnlogin = (event) => {
                                     class="bg-white border border-black block w-full p-2.5" required="" />
                             </div>
                             <button @click="btnlogin" v-if="!isLoggedIn" type="button"
-                                class="w-full text-white bg-teal-400 rounded-full p-2 font-thin hover:bg-teal-500 focus:outline-none">
+                                class="w-full text-white bg-red-500 rounded-full p-2 font-thin hover:bg-red-600 focus:outline-none">
                                 SIGN IN
                             </button>
                             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Don’t have an account yet?
                                 <RouterLink to="/register">
                                     <span href="#" class="font-thin">Sign up</span>
+                                </RouterLink>
+                            </p>
+                            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                                Forgot password yet?
+                                <RouterLink to="/resetPassword">
+                                    <span href="#" class="font-thin">Reset Password</span>
                                 </RouterLink>
                             </p>
                         </form>
