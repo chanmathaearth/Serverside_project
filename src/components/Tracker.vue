@@ -3,16 +3,19 @@ import { ref, onMounted } from "vue";
 import { useCustomerStore } from "@/stores/customer"; // import store ที่สร้างไว้
 
 const CustomerStore = useCustomerStore(); // เรียกใช้ store
+const totalprice = ref('');
 
+totalprice.value = localStorage.getItem('totalprice')
 // โหลดข้อมูล order เมื่อตัว component ทำงาน
 onMounted(async () => {
     await CustomerStore.getOrder(); // ดึงข้อมูลคำสั่งซื้อจาก backend ผ่าน store
+    console.log("test", CustomerStore)
 });
 </script>
 
 <template>
     <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg mt-10 p-6 mb-4">
-        <h2 class="text-2xl font-thin text-gray-700 mb-4">ORDER TRACKER</h2>
+        <h2 class="text-2xl font-extralight text-gray-700 mb-4">ORDER TRACKER</h2>
 
         <div
             v-for="(order, index) in CustomerStore.orders"
@@ -23,48 +26,34 @@ onMounted(async () => {
             ]"
         >
             <div class="flex justify-between items-center mb-4">
-                <p class="text-sm text-black font-thin">
-                    ORDER ID: <span class="font-thin">{{ order.id }}</span>
+                <p class="text-sm text-black font-extralight">
+                    ORDER ID: <span class="font-extralight">{{ order.id }}</span>
                 </p>
             </div>
-            <p class="text-sm text-black font-thin text-center mb-4">
+            <p class="text-sm text-black font-extralight text-center mb-4">
                 ORDER STATUS:
             </p>
 
             <div class="flex">
-                <ul class="steps w-full mb-4">
-                    <li
-                        :class="
-                            order.order_status === 'Pending'
-                                ? 'step step-success'
-                                : 'step'
-                        "
-                    >
-                        Pending
-                    </li>
-                    <li
-                        :class="
-                            order.order_status === 'Shipped' ||
-                            order.order_status === 'Delivered'
-                                ? 'step step-success'
-                                : 'step'
-                        "
-                    >
-                        Shipped
-                    </li>
+			<ul class="steps w-full mb-4">
+				<li
+					:class="['step', order.order_status === 'Pending' ? 'step-success' : order.order_status === 'Shipped' || order.order_status === 'Delivered' ? 'step-success' : '']"
+				>
+					Pending
+				</li>
+				<li
+					:class="['step', order.order_status === 'Shipped' || order.order_status === 'Delivered' ? 'step-success' : '']"
+				>
+					Shipped
+				</li>
+				<li
+					:class="['step', order.order_status === 'Delivered' ? 'step-success' : '']"
+				>
+					Delivery
+				</li>
+			</ul>
+		</div>
 
-                    <!-- สำหรับขั้นตอน Delivery -->
-                    <li
-                        :class="
-                            order.order_status === 'Delivered'
-                                ? 'step step-success'
-                                : 'step'
-                        "
-                    >
-                        Delivery
-                    </li>
-                </ul>
-            </div>
             <div class="flex items-start p-4">
                 <!-- ไอคอนสำหรับที่อยู่การจัดส่ง -->
                 <div class="mr-4 mt-1">
@@ -95,7 +84,7 @@ onMounted(async () => {
                 </div>
 
                 <!-- ข้อมูลที่อยู่การจัดส่ง -->
-                <div>
+                <div v-if="order.shipping_address_details && order.shipping_address_details.street_address">
                     <h2 class="text-lg font-light mb-1">Delivery Address</h2>
                     <p class="text-black font-light">
                         {{ order.shipping_address_details.province }}
@@ -163,7 +152,7 @@ onMounted(async () => {
 			<div :class="{'text-red-500 mb-4': order.payment_status === 'Pending', 'text-green-500': order.payment_status === 'Paid'}"class="font-light ml-14 text-black">
 				<span class="text-black">Status: </span>{{ order.payment_status }}
 			</div>       
-			<div class="text-center font-thin text-xl mb-6">TOTAL PRICE: {{ order.total_price }} THB</div>
+			<div class="text-center font-extralight text-xl mb-6">TOTAL PRICE: {{ order.total_price }} THB</div>
 		</div>
     </div>
 </template>

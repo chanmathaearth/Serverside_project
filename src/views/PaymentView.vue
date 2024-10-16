@@ -1,11 +1,47 @@
 <script setup>
 import { useCartStore } from '@/stores/cart.js'
 import { useProductStore } from '@/stores/product'
-import { ref, onMounted } from 'vue';
+import Swal from 'sweetalert2';
+import { ref, onMounted, watchEffect } from 'vue';
+
+const summaryPrice = ref(localStorage.getItem('summaryPrice') || 0); 
 const cartStore = useCartStore();
 const productStore = useProductStore();
-const summaryPrice = localStorage.getItem('summaryPrice');
 const discountCode = ref('');
+
+const applyDiscount = async () => {
+    try {
+        console.log("discountCode:", discountCode.value);
+        console.log("sum:", summaryPrice.value);
+
+        const response = await productStore.applyDiscountCode(discountCode.value, summaryPrice.value);
+        console.log('Discount applied successfully:', response);
+
+        localStorage.setItem('summaryPrice', response);
+        summaryPrice.value = response;
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Discount Applied',
+            text: `Your new total price is: ${response} THB`,
+            confirmButtonColor: '#df4625'
+        }).then(() => {
+            window.location.reload();
+        });
+    } catch (error) {
+        console.error('Error applying discount:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Invalid discount code or other issue occurred.',
+            confirmButtonColor: '#df4625'
+        });
+    }
+};
+
+watchEffect(() => {
+    console.log("Summary price updated:", summaryPrice.value);
+});
 
 </script>
 <template>
@@ -16,7 +52,7 @@ const discountCode = ref('');
                 <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <!-- Shipping Address -->
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-thin">1. Shipping Address</h3>
+                        <h3 class="text-xl font-extralight">1. Shipping Address</h3>
                         <button @click="toggleAddress" class="focus:outline-none">
                             <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': isAddressOpen }"
                                 class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20"
@@ -32,7 +68,7 @@ const discountCode = ref('');
                     </div>
 
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-thin">2. Payment Method</h3>
+                        <h3 class="text-xl font-extralight">2. Payment Method</h3>
                         <button @click="togglePayment" class="focus:outline-none">
                             <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': isPaymentOpen }"
                                 class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20"
@@ -49,7 +85,7 @@ const discountCode = ref('');
                 </div>
 
                 <div class="bg-white p-6 text-black w-full sm:w-1/3 mx-auto">
-                    <h3 class="text-xl font-thin text-black mb-4">
+                    <h3 class="text-xl font-extralight text-black mb-4">
                         Apply Discount Code
                     </h3>
                     <div class="flex items-center rounded-lg overflow-hidden mb-6 border">
@@ -60,9 +96,9 @@ const discountCode = ref('');
                             Apply
                         </button>
                     </div>
-                    <h3 class="text-xl font-thin mb-4">Order Summary</h3>
+                    <h3 class="text-xl font-extralight mb-4">Order Summary</h3>
                     <div v-for="(item, index) in cartStore.items" :key="index"
-                        class="font-thin relative  mt-4 rounded-xl">
+                        class="font-extralight relative  mt-4 rounded-xl">
                         <div v-if="product = productStore.list.find(product => product.id === item.product)"
                             class="flex justify-between">
                             <img :src="product.image"
@@ -82,15 +118,15 @@ const discountCode = ref('');
 
                     <hr class="my-4 border-gray-300" />
 
-                    <div class="flex justify-between font-thin">
+                    <div class="flex justify-between font-extralight">
                         <span>Cart Subtotal</span>
                         <span>{{ Number(summaryPrice).toLocaleString('en-US') }} THB</span>
                     </div>
-                    <div class="flex justify-between mt-2 font-thin">
+                    <div class="flex justify-between mt-2 font-extralight">
                         <span>Shipping</span>
                         <span>0.00 THB</span>
                     </div>
-                    <div class="flex justify-between mt-2 font-thin text-xl">
+                    <div class="flex justify-between mt-2 font-extralight text-xl">
                         <span>Order Total</span>
                         <span>{{ Number(summaryPrice).toLocaleString('en-US') }} THB</span>
                     </div>

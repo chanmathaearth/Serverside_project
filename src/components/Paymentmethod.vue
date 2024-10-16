@@ -16,7 +16,7 @@
                 src="https://cdn.discordapp.com/attachments/1171352440210210856/1294107388416233494/Pngtree_vector_credit_card_icon_4278064-removebg-preview.png?ex=6709ceec&is=67087d6c&hm=da2d9358aaf6ca0f71b5c821dfaca81b85f156f2442de9805b3d7f5a123766f2&"
             />
             <span
-                class="font-light text-xl"
+                class="font-extralight text-xl"
                 :class="
                     selectedMethod === 'card'
                         ? 'text-blue-500'
@@ -41,7 +41,7 @@
                 src="https://www.designil.com/wp-content/uploads/2020/04/prompt-pay-logo.png"
             />
             <span
-                class="mt-4 font-light text-xl"
+                class="mt-4 font-extralight text-xl"
                 :class="
                     selectedMethod === 'promptpay'
                         ? 'text-blue-500'
@@ -66,7 +66,7 @@
                 src="https://png.pngtree.com/png-vector/20230306/ourmid/pngtree-cash-on-delivery-red-label-vector-png-image_253982.png"
             />
             <span
-                class="font-light text-xl"
+                class="font-extralight text-xl"
                 :class="
                     selectedMethod === 'cod' ? 'text-blue-500' : 'text-gray-500'
                 "
@@ -94,7 +94,7 @@
                         </div>
                         <div
                             v-else
-                            class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-light"
+                            class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-extralight"
                         >
                             Pay now
                         </div>
@@ -113,7 +113,7 @@
             v-if="promptPayQRCode"
             class="mt-4 flex flex-col justify-center items-center"
         >
-            <h3 class="text-xl font-thin">Scan to Pay</h3>
+            <h3 class="text-xl font-extralight">Scan to Pay</h3>
             <div class="mt-4 border">
                 <img
                     width="250px"
@@ -126,7 +126,7 @@
                     width="250px"
                 />
             </div>
-            <p class="text-base mt-3 mb-2 font-thin">
+            <p class="text-base mt-3 mb-2 font-extralight">
                 TOTAL PRICE:
                 {{ Number(productPrice).toLocaleString("en-US") }} THB
             </p>
@@ -134,7 +134,7 @@
         <div v-if="!promptPayQRCode" class="flex justify-center">
             <button
                 @click="generatePromptPayQR"
-                class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-light"
+                class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-extralight"
             >
                 Pay by PromptPay QR Code
             </button>
@@ -142,7 +142,7 @@
         <div v-if="promptPayQRCode" class="flex justify-center">
             <button
                 @click="promtpaysuccess"
-                class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-light w-28 mb-20"
+                class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-extralight w-28 mb-20"
             >
                 Done
             </button>
@@ -151,14 +151,15 @@
 
     <div
         v-if="selectedMethod === 'cod'"
-        class="mt-6 justify-center font-light text-center"
+        class="mt-6 justify-center font-extralight text-center"
     >
+    <h1 class="pl-3 mb-2 text-left font-medium">Cash On Delivery</h1>
         <p class="text-base mt-4 mb-2">
             TOTAL PRICE: {{ Number(productPrice).toLocaleString("en-US") }} THB
         </p>
         <button
             @click="codsuccess"
-            class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-light"
+            class="bg-red-500 text-white p-2 mt-2 rounded-2xl focus:outline-none hover:bg-red-600 font-extralight"
         >
             Order Now
         </button>
@@ -176,14 +177,13 @@ import { useCustomerStore } from "@/stores/customer";
 const CustomerStore = useCustomerStore();
 const AddressStore = useAddressStore();
 const selectedMethod = ref("card");
-
+const sumprice = ref();
 const selectMethod = (method) => {
     selectedMethod.value = method;
 };
-
 const router = useRouter();
 const promptpaystate = ref(null);
-const productPrice = ref(null);
+const productPrice = ref(localStorage.getItem("summaryPrice"));
 const stripePromise = loadStripe(
     "pk_test_51Q7iZMBhZhzEe0URZ7yq74zQN148npBjK4DQsY3v2P4bOLb5gB7AugpvHD4n4LeKRUJsvy5f3cYtx3lF27e3UrFx00rawliOvK"
 );
@@ -193,6 +193,8 @@ const cardElement = ref(null);
 const isLoading = ref(false);
 const message = ref(null);
 const promptPayQRCode = ref(null);
+
+sumprice.value = localStorage.getItem('summaryPrice')
 
 onMounted(async () => {
     stripe.value = await stripePromise;
@@ -271,6 +273,8 @@ const promtpaysuccess = () => {
 
 const handleSubmit = async () => {
     isLoading.value = true;
+    const usertoken = localStorage.getItem('token');
+
     const { token, error } = await stripe.value.createToken(cardElement.value);
 
     if (error) {
@@ -284,7 +288,7 @@ const handleSubmit = async () => {
                 text: "Please select a shipping address before proceeding!",
                 confirmButtonColor: "#df4625",
             });
-			isLoading.value = false;
+			isLoading.value = true;
             return;
         }
         const response = await fetch(
@@ -292,7 +296,8 @@ const handleSubmit = async () => {
             {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                        'Authorization': `Bearer ${usertoken}`,
+                        'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     token: token.id,
@@ -322,7 +327,7 @@ const handleSubmit = async () => {
                 try {
                     const orderData = {
                         customer: localStorage.getItem("user_ID"),
-                        total_price: productPrice.value,
+                        total_price: sumprice.value,
                         order_status: "Pending",
                         payment_status: "Paid",
                         shipping_address: AddressStore.selectedAddress,
@@ -340,6 +345,7 @@ const handleSubmit = async () => {
 };
 
 const generatePromptPayQR = async () => {
+    const token = localStorage.getItem('token');
     promptpaystate.value = true;
     try {
         const response = await fetch(
@@ -347,8 +353,9 @@ const generatePromptPayQR = async () => {
             {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                },
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
                 body: JSON.stringify({
                     amount: productPrice.value,
                 }),

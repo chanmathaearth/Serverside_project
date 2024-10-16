@@ -123,7 +123,7 @@ const openTab = (tabId) => {
         <div class="flex mt-16">
             <Navbar :cartItems="cartItems" />
         </div>
-        <div v-if="product_detail" class="flex mt-16 p-6 font-thin">
+        <div v-if="product_detail" class="flex mt-16 p-6 font-extralight">
             <main>
                 <div class="h-full w-96 ml-4">
                     <div id="default-carousel" class="relative w-full" data-carousel="slide">
@@ -168,7 +168,7 @@ const openTab = (tabId) => {
 
             <div class="w-full ml-4">
                 <div>
-                    <span class="ml-4 flex text-3xl font-thin">{{ product_detail.name }}</span><br>
+                    <span class="ml-4 flex text-3xl font-extralight">{{ product_detail.name }}</span><br>
                     <span class="ml-4">PRODUCT ID : {{ product_detail.id }}</span><br>
                     <span class="ml-4" v-if="product_detail.amount > 0">STOCK STATUS : IN STOCK</span>
 					<span class="ml-4" v-else>STATUS : OUT OF STOCK</span><br><br>
@@ -222,7 +222,7 @@ const openTab = (tabId) => {
                 </div><br>
                 <div>
                     <div class="flex items-center space-x-2 ml-4">
-                        <label class="text-md font-thin">AMOUNT</label>
+                        <label class="text-md font-extralight">AMOUNT</label>
                         <div class="flex items-center border-2 rounded-full">
                             <button @click="changeQuantity(product_quantity - 1)"
                                 class="px-4 py-2 text-black hover:bg-gray-100 rounded-l-full focus:outline-none">
@@ -279,37 +279,37 @@ const openTab = (tabId) => {
             <div class="p-4 mt-2">
                 <div v-show="activeTab === 'tab1'" class="tabcontent">
                     <p class="font-medium text-xl mb-3">{{ product_detail.name }}</p>
-                    <p class="font-thin text-xl">{{ product_detail.description }}</p>
+                    <p class="font-extralight text-xl">{{ product_detail.description }}</p>
                 </div>
                 <div v-show="activeTab === 'tab2'" class="tabcontent">
 					<div class="flex mb-1">
-						<p class="text-xl font-thin">COLOR: </p>
-						<p class="ml-3 text-xl font-thin">{{ product_detail.color.toUpperCase() }}</p>
+						<p class="text-xl font-extralight">COLOR: </p>
+						<p class="ml-3 text-xl font-extralight">{{ product_detail.color.toUpperCase() }}</p>
 					</div>
 					<div class="flex mb-1">
-						<p class="text-xl font-thin">BOOTS TYPE: </p>
-						<p class="ml-3 text-xl font-thin" v-if="product_detail.categories && product_detail.categories.length > 0">
+						<p class="text-xl font-extralight">BOOTS TYPE: </p>
+						<p class="ml-3 text-xl font-extralight" v-if="product_detail.categories && product_detail.categories.length > 0">
 						{{ product_detail.categories[0].toUpperCase() }}
 						</p>
-						<p class="ml-3 text-xl font-thin" v-else>
+						<p class="ml-3 text-xl font-extralight" v-else>
 						No category available
 						</p>					
 					</div>
 					<div class="flex mb-1">
-						<p class="text-xl font-thin">LMITED: </p>
-						<p class="ml-3 text-xl font-thin">NO</p>
+						<p class="text-xl font-extralight">LMITED: </p>
+						<p class="ml-3 text-xl font-extralight">NO</p>
 					</div>
 					<div class="flex mb-1">
-						<p class="text-xl font-thin">SHIPPING COST: </p>
-						<p class="ml-3 text-xl font-thin">NO</p>
+						<p class="text-xl font-extralight">SHIPPING COST: </p>
+						<p class="ml-3 text-xl font-extralight">NO</p>
 					</div>
 					<div class="flex mb-4">
-						<p class="text-xl font-thin">COLLABORATION: </p>
-						<p class="ml-3 text-xl font-thin">NO</p>
+						<p class="text-xl font-extralight">COLLABORATION: </p>
+						<p class="ml-3 text-xl font-extralight">NO</p>
 					</div>
                 </div>
                 <div v-show="activeTab === 'tab3'" class="tabcontent flex justify-center items-center">
-                    <p><img src="https://files.oaiusercontent.com/file-qfyiz3hQEdt7HmdgOFTMuOSj?se=2024-10-01T21%3A48%3A08Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Df896a823-85ef-4e45-a2e8-06c8f7eb0730.webp&sig=lfawDnETMChZw6z9CVdw2t%2BlFvayVukjk68fq8FW25M%3D" width="300" alt=""></p>
+                    <p><img src="https://nordicprostoreus.com/cdn/shop/products/71VA79GSBhL._AC_UL1500_2000x.jpg?v=1681300862" width="300" alt=""></p>
                 </div>
             </div>
         </div>

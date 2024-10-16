@@ -37,6 +37,8 @@ const filterProducts = () => {
                 selectedColors.value.includes(obj.color))
     );
 };
+
+
 </script>
 
 <template>

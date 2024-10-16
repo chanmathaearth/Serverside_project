@@ -27,11 +27,22 @@ const updateOrderStatus = async (order) => {
     });
 
     if (newStatus) {
+        const statusChange = {
+            "id": order.id,
+            "order_status": newStatus
+        }
         try {
             // ส่งข้อมูลไป backend เพื่ออัปเดตสถานะ
-            await CustomerStore.updateOrderStatus(order.id, newStatus);
-            Swal.fire("Updated!", `Order status has been updated to ${newStatus}`, "success");
-        } catch (error) {
+            await CustomerStore.updateStatus(statusChange);
+            Swal.fire({
+                title: "Updated!",
+                text: `Order status has been updated to ${newStatus}`,
+                icon: "success",
+                confirmButtonColor: '#df4625'
+                }).then(() => {
+                    window.location.reload();
+                });     
+            } catch (error) {
             Swal.fire("Error!", "Failed to update order status", "error");
         }
     }
@@ -52,11 +63,23 @@ const updatePaymentStatus = async (order) => {
     });
 
     if (newStatus) {
+        const statusChange = {
+            "id": order.id,
+            "payment_status": newStatus
+        }
         try {
             // ส่งข้อมูลไป backend เพื่ออัปเดตสถานะการชำระเงิน
-            await CustomerStore.updatePaymentStatus(order.id, newStatus);
-            Swal.fire("Updated!", `Payment status has been updated to ${newStatus}`, "success");
-        } catch (error) {
+            await CustomerStore.updateStatus(statusChange);
+            Swal.fire({
+                title: "Updated!",
+                text: `Payment status has been updated to ${newStatus}`,
+                icon: "success",
+                confirmButtonColor: '#df4625'
+                }).then(() => {
+                    window.location.reload();
+                });        
+            } 
+        catch (error) {
             Swal.fire("Error!", "Failed to update payment status", "error");
         }
     }
@@ -67,33 +90,33 @@ const updatePaymentStatus = async (order) => {
     <div id="app">
         <AdminNavbar :cartItems="cartItems" />
         <section class="text-center p-8 mt-16">
-            <h1 class="text-3xl font-thin">Welcome, Admin!</h1>
-            <p class="mt-2 text-xl font-thin">Manage your order below.</p>
+            <h1 class="text-3xl font-extralight">Welcome, Admin!</h1>
+            <p class="mt-2 text-xl font-extralight">Manage your order below.</p>
         </section>
         <div class="p-6 px-12">
             <table class="table table-lg table-zebra min-w-full">
                 <thead class="bg-red-500">
                     <tr>
-                        <th class="text-white p-2 font-thin text-lg">Order ID</th>
-                        <th class="text-white p-2 font-thin text-lg">Customer ID</th>
-                        <th class="text-white p-2 font-thin text-lg">Total Price</th>
-                        <th class="text-white p-2 font-thin text-lg">Order Status</th>
-                        <th class="text-white p-2 font-thin text-lg">Payment Status</th>
+                        <th class="text-white p-2 font-extralight text-lg">Order ID</th>
+                        <th class="text-white p-2 font-extralight text-lg">Customer ID</th>
+                        <th class="text-white p-2 font-extralight text-lg">Total Price</th>
+                        <th class="text-white p-2 font-extralight text-lg">Order Status</th>
+                        <th class="text-white p-2 font-extralight text-lg">Payment Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="order in CustomerStore.orders" :key="order.id" class="text-left">
-                        <td class="border border-gray-300 p-2 font-thin text-lg">{{ order.id }}</td>
-                        <td class="border border-gray-300 p-2 font-thin text-lg">{{ order.customer }}</td>
-                        <td class="border border-gray-300 p-2 font-thin text-lg">{{ order.total_price }}</td>
-                        <td class="border border-gray-300 p-2 font-thin text-lg">
-                            <div class="flex justify-between ml-2 mr-2 font-thin text-lg">
+                        <td class="border border-gray-300 p-2 font-extralight text-lg">{{ order.id }}</td>
+                        <td class="border border-gray-300 p-2 font-extralight text-lg">{{ order.customer }}</td>
+                        <td class="border border-gray-300 p-2 font-extralight text-lg">{{ order.total_price }}</td>
+                        <td class="border border-gray-300 p-2 font-extralight text-lg">
+                            <div :class="{ 'text-green-500': order.order_status === 'Delivered', 'text-red-500': order.order_status !== 'Delivered' }"class="flex justify-between ml-2 mr-2 font-extralight text-lg">
                             {{ order.order_status }}
                             <button @click="updateOrderStatus(order)" class="bg-yellow-500 text-white ml-2 px-2 py-1 rounded focus:outline-none">Edit</button>
                             </div>
                         </td>
                         <td class="border border-gray-300 p-2 ml-2 mr-2">
-                            <div class="flex justify-between font-thin text-lg">
+                            <div :class="{ 'text-green-600 font-extralight ': order.payment_status === 'Paid', 'text-red-500': order.payment_status !== 'Paid'}" class="flex justify-between font-extralight text-lg">
                                 {{ order.payment_status }}
                                 <button @click="updatePaymentStatus(order)" class="bg-yellow-500 text-white ml-2 px-2 py-1 rounded focus:outline-none">Edit</button>
                             </div>

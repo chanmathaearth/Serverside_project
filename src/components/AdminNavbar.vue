@@ -23,9 +23,11 @@ const logout = () => {
         localStorage.removeItem('cart-data');
         localStorage.removeItem('checkout-data');
         localStorage.removeItem('username');
+        localStorage.removeItem('role');
+        localStorage.removeItem('user_ID');
         localStorage.removeItem('refreshToken');
-        localStorage.removeItem('id');
         localStorage.removeItem('token');
+        localStorage.removeItem('summaryPrice');
         router.push('/login');
     });
 };
@@ -34,7 +36,7 @@ const logout = () => {
     <div>
         <nav class="fixed w-full z-20 top-0 left-0 bg-white max-h-full border-b">
             <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4">
-                <div class="font-thin text-2xl">
+                <div class="font-extralight text-2xl">
                     <RouterLink
                         to="/admin"
                     >
@@ -53,7 +55,7 @@ const logout = () => {
                         <span class="text-lg ml-6">INVENTORY</span>
                     </RouterLink>
                 </div>
-                <div class="transition-all duration-300 hover:scale-105 font-thin text-lg transition-all duration-300 hover:scale-110">
+                <div class="transition-all duration-300 hover:scale-105 font-extralight text-lg transition-all duration-300 hover:scale-110">
                     <button @click="logout()">SIGN OUT</button> 
                 </div>
             </div>

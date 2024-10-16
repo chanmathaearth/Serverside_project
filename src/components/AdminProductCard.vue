@@ -116,12 +116,12 @@ const editProduct = async () => {
             <h3 class="mt-4 text-red-600 uppercase text-sm text-left pl-1">
                 {{ props.product.brand }}
             </h3>
-            <p class="text-xl font-thin mt-1 text-left pl-1 text-black">
+            <p class="text-xl font-extralight mt-1 text-left pl-1 text-black">
                 {{ props.product.name }}
             </p>
             <div class="flex justify-center w-full">
                 <button
-                    class="flex justify-center items-center text-sm font-thin pl-1 mt-3 p-1 rounded-xl text-center mr-4 w-full bg-amber-400 text-white hover:bg-amber-500 focus:outline-none"
+                    class="flex justify-center items-center text-sm font-extralight pl-1 mt-3 p-1 rounded-xl text-center mr-4 w-full bg-amber-400 text-white hover:bg-amber-500 focus:outline-none"
                     @click="openModal"
                 >
                     Edit
@@ -131,7 +131,7 @@ const editProduct = async () => {
 
                 </button>
                 <button
-                    class="flex justify-center items-center text-sm font-thin pl-1 mt-3 p-1 rounded-xl text-center w-full bg-red-500 text-white hover:bg-red-600 focus:outline-none"
+                    class="flex justify-center items-center text-sm font-extralight pl-1 mt-3 p-1 rounded-xl text-center w-full bg-red-500 text-white hover:bg-red-600 focus:outline-none"
                     @click="deleteProduct"
                 >
                     Delete
@@ -148,7 +148,7 @@ const editProduct = async () => {
         <div class="relative p-4 max-h-full w-[40%]">
             <div class="relative bg-white rounded-lg shadow">
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                    <h3 class="text-lg font-thin">EDIT PRODUCT</h3>
+                    <h3 class="text-lg font-extralight">EDIT PRODUCT</h3>
                     <button type="button" class="text-gray-400 bg-transparent focus:outline-none" @click="closeModal">
                         <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6"/>
@@ -157,31 +157,31 @@ const editProduct = async () => {
                 </div>
             <form id="editProductForm" class="p-6">
                 <div class="mb-4">
-                    <label class="block font-thin">Product Name</label>
+                    <label class="block font-extralight">Product Name</label>
                     <input v-model="name" type="text" class="w-full p-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block font-thin">Description</label>
+                    <label class="block font-extralight">Description</label>
                     <textarea v-model="description" rows="4" class="w-full p-2 border rounded-lg" required></textarea>
                 </div>
                 <div class="mb-4">
-                    <label class="block font-thin">Brand</label>
+                    <label class="block font-extralight">Brand</label>
                     <input v-model="brand" type="text" class="w-full p-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block font-thin">Price</label>
+                    <label class="block font-extralight">Price</label>
                     <input v-model="price" type="number" step="0.01" class="w-full p-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block font-thin">Color</label>
+                    <label class="block font-extralight">Color</label>
                     <input v-model="color" type="text" class="w-full p-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block font-thin">Amount</label>
+                    <label class="block font-extralight">Amount</label>
                     <input v-model="amount" type="number" class="w-full p-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block font-thin">Categories</label>
+                    <label class="block font-extralight">Categories</label>
                     <select v-model="categories" class="p-2 border rounded-lg w-full">
                         <option value="touch">TOUCH</option>
                         <option value="speed">SPEED</option>
@@ -189,13 +189,13 @@ const editProduct = async () => {
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label class="block font-thin">Main Image URL</label>
+                    <label class="block font-extralight">Main Image URL</label>
                     <input v-model="image" type="url" class="w-full p-2 border rounded-lg" required>
                 </div>
                 <!-- Sizes -->
                 <!-- Sizes -->
                 <div class="mb-4">
-                <label class="block font-thin">Sizes</label>
+                <label class="block font-extralight">Sizes</label>
                     <div v-for="(size, index) in sizes" :key="index" class="flex mb-2 items-center">
                         <select v-model="size.type_size" class="p-2 border rounded-lg w-1/3 mr-2">
                             <option value="EUR">EUR</option>
@@ -208,12 +208,12 @@ const editProduct = async () => {
                             </svg>
                         </button>
                     </div>
-                    <button type="button" @click="addSizeField" class="bg-green-600 font-thin text-white p-2 text-sm rounded-lg mt-2">ADD SIZE</button>
+                    <button type="button" @click="addSizeField" class="bg-green-600 font-extralight text-white p-2 text-sm rounded-lg mt-2">ADD SIZE</button>
                 </div>
 
                 <!-- Additional Images -->
                 <div class="mb-4">
-                    <label class="block font-thin">Additional Images URLs</label>
+                    <label class="block font-extralight">Additional Images URLs</label>
                     <div v-for="(img, index) in images" :key="index" class="flex mb-2 items-center">
                         <input v-model="images[index]" type="url" class="w-full p-2 border rounded-lg mr-2" placeholder="Image URL">
                         <button type="button" class="text-red-600 bg-transparent focus:outline-none" @click="removeImageField(index)">
@@ -222,10 +222,10 @@ const editProduct = async () => {
                             </svg>
                         </button>                    
                     </div>
-                    <button type="button" @click="addImageField" class="bg-green-600 font-thin text-white p-2 text-sm rounded-lg mt-2">ADD IMAGE</button>
+                    <button type="button" @click="addImageField" class="bg-green-600 font-extralight text-white p-2 text-sm rounded-lg mt-2">ADD IMAGE</button>
                 </div>
                 <div class="mt-6">
-                    <button type="submit" @click="editProduct" class="bg-amber-500 font-thin text-white px-4 py-2 rounded-lg mt-2 w-full focus:outline-none">EDIT PRODUCT</button>
+                    <button type="submit" @click="editProduct" class="bg-amber-500 font-extralight text-white px-4 py-2 rounded-lg mt-2 w-full focus:outline-none">EDIT PRODUCT</button>
                 </div>
             </form>
             </div>

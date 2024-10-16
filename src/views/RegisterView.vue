@@ -50,14 +50,14 @@ const btnAddCustomer = () => {
                 class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0"
             >
                 <div class="p-6 space-y-6 sm:p-8">
-                    <h1 class="text-xl font-thin leading-tight tracking-tight text-center md:text-2xl" >
+                    <h1 class="text-xl font-extralight leading-tight tracking-tight text-center md:text-2xl" >
                         SIGN UP
                     </h1>
                     <form class="space-y-4 md:space-y-6" action="#">
                         <div>
                             <label
                                 for="firstname"
-                                class="block mb-2 text-sm font-thin"
+                                class="block mb-2 text-sm font-extralight"
                                 >FIRST NAME</label
                             >
                             <input
@@ -73,7 +73,7 @@ const btnAddCustomer = () => {
                         <div>
                             <label
                                 for="lastname"
-                                class="block mb-2 text-sm font-thin"
+                                class="block mb-2 text-sm font-extralight"
                                 >LAST NAME</label
                             >
                             <input
@@ -89,7 +89,7 @@ const btnAddCustomer = () => {
                         <div>
                             <label
                                 for="birthdate"
-                                class="block mb-2 text-sm font-thin"
+                                class="block mb-2 text-sm font-extralight"
                                 >BIRTHDATE</label
                             >
                             <input
@@ -97,14 +97,14 @@ const btnAddCustomer = () => {
                                 name="birthdate"
                                 id="birthdate"
                                 v-model="newCustomer.birthdate"
-                                class="bg-white border border-black block w-full p-2.5 font-thin"
+                                class="bg-white border border-black block w-full p-2.5 font-extralight"
                                 required=""
                             />
                         </div>
                         <div>
                             <label
                                 for="email"
-                                class="block mb-2 text-sm font-thin"
+                                class="block mb-2 text-sm font-extralight"
                                 >EMAIL</label
                             >
                             <input
@@ -120,7 +120,7 @@ const btnAddCustomer = () => {
                         <div>
                             <label
                                 for="phone"
-                                class="block mb-2 text-sm font-thin"
+                                class="block mb-2 text-sm font-extralight"
                                 >PHONE</label
                             >
                             <input
@@ -136,7 +136,7 @@ const btnAddCustomer = () => {
                         <div>
                             <label
                                 for="username"
-                                class="block mb-2 text-sm font-thin"
+                                class="block mb-2 text-sm font-extralight"
                                 >USERNAME</label
                             >
                             <input
@@ -152,7 +152,7 @@ const btnAddCustomer = () => {
                         <div>
                             <label
                                 for="password"
-                                class="block mb-2 text-sm font-thin"
+                                class="block mb-2 text-sm font-extralight"
                                 >PASSWORD</label
                             >
                             <input
@@ -163,19 +163,20 @@ const btnAddCustomer = () => {
                                 class="bg-white border border-black block w-full p-2.5"
                                 placeholder="••••••••"
                                 required=""
+                                minlength="8"
                             />
                         </div>
                         <div>
                             <label
                                 for="gender"
-                                class="block mb-2 text-sm font-thin"
+                                class="block mb-2 text-sm font-extralight"
                                 >GENDER</label
                             >
                             <select
                                 name="gender"
                                 id="gender"
                                 v-model="newCustomer.gender"
-                                class="bg-white border border-black block w-full p-2.5 font-thin"
+                                class="bg-white border border-black block w-full p-2.5 font-extralight"
                                 required=""
                             >
                                 <option value="Male">MALE</option>
@@ -185,7 +186,7 @@ const btnAddCustomer = () => {
                         
                         <a @click="btnAddCustomer"
                             type="submit"
-                            class="w-full text-white bg-red-500 rounded-full p-2 font-thin hover:bg-red-600 focus:outline-none">
+                            class="w-full text-white bg-red-500 rounded-full p-2 font-extralight hover:bg-red-600 focus:outline-none">
                             <div class="flex justify-center">REGISTER</div>
                         </a>
                         <p
@@ -195,7 +196,7 @@ const btnAddCustomer = () => {
                             <RouterLink to="/login">
                             <span
                                 href="#"
-                                class="font-thin"
+                                class="font-extralight"
                                 >Sign in</span
                             >
                             </RouterLink>

@@ -75,7 +75,7 @@ const calculateSummaryPrice = () => {
 <template>
     <div>
         <nav class="fixed w-full z-20 top-0 left-0 bg-white max-h-full border-b">
-            <div class="fixed bg-red-600 w-full h-[3%]">
+            <div class="fixed bg-red-600 w-full h-6">
                 <h1 class="text-white animate-pulse text-center mb-4 font-thin">
                     Precision, Power, Performance – On Your Feet.
                 </h1>
@@ -84,11 +84,11 @@ const calculateSummaryPrice = () => {
 
 
             <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4 mt-6">
-                <div class="transition-all duration-300 hover:scale-105 font-thin text-l">
+                <div class="transition-all duration-300 hover:scale-105 font-extralight text-l">
                     <RouterLink v-if="isLoggedIn" to="/tracker">TRACKER</RouterLink>
                     <RouterLink v-else to="/login">TRACKER</RouterLink>
                 </div>
-                <div class="transition-all duration-300 hover:scale-105 font-thin text-2xl">
+                <div class="transition-all duration-300 hover:scale-105 font-extralight text-2xl">
                     <RouterLink to="/">STUDFORCE</RouterLink>
                 </div>
                 <div class="profile flex items-center space-x-6">
@@ -102,7 +102,7 @@ const calculateSummaryPrice = () => {
                                         d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <p class="font-thin text-sm">{{ user.username.toUpperCase() }}</p>
+                                <p class="font-extralight text-sm">{{ user.username.toUpperCase() }}</p>
                             </div>
                         </RouterLink>
                     </div>
@@ -136,7 +136,7 @@ const calculateSummaryPrice = () => {
         <div v-if="isCartModalVisible" class="fixed inset-0 bg-black bg-opacity-60 flex justify-end z-30">
             <div class="bg-white p-6 shadow-lg max-w-md w-full">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-thin text-left">YOUR CART</h2>
+                    <h2 class="text-xl font-extralight text-left">YOUR CART</h2>
                     <button @click="toggleCartModal">
                         <svg class="w-6 h-6 text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -147,7 +147,7 @@ const calculateSummaryPrice = () => {
                 </div>
                 <div class="flex justify-center items-center mb-5">
                     <ul v-if="cartStore.items && cartStore.items.length > 0" class="overflow-y-scroll h-[37rem]">
-                        <div v-for="(item, index) in cartStore.items" :key="index" class="font-thin relative p-2 mt-4 rounded-xl border">
+                        <div v-for="(item, index) in cartStore.items" :key="index" class="font-extralight relative p-2 mt-4 rounded-xl border">
                             <div v-if = "product = productStore.list.find(product => product.id === item.product)" class="flex justify-between p-2 space-x-3 mr-4" >
                                     <img :src="product.image" width="100px">
                                     <div class="flex flex-col mt-6">
@@ -177,7 +177,7 @@ const calculateSummaryPrice = () => {
                         </div>
                     </ul>
                 </div>
-                <div class="flex justify-between font-thin text-lg p-2 mb-4 text-black border-t" 
+                <div class="flex justify-between font-extralight text-lg p-2 mb-4 text-black border-t" 
                     v-if="calculateSummaryPrice() != 0">
                     <p class="mt-2">CART SUBTOTAL</p>
                     <p class="text-red-500 mt-2">{{ Number(calculateSummaryPrice()).toLocaleString('en-US') }} THB</p>
@@ -187,7 +187,7 @@ const calculateSummaryPrice = () => {
                     <RouterLink to="/checkout">
                         <button
                             :disabled="calculateSummaryPrice() == 0"
-                            class="flex bg-red-500 text-white px-4 py-2 rounded-xl mr-4 font-thin mb-4 text-sm items-center hover:bg-red-600"
+                            class="flex bg-red-500 text-white px-4 py-2 rounded-xl font-extralight mb-4 text-sm items-center hover:bg-red-600"
                             :class="{ 'opacity-50 cursor-not-allowed': calculateSummaryPrice() == 0}">
                             <svg class="w-6 h-6 text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" fill="currentColor" viewBox="0 0 24 24">

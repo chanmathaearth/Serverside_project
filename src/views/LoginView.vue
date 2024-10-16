@@ -95,16 +95,25 @@ const btnlogin = (event) => {
                                 class="w-full text-white bg-red-500 rounded-full p-2 font-thin hover:bg-red-600 focus:outline-none">
                                 SIGN IN
                             </button>
-                            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Don’t have an account yet?
-                                <RouterLink to="/register">
-                                    <span href="#" class="font-thin">Sign up</span>
-                                </RouterLink>
-                            </p>
                         </form>
+                        
                     </div>
+                    <p class="text-sm font-light text-gray-500 dark:text-gray-400 pl-8">
+                        Don’t have an account yet?
+                        <RouterLink to="/register">
+                            <span href="#" class="font-thin">Sign up</span>
+                        </RouterLink>
+                    </p>
+                    <p class="text-sm font-light text-gray-500 dark:text-gray-400 pl-8 pb-6">
+                        Forgot password?
+                        <RouterLink to="/ResetPassword">
+                            <span href="#" class="font-thin">Reset Password</span>
+                        </RouterLink>
+                    </p>
                 </div>
+                
             </div>
+            
         </section>
     </div>
 </template>

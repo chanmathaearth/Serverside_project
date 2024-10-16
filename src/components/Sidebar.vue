@@ -2,7 +2,7 @@
     <div data-theme="light" >
         <button
             @click="toggleSidebar"
-            class="w-full flex items-center justify-center py-2 px-4 rounded-lg font-thin"
+            class="focus:outline-none w-full flex items-center justify-center py-2 px-4 rounded-lg font-extralight"
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -23,8 +23,8 @@
         <div v-show="isSidebarVisible" class="p-4 w-64">
             <div class="mb-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="font-thin text-lg">Product Categories</h2>
-                    <button @click="toggleCate">
+                    <h2 class="font-extralight text-lg">Product Categories</h2>
+                    <button class="focus:outline-none" @click="toggleCate">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             :class="{ 'rotate-180': isCategoryOpen }"
@@ -49,7 +49,7 @@
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
-                        <span class="font-thin">Adidas</span>
+                        <span class="font-extralight">Adidas</span>
                     </li>
                      <li class="flex items-center">
                         <input
@@ -59,7 +59,7 @@
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
-                        <span class="font-thin">Asicis</span>
+                        <span class="font-extralight">Asicis</span>
                     </li>
                      <li class="flex items-center">
                         <input
@@ -69,7 +69,7 @@
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
-                        <span class="font-thin">Nike</span>
+                        <span class="font-extralight">Nike</span>
                     </li>
                      <li class="flex items-center">
                         <input
@@ -79,7 +79,7 @@
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
-                        <span class="font-thin">Mizuno</span>
+                        <span class="font-extralight">Mizuno</span>
                     </li>
                     <li class="flex items-center">
                         <input
@@ -89,7 +89,7 @@
                             v-model="selectedBrands"
                             @change="emitSelectedBrands"
                         />
-                        <span class="font-thin">Puma</span>
+                        <span class="font-extralight">Puma</span>
                     </li>
                 </ul>
             </div>
@@ -98,8 +98,8 @@
         <div v-show="isSidebarVisible" class="p-4 w-64">
             <div class="mb-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="font-thin text-lg">Colors</h2>
-                    <button @click="toggleColor">
+                    <h2 class="font-extralight text-lg">Colors</h2>
+                    <button class="focus:outline-none" @click="toggleColor">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             :class="{ 'rotate-180': isColorOpen }"
@@ -125,7 +125,7 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Red</span>
+                        <span class="font-extralight">Red</span>
                     </li>
                      <li class="flex items-center">
                         <input
@@ -135,7 +135,7 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Blue</span>
+                        <span class="font-extralight">Blue</span>
                     </li>
                      <li class="flex items-center">
                         <input
@@ -145,7 +145,7 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Green</span>
+                        <span class="font-extralight">Green</span>
                     </li>
                      <li class="flex items-center">
                         <input
@@ -155,7 +155,7 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Yellow</span>
+                        <span class="font-extralight">Yellow</span>
                     </li>
                     <li class="flex items-center">
                         <input
@@ -165,7 +165,7 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">White</span>
+                        <span class="font-extralight">White</span>
                     </li>
                      <li class="flex items-center">
                         <input
@@ -175,7 +175,7 @@
                             v-model="selectedColors"
                             @change="emitSelectedColors"
                         />
-                        <span class="font-thin">Black</span>
+                        <span class="font-extralight">Black</span>
                     </li>
                 </ul>
             </div>

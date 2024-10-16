@@ -139,7 +139,9 @@ const handleSave = async () => {
             text: "Your address has been successfully added.",
             icon: "success",
             confirmButtonText: "OK",
-            confirmButtonColor: "#d33"
+            confirmButtonColor: '#df4625',
+        }).then(() => {
+            window.location.reload();
         });
         closeModal();
     } catch (error) {
@@ -148,7 +150,7 @@ const handleSave = async () => {
             text: "There was an issue saving your address. Please try again later.",
             icon: "error",
             confirmButtonText: "OK",
-            confirmButtonColor: "#d33"
+            cconfirmButtonColor: '#df4625',
         });
     }
 };
@@ -160,7 +162,7 @@ const deleteAddress = async (addressId) => {
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: '#df4625',
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!",
         });
@@ -214,7 +216,7 @@ const handleEdit = async () => {
             text: "Your address has been successfully added.",
             icon: "success",
             confirmButtonText: "OK",
-            confirmButtonColor: '#df4625'
+            confirmButtonColor: '#df4625',
         });
         closeModal();
     } catch (error) {
@@ -223,7 +225,7 @@ const handleEdit = async () => {
             text: "There was an issue saving your address. Please try again later.",
             icon: "error",
             confirmButtonText: "OK",
-            confirmButtonColor: '#df4625'
+            confirmButtonColor: '#df4625',
         });
     }
 };
@@ -254,16 +256,16 @@ onMounted(() => {
     <div class="p-6 rounded-xl p-4 mb-6 border">
         <div class="col-span-2 mb-4">
             <div
-                class="flex justify-between mb-4 text-md font-light items-center"
+                class="flex justify-between mb-4 text-md font-extralight items-center"
             >
                 <label
                     for="existing-address"
-                    class="block mb-1 text-2xl font-thin"
+                    class="block mb-1 text-2xl font-extralight"
                     >Address</label
                 >
                 <button
                     @click="openModal"
-                    class="bg-red-500 text-white p-2 font-light rounded-full focus:outline-none hover:bg-red-600 text-sm"
+                    class="bg-red-500 text-white p-2 font-extralight rounded-full focus:outline-none hover:bg-red-600 text-sm"
                 >
                     Add New Address
                 </button>
@@ -288,13 +290,13 @@ onMounted(() => {
         >
             <button
                 @click="openEditModal(selectedExistingAddress)"
-                class="bg-amber-400 text-white p-1 font-light rounded-xl focus:outline-none hover:bg-amber-500 w-[10%]"
+                class="bg-amber-400 text-white p-1 font-extralight rounded-xl focus:outline-none hover:bg-amber-500 w-[10%]"
             >
                 edit
             </button>
             <button
                 @click="deleteAddress(selectedExistingAddress.id)"
-                class="bg-red-500 text-white p-1 font-light rounded-xl focus:outline-none hover:bg-red-600 w-[10%]"
+                class="bg-red-500 text-white p-1 font-extralight rounded-xl focus:outline-none hover:bg-red-600 w-[10%]"
             >
                 delete
             </button>
@@ -308,7 +310,7 @@ onMounted(() => {
                     <div
                         class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
                     >
-                        <h3 class="text-lg font-thin">EDIT ADDRESS</h3>
+                        <h3 class="text-lg font-extralight">EDIT ADDRESS</h3>
                         <button
                             type="button"
                             class="text-gray-400 bg-transparent focus:outline-none"
@@ -418,7 +420,7 @@ onMounted(() => {
                             <div class="mt-6 flex justify-center">
                                 <button @click="handleEdit()"
                                     type="submit"
-                                    class="bg-red-500 text-white font-normal p-3 rounded-full hover:bg-red-600 focus:outline-none w-32 font-thin"
+                                    class="bg-red-500 text-white font-normal p-3 rounded-full hover:bg-red-600 focus:outline-none w-32 font-extralight"
                                 >
                                     Save
                                 </button>
@@ -438,7 +440,7 @@ onMounted(() => {
                     <div
                         class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
                     >
-                        <h3 class="text-lg font-thin">ADD NEW ADDRESS</h3>
+                        <h3 class="text-lg font-extralight">ADD NEW ADDRESS</h3>
                         <button
                             type="button"
                             class="text-gray-400 bg-transparent focus:outline-none"
@@ -603,7 +605,7 @@ onMounted(() => {
                         >
                             <button
                                 type="button"
-                                class="bg-red-500 text-white p-3 rounded-full hover:bg-red-600 focus:outline-none w-32 font-thin"
+                                class="bg-red-500 text-white p-3 rounded-full hover:bg-red-600 focus:outline-none w-32 font-extralight"
                             >
                                 Add
                             </button>

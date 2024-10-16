@@ -9,6 +9,8 @@ import RegisterView from '../views/RegisterView.vue'
 import PaymentView from '../views/PaymentView.vue'
 import AdminView from '../views/AdminView.vue'
 import OrderView from '../views/OrderView.vue'
+import ResetPassword from '../views/ResetPassword.vue'
+import ResetPasswordConfirm from '../views/ResetPasswordConfirm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +59,17 @@ const router = createRouter({
       component: OrderView,
       meta: { requiresAuth: true, requiresAdmin: true }  // ต้องการการล็อกอินและต้องเป็น admin
     },
+    {
+      path: '/resetPassword',
+      name: 'resetPassword',
+      component: ResetPassword,
+    },
+    {
+      path: '/reset-password/:uidb64/:token',
+      name: 'resetPasswordConfirm',
+      component: ResetPasswordConfirm,
+      props: true
+    }   
   ]
 })
 
