@@ -213,5 +213,20 @@ export const useCustomerStore = defineStore('customer', {
                 console.error('Error updating status:', error);
             }
         },
+        async submitEmail(email) {
+            try {
+                await axios.post('http://localhost:8000/api/customers/password-reset/', {
+                    email: email,
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                alert('Password reset link has been sent to your email.');
+            } catch (error) {
+                console.error('Error sending password reset link:', error);
+                alert('Failed to send reset link.');
+            }
+        },
     }
 })
